@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fcfcfc" >
+
+    <LinearLayout
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="44dip"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:id="@+id/toolbar1"
+            android:layout_width="match_parent"
+            android:layout_height="50dip"
+            android:layout_below="@+id/navbar"
+            android:layout_marginTop="-6dip"
+            android:background="@drawable/bar_tool_bg" >
+
+            <Button
+                android:id="@+id/btn_price_one"
+                android:layout_width="wrap_content"
+                android:layout_height="44dip"
+                android:layout_weight="1"
+                android:background="@drawable/btn_selector_notice_sort"
+                android:text="一元区"
+                android:textSize="13sp" />
+
+            <Button
+                android:id="@+id/btn_price_three"
+                android:layout_width="wrap_content"
+                android:layout_height="44dip"
+                android:layout_weight="1"
+                android:background="@drawable/btn_selector_notice_sort"
+                android:text="三元区"
+                android:textSize="13sp" />
+
+            <Button
+                android:id="@+id/btn_price_five"
+                android:layout_width="wrap_content"
+                android:layout_height="44dip"
+                android:layout_weight="1"
+                android:background="@drawable/btn_selector_notice_sort"
+                android:text="五元区"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/all_event_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="43dip"
+            android:orientation="horizontal" >
+
+            <Spinner
+                android:id="@+id/spinner_sort"
+                android:layout_width="0dip"
+                android:layout_height="44dip"
+                android:layout_marginLeft="6dip"
+                android:layout_weight="1" />
+
+            <Spinner
+                android:id="@+id/spinner_province"
+                android:layout_width="0dip"
+                android:layout_height="44dip"
+                android:layout_marginLeft="6dip"
+                android:layout_weight="1" />
+
+            <Spinner
+                android:id="@+id/spinner_city"
+                android:layout_width="0dip"
+                android:layout_height="44dip"
+                android:layout_marginLeft="6dip"
+                android:layout_weight="1" />
+
+            <Spinner
+                android:id="@+id/spinner_school"
+                android:layout_width="0dip"
+                android:layout_height="44dip"
+                android:layout_marginLeft="6dip"
+                android:layout_weight="1" />
+
+            <Spinner
+                android:id="@+id/spinner_depart"
+                android:layout_width="0dip"
+                android:layout_height="44dip"
+                android:layout_marginLeft="6dip"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            android:src="@drawable/weibo_split" />
+    </LinearLayout>
+
+    <com.handmark.pulltorefresh.library.PullToRefreshListView
+        android:id="@+id/all_course_listview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="138dip"
+        android:cacheColorHint="#00000000"
+        android:divider="@null"
+        android:orientation="vertical" />
+    
+    <com.handmark.pulltorefresh.library.PullToRefreshListView
+        android:id="@+id/my_donate_listview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="44dip"
+        android:cacheColorHint="#00000000"
+        android:divider="@null"
+        android:orientation="vertical" />
+
+    <com.handmark.pulltorefresh.library.PullToRefreshListView
+        android:id="@+id/my_course_listview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="44dip"
+        android:cacheColorHint="#00000000"
+        android:divider="@null"
+        android:orientation="vertical" />
+
+    <RelativeLayout
+        android:id="@+id/navbar"
+        android:layout_width="match_parent"
+        android:layout_height="50dip"
+        android:background="@drawable/bar_navigation_bg" >
+
+        <Button
+            android:id="@+id/btn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="2dip"
+            android:background="@drawable/btn_selector_navbar_backicon" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="44dip"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:orientation="horizontal" >
+
+            <Button
+                android:id="@+id/btn_all_course"
+                android:layout_width="80dip"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_selector_nav_following"
+                android:shadowColor="#000"
+                android:shadowDx="0"
+                android:shadowDy="-1"
+                android:shadowRadius="0.01"
+                android:text="所有捐赠"
+                android:textColor="#fff"
+                android:textSize="12sp" />
+            
+            <Button
+                android:id="@+id/btn_my_donate"
+                android:layout_width="80dip"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_selector_nav_mid"
+                android:shadowColor="#000"
+                android:shadowDx="0"
+                android:shadowDy="-1"
+                android:shadowRadius="0.01"
+                android:text="我的捐赠"
+                android:textColor="#fff"
+                android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/btn_my_course"
+                android:layout_width="80dip"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_selector_nav_followed"
+                android:shadowColor="#000"
+                android:shadowDx="0"
+                android:shadowDy="-1"
+                android:shadowRadius="0.01"
+                android:text="我的购买"
+                android:textColor="#fff"
+                android:textSize="12sp" />
+        </LinearLayout>
+    </RelativeLayout>
+</RelativeLayout>

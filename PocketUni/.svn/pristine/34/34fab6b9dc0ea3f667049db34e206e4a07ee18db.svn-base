@@ -1,0 +1,24 @@
+package com.xyhui.widget;
+
+import com.baidu.mobstat.StatService;
+import com.mslibs.utils.VolleyLog;
+import com.mslibs.widget.CActivity;
+
+public abstract class FLActivity extends CActivity {
+
+	@Override
+	protected void onPause() {
+		VolleyLog.d("FLActivity.onPause()");
+		super.onPause();
+		StatService.onPause(this);
+	}
+
+	@Override
+	protected void onResume() {
+
+		VolleyLog.d("FLActivity.OnResume()");
+		super.onResume();
+		StatService.onResume(this);
+	}
+
+}

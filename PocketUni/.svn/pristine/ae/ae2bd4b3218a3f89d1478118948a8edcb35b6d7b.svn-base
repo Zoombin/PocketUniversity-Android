@@ -1,0 +1,192 @@
+package com.xyhui.activity;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import com.mslibs.api.CallBack;
+import com.mslibs.utils.JSONUtils;
+import com.mslibs.utils.VolleyLog;
+import com.xyhui.R;
+import com.xyhui.activity.app.NavMapListActivity;
+import com.xyhui.activity.app.NoticeListActivity;
+import com.xyhui.activity.event.EventListActivity;
+import com.xyhui.activity.group.GroupListActivity;
+import com.xyhui.activity.more.AccountManageActivity;
+import com.xyhui.activity.weibo.UserSearchActivity;
+import com.xyhui.api.Api;
+import com.xyhui.types.Response;
+import com.xyhui.utils.Preferences;
+import com.xyhui.widget.BannerLayout;
+import com.xyhui.widget.FLTabActivity;
+
+public class TabIndexActivity extends FLTabActivity {
+
+	BannerLayout index_banner;
+
+	LinearLayout layout_notice;
+	LinearLayout layout_group;
+	LinearLayout layout_searchfriend;
+	LinearLayout layout_event;
+	LinearLayout layout_navigation;
+	LinearLayout layout_accountsetting;
+
+	private PuApp mainApp;
+
+	private TextView text_groupcount;
+
+	private TextView text_announcecount;
+
+	private String school;
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_tab_index);
+
+		mainApp = (PuApp) getApplication();
+
+		linkUiVar();
+		bindListener();
+		ensureUi();
+	}
+
+	@Override
+	public void linkUiVar() {
+		index_banner = (BannerLayout) findViewById(R.id.index_banner);
+		layout_notice = (LinearLayout) findViewById(R.id.layout_notice);
+		layout_group = (LinearLayout) findViewById(R.id.layout_group);
+		layout_searchfriend = (LinearLayout) findViewById(R.id.layout_searchfriend);
+		layout_event = (LinearLayout) findViewById(R.id.layout_event);
+		layout_navigation = (LinearLayout) findViewById(R.id.layout_navigation);
+		layout_accountsetting = (LinearLayout) findViewById(R.id.layout_accountsetting);
+		text_groupcount = (TextView) findViewById(R.id.text_groupcount);
+		text_announcecount = (TextView) findViewById(R.id.text_announcecount);
+	}
+
+	@Override
+	public void bindListener() {
+		layout_notice.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// 打开校内通知
+				Intent intent = new Intent();
+				intent.setClass(mActivity, NoticeListActivity.class);
+				mActivity.startActivity(intent);
+			}
+		});
+
+		layout_event.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// 打开校园活动
+				Intent intent = new Intent();
+				intent.setClass(mActivity, EventListActivity.class);
+				mActivity.startActivity(intent);
+			}
+		});
+		layout_group.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// 打开部落
+				Intent intent = new Intent();
+				intent.setClass(mActivity, GroupListActivity.class);
+				mActivity.startActivity(intent);
+			}
+		});
+		layout_navigation.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// 打开校内导航
+				Intent intent = new Intent();
+				intent.setClass(mActivity, NavMapListActivity.class);
+				mActivity.startActivity(intent);
+			}
+		});
+
+		layout_searchfriend.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// 打开寻找好友
+				Intent intent = new Intent();
+				intent.setClass(mActivity, UserSearchActivity.class);
+				mActivity.startActivity(intent);
+			}
+		});
+
+		layout_accountsetting.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// 账号管理
+				Intent intent = new Intent();
+				intent.setClass(mActivity, AccountManageActivity.class);
+				mActivity.startActivity(intent);
+			}
+		});
+	}
+
+	@Override
+	public void ensureUi() {
+		index_banner.update();
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+
+		new Api(callback).mygroupcount(mainApp.getToken());
+
+		text_announcecount.setText("有0条新的通知");
+		school = mainApp.getPreference(Preferences.LOCAL.SCHOOLID);
+
+		if (TextUtils.isEmpty(school)) {
+			school = "1";
+		}
+
+		long time = mainApp.getLongPreference(Preferences.LOCAL.ANNOUNCETIME);
+
+		VolleyLog.d("%d", time);
+
+		if (time <= 0) {
+			time = 1;
+		}
+
+		VolleyLog.d("%d", time);
+
+		new Api(announcecallback).getAnnounceNew(mainApp.getToken(), school, time);
+		index_banner.reload();
+
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		index_banner.pause();
+	}
+
+	CallBack callback = new CallBack() {
+		@Override
+		public void onSuccess(String response) {
+			Response r = JSONUtils.fromJson(response, Response.class);
+
+			if (null != r && !TextUtils.isEmpty(r.response)) {
+				text_groupcount.setText("已加入" + r.response + "个部落");
+			}
+		}
+	};
+
+	CallBack announcecallback = new CallBack() {
+		@Override
+		public void onSuccess(String response) {
+			Response r = JSONUtils.fromJson(response, Response.class);
+			if (null != r && !TextUtils.isEmpty(r.count)) {
+				text_announcecount.setText("有" + r.count + "条新的通知");
+			}
+		}
+	};
+
+}

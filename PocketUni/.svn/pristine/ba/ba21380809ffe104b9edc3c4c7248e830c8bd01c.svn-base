@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#fcfcfc"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dip" >
+
+        <LinearLayout
+            android:id="@+id/img_avatar_linear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dip"
+            android:background="#ddd"
+            android:padding="1dip" >
+
+            <ImageView
+                android:id="@+id/img_avatar"
+                android:layout_width="72dip"
+                android:layout_height="72dip"
+                android:background="#fff"
+                android:cropToPadding="true"
+                android:padding="2dip"
+                android:scaleType="centerCrop"
+                android:src="@drawable/img_default" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dip"
+            android:layout_marginRight="10dip"
+            android:layout_toLeftOf="@+id/linear_right"
+            android:layout_toRightOf="@+id/img_avatar_linear"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/text_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/text_hours"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dip"
+                android:singleLine="true"
+                android:textColor="#888"
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/text_school"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dip"
+                android:singleLine="true"
+                android:textColor="#888"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linear_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="3dip"
+            android:orientation="vertical" 
+            android:gravity="center_horizontal">
+
+            <TextView
+                android:id="@+id/text_cost"
+                android:layout_width="80dip"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dip"
+                android:singleLine="true"
+                android:textSize="13sp" />
+
+            <Button
+                android:id="@+id/btn_collect"
+                android:layout_width="75dip"
+                android:layout_height="wrap_content"
+                android:background="@drawable/common_download_btn"
+                android:paddingBottom="5dip"
+                android:paddingLeft="10dip"
+                android:paddingRight="10dip"
+                android:paddingTop="5dip"
+                android:text="已收藏"
+                android:textColor="@android:color/black"
+                android:textSize="14sp" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1.5dip"
+        android:scaleType="fitXY"
+        android:src="@drawable/weibo_split" />
+
+</LinearLayout>

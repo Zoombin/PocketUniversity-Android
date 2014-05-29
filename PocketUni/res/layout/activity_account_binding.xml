@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/signin_bg" >
+
+    <LinearLayout
+        android:id="@+id/sv_phone_binding"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="44dip"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingTop="20dip" >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="100dip"
+            android:layout_marginBottom="20dip"
+            android:gravity="center"
+            android:text="使用第三方短信群发，会存在一些收不到短信现象。请检查是否屏蔽垃圾短信，稍后再试，或联系我们的客服。验证码没有时间限制，收到后再登陆网站，输入手机号码和验证码即可进行身份验证！感谢您的谅解！"
+            android:textColor="#fff"
+            android:textSize="15sp" />
+
+        <EditText
+            android:id="@+id/edit_phone_num"
+            android:layout_width="250dip"
+            android:layout_height="44dip"
+            android:background="@drawable/edit_selector_signin"
+            android:hint="输入需要绑定的手机号码"
+            android:inputType="phone"
+            android:padding="8dip"
+            android:singleLine="true"
+            android:textColor="#fff"
+            android:textSize="14sp" >
+
+            <requestFocus />
+        </EditText>
+
+        <Button
+            android:id="@+id/btn_get_msm_code"
+            android:layout_width="250dip"
+            android:layout_height="44dip"
+            android:layout_marginTop="12dip"
+            android:layout_toRightOf="@+id/img_group_avatar"
+            android:background="@drawable/btn_selector_signin"
+            android:text="获取手机短信验证码"
+            android:textColor="#fff"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/text_phone_sendtips"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="18dip"
+            android:layout_marginTop="8dip"
+            android:gravity="center"
+            android:text="我们将向你的手机发送短信验证码"
+            android:textColor="#fff"
+            android:textSize="15sp" />
+
+        <EditText
+            android:id="@+id/edit_msm_code"
+            android:layout_width="250dip"
+            android:layout_height="44dip"
+            android:layout_marginTop="12dip"
+            android:background="@drawable/edit_selector_signin"
+            android:hint="输入手机短信验证码"
+            android:inputType="number"
+            android:padding="8dip"
+            android:textColor="#fff"
+            android:textSize="14sp" >
+        </EditText>
+
+        <Button
+            android:id="@+id/btn_phone_bind"
+            android:layout_width="250dip"
+            android:layout_height="44dip"
+            android:layout_marginTop="12dip"
+            android:layout_toRightOf="@+id/img_group_avatar"
+            android:background="@drawable/btn_selector_signin"
+            android:text="提交绑定手机号码"
+            android:textColor="#fff"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/sv_email_binding"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="44dip"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingTop="20dip" >
+        
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="100dip"
+            android:layout_marginBottom="20dip"
+            android:gravity="center"
+            android:text="尽量使用163或126网易邮箱。QQ邮箱由于我们发送太多，会存在延时或退回现象"
+            android:textColor="#fff"
+            android:textSize="15sp" />
+
+        <EditText
+            android:id="@+id/edit_email_addr"
+            android:layout_width="250dip"
+            android:layout_height="44dip"
+            android:background="@drawable/edit_selector_signin"
+            android:hint="输入需要绑定的邮箱"
+            android:inputType="textEmailAddress"
+            android:padding="8dip"
+            android:singleLine="true"
+            android:textColor="#fff"
+            android:textSize="14sp" >
+
+            <requestFocus />
+        </EditText>
+
+        <Button
+            android:id="@+id/btn_get_email_code"
+            android:layout_width="250dip"
+            android:layout_height="44dip"
+            android:layout_marginTop="12dip"
+            android:layout_toRightOf="@+id/img_group_avatar"
+            android:background="@drawable/btn_selector_signin"
+            android:text="获取邮箱验证码"
+            android:textColor="#fff"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/text_email_sendtips"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="18dip"
+            android:layout_marginTop="8dip"
+            android:gravity="center"
+            android:text="我们将向你的邮箱发送验证码"
+            android:textColor="#fff"
+            android:textSize="15sp" />
+
+        <EditText
+            android:id="@+id/edit_email_code"
+            android:layout_width="250dip"
+            android:layout_height="44dip"
+            android:layout_marginTop="12dip"
+            android:background="@drawable/edit_selector_signin"
+            android:hint="输入邮箱验证码"
+            android:inputType="number"
+            android:padding="8dip"
+            android:textColor="#fff"
+            android:textSize="14sp" >
+        </EditText>
+
+        <Button
+            android:id="@+id/btn_email_bind"
+            android:layout_width="250dip"
+            android:layout_height="44dip"
+            android:layout_marginTop="12dip"
+            android:layout_toRightOf="@+id/img_group_avatar"
+            android:background="@drawable/btn_selector_signin"
+            android:text="提交绑定邮箱"
+            android:textColor="#fff"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/navbar"
+        android:layout_width="match_parent"
+        android:layout_height="50dip"
+        android:background="@drawable/bar_navigation_bg" >
+
+        <Button
+            android:id="@+id/btn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="2dip"
+            android:background="@drawable/btn_selector_navbar_backicon" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="44dip"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:orientation="horizontal" >
+
+            <Button
+                android:id="@+id/btn_binding_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_selector_nav_following"
+                android:shadowColor="#000"
+                android:shadowDx="0"
+                android:shadowDy="-1"
+                android:shadowRadius="0.01"
+                android:text="手机绑定"
+                android:textColor="#fff"
+                android:textSize="13sp" />
+
+            <Button
+                android:id="@+id/btn_binding_email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_selector_nav_followed"
+                android:shadowColor="#000"
+                android:shadowDx="0"
+                android:shadowDy="-1"
+                android:shadowRadius="0.01"
+                android:text="邮箱绑定"
+                android:textColor="#fff"
+                android:textSize="13sp" />
+        </LinearLayout>
+    </RelativeLayout>
+
+</RelativeLayout>

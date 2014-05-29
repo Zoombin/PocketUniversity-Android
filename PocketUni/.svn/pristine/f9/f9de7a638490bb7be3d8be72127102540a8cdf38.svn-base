@@ -1,0 +1,214 @@
+package com.xyhui.activity;
+
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import com.mslibs.utils.JSONUtils;
+import com.mslibs.utils.NotificationsUtil;
+import com.mslibs.utils.VolleyLog;
+import com.xyhui.R;
+import com.xyhui.activity.more.AboutActivity;
+import com.xyhui.activity.more.AccountManageActivity;
+import com.xyhui.activity.more.QRCardViewActivity;
+import com.xyhui.activity.more.QRCodeScanActivity;
+import com.xyhui.activity.weibo.MessageActivity;
+import com.xyhui.activity.weibo.UserHomePageActivity;
+import com.xyhui.api.Api;
+import com.xyhui.api.CallBack;
+import com.xyhui.types.Response;
+import com.xyhui.utils.DownloadImpl;
+import com.xyhui.utils.Params;
+import com.xyhui.utils.PrefUtil;
+import com.xyhui.widget.FLTabActivity;
+
+public class Tab5MoreActivity extends FLTabActivity {
+
+	private final String HELP_URL = "http://pocketuni.net/puhelp.html";
+
+	LinearLayout account_layout;
+	LinearLayout homepage_layout;
+	LinearLayout qrcard_layout;
+	LinearLayout qrscan_layout;
+	LinearLayout message_layout;
+	LinearLayout question_layout;
+	LinearLayout about_layout;
+	LinearLayout update_layout;
+	TextView text_version;
+	LinearLayout signout_layout;
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_tab_more);
+
+		linkUiVar();
+		bindListener();
+		ensureUi();
+	}
+
+	@Override
+	public void linkUiVar() {
+		account_layout = (LinearLayout) findViewById(R.id.account_layout);
+		homepage_layout = (LinearLayout) findViewById(R.id.homepage_layout);
+		qrcard_layout = (LinearLayout) findViewById(R.id.qrcard_layout);
+		qrscan_layout = (LinearLayout) findViewById(R.id.qrscan_layout);
+		message_layout = (LinearLayout) findViewById(R.id.message_layout);
+		question_layout = (LinearLayout) findViewById(R.id.question_layout);
+		about_layout = (LinearLayout) findViewById(R.id.about_layout);
+		update_layout = (LinearLayout) findViewById(R.id.update_layout);
+		text_version = (TextView) findViewById(R.id.text_version);
+		signout_layout = (LinearLayout) findViewById(R.id.signout_layout);
+	}
+
+	@Override
+	public void bindListener() {
+
+		account_layout.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// 账号管理
+				Intent intent = new Intent();
+				intent.setClass(mActivity, AccountManageActivity.class);
+				mActivity.startActivity(intent);
+			}
+		});
+		homepage_layout.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// 个人首页
+				String user_id = new PrefUtil().getPreference(Params.LOCAL.UID);
+
+				Intent intent = new Intent();
+				intent.setClass(mActivity, UserHomePageActivity.class);
+				intent.putExtra(Params.INTENT_EXTRA.USER_ID, user_id);
+				mActivity.startActivity(intent);
+			}
+		});
+		qrcard_layout.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// 二维码名片
+				Intent intent = new Intent();
+				intent.setClass(mActivity, QRCardViewActivity.class);
+				mActivity.startActivity(intent);
+			}
+		});
+		qrscan_layout.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// 二维码扫描
+				Intent intent = new Intent();
+				intent.setClass(mActivity, QRCodeScanActivity.class);
+				mActivity.startActivity(intent);
+			}
+		});
+
+		message_layout.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// 账号消息
+				Intent intent = new Intent();
+				intent.setClass(mActivity, MessageActivity.class);
+				mActivity.startActivity(intent);
+			}
+		});
+		question_layout.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// 常见问题
+				Intent intent = new Intent();
+				intent.setClass(mActivity, WebViewActivity.class);
+				intent.putExtra(Params.INTENT_EXTRA.WEBVIEW_TITLE, "常见问题");
+				intent.putExtra(Params.INTENT_EXTRA.WEBVIEW_URL, HELP_URL);
+				mActivity.startActivity(intent);
+			}
+		});
+		about_layout.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// 关于PocketUni
+				Intent intent = new Intent();
+				intent.setClass(mActivity, AboutActivity.class);
+				mActivity.startActivity(intent);
+			}
+		});
+		update_layout.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// 检测新版本
+				showProgress();
+				new Api(callback, mActivity).getVersion();
+			}
+		});
+		signout_layout.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// 注销账号
+				new AlertDialog.Builder(mActivity).setTitle("确定要注销吗?")
+						.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int whichButton) {
+								PuApp.get().logout(mActivity);
+							}
+						}).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int whichButton) {
+
+							}
+						}).show();
+			}
+		});
+	}
+
+	@Override
+	public void ensureUi() {
+		// 显示当前版本号
+		String v = getVersion();
+		text_version.setText("当前版本：" + v);
+	}
+
+	CallBack callback = new CallBack() {
+		@Override
+		public void onSuccess(String response) {
+			dismissProgress();
+			Response r = JSONUtils.fromJson(response, Response.class);
+
+			if (r == null) {
+				return;
+			}
+
+			final String version = r.version;
+			final String url = r.response;
+			String current_version = getVersion();
+
+			VolleyLog.d("version: %s \n current_version: %s", version, current_version);
+
+			if (TextUtils.isEmpty(version) || TextUtils.isEmpty(url)
+					|| current_version.compareTo(version) >= 0) {
+
+				VolleyLog.d("no need update");
+				NotificationsUtil.ToastBottomMsg(mContext, "当前是最新版本");
+			} else {
+				new AlertDialog.Builder(Tab5MoreActivity.this).setTitle("升级应用程序")
+						.setMessage("程序有新的版本可用, 现在就升级吗?")
+						.setPositiveButton("立即升级", new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int whichButton) {
+
+								DownloadImpl download = new DownloadImpl(mContext, url,
+										"PocketUni客户端", String.format("PocketUni_%s.apk", version));
+								download.startDownload();
+							}
+						}).setNeutralButton("暂不升级", new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int whichButton) {
+								dialog.cancel();
+							}
+						}).show();
+			}
+		}
+	};
+}

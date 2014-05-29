@@ -1,0 +1,31 @@
+package com.xyhui.utils;
+
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+
+import com.xyhui.activity.PuApp;
+import com.xyhui.activity.SigninActivity;
+
+public class AccountUtils {
+	private PuApp mainApp = PuApp.get();
+
+	public void logout(Context context) {
+		mainApp.setPreference(Preferences.LOCAL.NOTLOGGED, true);
+		mainApp.setPreference(Preferences.LOCAL.TOKEN, null);
+		mainApp.setPreference(Preferences.LOCAL.SECRET, null);
+		mainApp.setPreference(Preferences.LOCAL.UID, null);
+		mainApp.setPreference(Preferences.LOCAL.CITYID, null);
+		mainApp.setPreference(Preferences.LOCAL.SCHOOLID, null);
+		mainApp.setPreference(Preferences.LOCAL.SCHOOLLIST, null);
+		mainApp.setPreference(Preferences.LOCAL.CITYLIST, null);
+		mainApp.setPreference(Preferences.LOCAL.MOBILE, null);
+		mainApp.setPreference(Preferences.LOCAL.ANNOUNCETIME, 0);
+
+		// 进入登陆界面
+		Intent intent = new Intent();
+		intent.setClass(context, SigninActivity.class);
+		context.startActivity(intent);
+		((Activity) context).finish();
+	}
+}

@@ -1,0 +1,10 @@
+package com.xyhui.types;
+
+public class Response {
+	public String response = null;
+	public String message = null;
+	public String count = null;
+	public String version = null;
+	public int status = 0;
+	public String msg = null;
+}

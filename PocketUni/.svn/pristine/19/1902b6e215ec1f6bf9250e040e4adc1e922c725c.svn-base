@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dip"
+        android:layout_marginTop="44dip"
+        android:background="@drawable/bar_tool_bg" >
+
+        <Button
+            android:id="@+id/btn_all_weibo"
+            android:layout_width="0dip"
+            android:layout_height="44dip"
+            android:layout_weight="1"
+            android:background="@drawable/btn_selector_notice_sort"
+            android:textSize="13sp" />
+        
+        <Button
+            android:id="@+id/btn_my_weibo"
+            android:layout_width="0dip"
+            android:layout_height="44dip"
+            android:layout_weight="1"
+            android:background="@drawable/btn_selector_notice_sort"
+            android:textSize="13sp" />
+    </LinearLayout>
+
+    <com.handmark.pulltorefresh.library.PullToRefreshListView
+        android:id="@+id/weibo_listview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="88dip"
+        android:cacheColorHint="#00000000"
+        android:divider="@null"
+        android:orientation="vertical" />
+
+    <RelativeLayout
+        android:id="@+id/navbar"
+        android:layout_width="match_parent"
+        android:layout_height="50dip"
+        android:background="@drawable/bar_navigation_bg" >
+
+        <Button
+            android:id="@+id/btn_newweibo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="2dip"
+            android:background="@drawable/btn_selector_navbar_edit" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="44dip"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:orientation="horizontal" >
+
+            <Button
+                android:id="@+id/btn_wish"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_selector_nav_following"
+                android:shadowColor="#000"
+                android:shadowDx="0"
+                android:shadowDy="-1"
+                android:shadowRadius="0.01"
+                android:text="许愿"
+                android:textColor="#fff"
+                android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/btn_help"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_selector_nav_followed"
+                android:shadowColor="#000"
+                android:shadowDx="0"
+                android:shadowDy="-1"
+                android:shadowRadius="0.01"
+                android:text="求助"
+                android:textColor="#fff"
+                android:textSize="12sp" />
+        </LinearLayout>
+    </RelativeLayout>
+</RelativeLayout>

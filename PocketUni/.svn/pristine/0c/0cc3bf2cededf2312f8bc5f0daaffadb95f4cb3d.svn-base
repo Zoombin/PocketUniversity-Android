@@ -1,0 +1,154 @@
+package com.xyhui.types;
+
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.text.TextUtils;
+
+import com.mslibs.utils.ParcelUtils;
+
+public class Course implements Parcelable {
+	// 课程id、名称、图标
+	public String id = null;
+	public String title = null;
+	public String logoId = null;
+
+	// 课程分类id、分类名称
+	public String sortId = null;
+	public String sortName = null;
+
+	// 授课老师名字
+	public String teacher = null;
+
+	// 课程开始、结束、报名截止时间
+	public String sTime = null;
+	public String eTime = null;
+	public String deadline = null;
+
+	// 上课地点
+	public String address = null;
+
+	// 学分
+	public String credit = null;
+
+	// 已参加人数
+	public String joinCount = null;
+	// 剩余名额
+	public String limitCount = null;
+
+	// 课程简介
+	public String description = null;
+
+	// 是否已参加
+	public boolean hasJoined = false;
+
+	// 是否已经结束
+	public boolean isFinished = false;
+
+	// 是否可报名
+	public boolean isAvailable = false;
+
+	// 是否需要绑定手机号码(0:不需要 1：需要)
+	public int need_tel = 0;
+
+	public String getTips() {
+		return "课程时间：" + sTime + " 至 " + eTime + "\n报名截止时间：" + deadline + "\n参加人数(" + joinCount
+				+ ")  剩余名额 (" + limitCount + ")";
+	}
+
+	public String getNotice() {
+		String result = "";
+
+		if (!TextUtils.isEmpty(sortName)) {
+			result += "课程分类：" + sortName;
+		}
+
+		if (!TextUtils.isEmpty(teacher)) {
+			result += "\n授课老师：" + teacher;
+		}
+
+		if (!TextUtils.isEmpty(sTime) && !TextUtils.isEmpty(eTime)) {
+			result += "\n上课时间：" + sTime + " 至 " + eTime;
+		}
+
+		if (!TextUtils.isEmpty(deadline)) {
+			result += "\n报名截止时间：" + deadline;
+		}
+
+		if (!TextUtils.isEmpty(address)) {
+			result += "\n上课地点：" + address;
+		}
+
+		if (!TextUtils.isEmpty(credit)) {
+			result += "\n课时：";
+			result += credit;
+		}
+
+		if (!TextUtils.isEmpty(joinCount)) {
+			result += "\n已报名人数：" + joinCount;
+		}
+
+		if (!TextUtils.isEmpty(limitCount)) {
+			result += "\n剩余名额：" + limitCount;
+		}
+
+		if (!TextUtils.isEmpty(description)) {
+			result += "\n课程介绍：" + description;
+		}
+
+		return result;
+	}
+
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel out, int flags) {
+		ParcelUtils.writeStringToParcel(out, id);
+		ParcelUtils.writeStringToParcel(out, title);
+		ParcelUtils.writeStringToParcel(out, logoId);
+		ParcelUtils.writeStringToParcel(out, sortName);
+		ParcelUtils.writeStringToParcel(out, teacher);
+		ParcelUtils.writeStringToParcel(out, sTime);
+		ParcelUtils.writeStringToParcel(out, eTime);
+		ParcelUtils.writeStringToParcel(out, deadline);
+		ParcelUtils.writeStringToParcel(out, address);
+		ParcelUtils.writeStringToParcel(out, credit);
+		ParcelUtils.writeStringToParcel(out, joinCount);
+		ParcelUtils.writeStringToParcel(out, limitCount);
+		ParcelUtils.writeStringToParcel(out, description);
+	}
+
+	public Course() {
+
+	}
+
+	public Course(Parcel in) {
+		id = ParcelUtils.readStringFromParcel(in);
+		title = ParcelUtils.readStringFromParcel(in);
+		logoId = ParcelUtils.readStringFromParcel(in);
+		sortName = ParcelUtils.readStringFromParcel(in);
+		teacher = ParcelUtils.readStringFromParcel(in);
+		sTime = ParcelUtils.readStringFromParcel(in);
+		eTime = ParcelUtils.readStringFromParcel(in);
+		deadline = ParcelUtils.readStringFromParcel(in);
+		address = ParcelUtils.readStringFromParcel(in);
+		credit = ParcelUtils.readStringFromParcel(in);
+		joinCount = ParcelUtils.readStringFromParcel(in);
+		limitCount = ParcelUtils.readStringFromParcel(in);
+		description = ParcelUtils.readStringFromParcel(in);
+	}
+
+	public static final Parcelable.Creator<Course> CREATOR = new Parcelable.Creator<Course>() {
+		public Course createFromParcel(Parcel in) {
+			return new Course(in);
+		}
+
+		@Override
+		public Course[] newArray(int size) {
+			return new Course[size];
+		}
+	};
+
+}

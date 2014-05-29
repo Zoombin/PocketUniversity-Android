@@ -1,0 +1,289 @@
+package com.xyhui.activity;
+
+import java.util.ArrayList;
+
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.Bundle;
+import android.os.Handler;
+import android.text.TextUtils;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
+
+import com.mslibs.api.CallBack;
+import com.mslibs.utils.JSONUtils;
+import com.mslibs.utils.NotificationsUtil;
+import com.mslibs.utils.VolleyLog;
+import com.xyhui.R;
+import com.xyhui.api.Api;
+import com.xyhui.types.City;
+import com.xyhui.types.Response;
+import com.xyhui.types.School;
+import com.xyhui.types.Token;
+import com.xyhui.utils.Preferences;
+import com.xyhui.widget.FLActivity;
+
+public class SigninActivity extends FLActivity {
+
+	PuApp mApplication;
+	private Handler mHandler = new Handler();
+	private int delayTimes = 0;
+	private final int MAX_DELAY_TIMES = 10;
+	/** 跳转到下一个Activity的延时时间 **/
+	private final int DELAYED_GOTO_DURATION = 500;
+
+	Button btn_select_school;
+	Button btn_select_city;
+	EditText edit_email;
+	EditText edit_password;
+	Button btn_signin;
+
+	School school = null;
+
+	City city = null;
+
+	private boolean mobileReceived = false;
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_signin);
+
+		mApplication = (PuApp) getApplication();
+
+		linkUiVar();
+		bindListener();
+		ensureUi();
+	}
+
+	@Override
+	public void linkUiVar() {
+		btn_select_school = (Button) this.findViewById(R.id.btn_select_school);
+		btn_select_city = (Button) this.findViewById(R.id.btn_select_city);
+		edit_email = (EditText) findViewById(R.id.edit_email);
+		edit_password = (EditText) findViewById(R.id.edit_password);
+		btn_signin = (Button) findViewById(R.id.btn_signin);
+	}
+
+	@Override
+	public void bindListener() {
+		btn_select_city.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				closeKeyboard(edit_email);
+				// 打开城市列表
+				Intent intent = new Intent();
+				intent.setClass(mActivity, CityListActivity.class);
+				mActivity.startActivity(intent);
+			}
+		});
+
+		btn_select_school.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (null == city) {
+					NotificationsUtil.ToastTopMsg(mContext, "请先选择城市");
+					return;
+				}
+
+				closeKeyboard(edit_email);
+				// 打开学校列表
+				Intent intent = new Intent();
+				intent.setClass(mActivity, SchoolListActivity.class);
+				mActivity.startActivity(intent);
+			}
+		});
+
+		btn_signin.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// 提交登录
+				if (city == null) {
+					NotificationsUtil.ToastBottomMsg(mContext, "请选择城市");
+					return;
+				}
+
+				if (school == null) {
+					NotificationsUtil.ToastBottomMsg(mContext, "请选择学校");
+					return;
+				}
+
+				String email = edit_email.getText().toString().trim();
+				String password = edit_password.getText().toString().trim();
+
+				if (TextUtils.isEmpty(email)) {
+					NotificationsUtil.ToastBottomMsg(mContext, "请填写学号");
+					return;
+				}
+
+				if (TextUtils.isEmpty(password)) {
+					NotificationsUtil.ToastBottomMsg(mContext, "请填写登录密码");
+					return;
+				}
+				v.setEnabled(false);
+				email = email + school.email;
+				new Api(x).login(email, password);
+				closeKeyboard(edit_email);
+			}
+		});
+	}
+
+	private void testOneSchool() {
+
+		ArrayList<School> schools = mApplication.getSchools();
+
+		if (schools != null && !schools.isEmpty()) {
+			schools.remove(0);
+
+			ArrayList<School> citySchools = new ArrayList<School>();
+
+			String cityId = mApplication.getPreference(Preferences.LOCAL.CITYID);
+
+			for (int i = 0; i < schools.size(); i++) {
+				School school = schools.get(i);
+				String schoolCityId = school.cityId;
+
+				if (cityId.equals(schoolCityId) && citySchools.size() < 2) {
+					citySchools.add(school);
+				} else if (citySchools.size() >= 2) {
+					break;
+				}
+			}
+
+			if (citySchools.size() == 1) {
+				school = citySchools.get(0);
+				btn_select_school.setText(school.name);
+				mApplication.setPreference(Preferences.LOCAL.SCHOOLID, school.school);
+			} else {
+				btn_select_school.setText("选择所在学校");
+			}
+		}
+	}
+
+	CallBack x = new CallBack() {
+
+		@Override
+		public void onSuccess(String response) {
+			Token token = JSONUtils.fromJson(response, Token.class);
+			if (token.isEmpty() || TextUtils.isEmpty(token.oauth_token)
+					|| TextUtils.isEmpty(token.oauth_token_secret)) {
+				String message = token.message;
+				if (TextUtils.isEmpty(message)) {
+					NotificationsUtil.ToastBottomMsg(mContext, "服务器返回错误");
+				} else {
+					NotificationsUtil.ToastBottomMsg(mContext, message);
+				}
+				btn_signin.setEnabled(true);
+			} else {
+
+				mApplication.setPreference(Preferences.LOCAL.NOTLOGGED, false);
+				mApplication.setPreference(Preferences.LOCAL.UID, token.uid);
+				mApplication.setPreference(Preferences.LOCAL.TOKEN, token.oauth_token);
+				mApplication.setPreference(Preferences.LOCAL.SECRET, token.oauth_token_secret);
+				mApplication.setUserData();
+				new Api(callback).getMobile(mApplication.getToken());
+				initOrMain();
+			}
+		}
+
+		CallBack callback = new CallBack() {
+			@Override
+			public void onSuccess(String response) {
+				mobileReceived = true;
+				Response result = JSONUtils.fromJson(response, Response.class);
+				if (!TextUtils.isEmpty(result.response)) {
+					mApplication.setPreference(Preferences.LOCAL.MOBILE, result.response);
+				} else {
+					mApplication.setPreference(Preferences.LOCAL.MOBILE, null);
+				}
+			}
+		};
+
+		@Override
+		public void onFailure(String message) {
+			NotificationsUtil.ToastBottomMsg(mContext, message);
+			btn_signin.setEnabled(true);
+		}
+	};
+
+	private void initOrMain() {
+		mHandler.postDelayed(new Runnable() {
+			public void run() {
+				VolleyLog.d("userDataArrived: %b", mApplication.userDataArrived());
+				VolleyLog.d("MOBILE: %s", mApplication.getPreference(Preferences.LOCAL.MOBILE));
+				if (mApplication.userDataArrived() && mobileReceived) {
+					Intent intent = new Intent();
+					if (!mApplication.isVerified()) {
+						intent.setClass(SigninActivity.this, AccountBindingActivity.class);
+					} else if (!mApplication.isInited()) {
+						intent.setClass(SigninActivity.this, UserInitActivity.class);
+					} else {
+						intent.setClass(SigninActivity.this, MainActivity.class);
+					}
+					startActivity(intent);
+					finish();
+				} else if (delayTimes > MAX_DELAY_TIMES) {
+					NotificationsUtil.ToastTopMsg(mContext, "暂时无法获取数据");
+					finish();
+				} else {
+					delayTimes++;
+					initOrMain();
+				}
+
+			}
+		}, DELAYED_GOTO_DURATION);
+	}
+
+	@Override
+	public void ensureUi() {
+		IntentFilter filter = new IntentFilter();
+		filter.addAction("android.user.SCHOOL");
+		filter.addAction("android.user.CITY");
+		VolleyLog.v("Receiver Registed");
+		registerReceiver(mEvtReceiver, filter);
+		registerReceiver(mCityReceiver, filter);
+	}
+
+	public BroadcastReceiver mEvtReceiver = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			if (intent.getAction().equals("android.user.SCHOOL")) {
+				if (intent.hasExtra(Preferences.INTENT_EXTRA.SCHOOL)) {
+					school = intent.getParcelableExtra(Preferences.INTENT_EXTRA.SCHOOL);
+					btn_select_school.setText(school.name);
+				}
+			}
+		}
+	};
+
+	public BroadcastReceiver mCityReceiver = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			if (intent.getAction().equals("android.user.CITY")) {
+				if (intent.hasExtra(Preferences.INTENT_EXTRA.CITY)) {
+					city = intent.getParcelableExtra(Preferences.INTENT_EXTRA.CITY);
+					btn_select_city.setText(city.city);
+
+					testOneSchool();
+				}
+			}
+		}
+	};
+
+	@Override
+	public void onResume() {
+		super.onResume();
+	}
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		unregisterReceiver(mEvtReceiver);
+		unregisterReceiver(mCityReceiver);
+		VolleyLog.d("Receiver UnRegisted:");
+	}
+}

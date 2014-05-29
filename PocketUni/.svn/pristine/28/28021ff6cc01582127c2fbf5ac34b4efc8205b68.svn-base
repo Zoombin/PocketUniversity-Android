@@ -1,0 +1,6 @@
+package com.xyhui.types;
+
+public class DetailGroups {
+	public DetailGroup data = null;
+	public String message = null;
+}

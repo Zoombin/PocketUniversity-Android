@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">PocketUni</string>
+    <string name="pull_to_refresh_pull_label">下拉可以刷新</string>
+	<string name="pull_to_refresh_release_label">松开即可刷新</string>
+	<string name="pull_to_refresh_refreshing_label">正在读取……</string>
+	<string name="dialog_title">正在获取内容</string>
+	<string name="dialog_message">请稍候...</string>
+	<string name="at">\uff20</string>
+	
+</resources>

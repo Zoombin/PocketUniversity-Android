@@ -1,0 +1,57 @@
+package com.xyhui.types;
+
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import com.mslibs.utils.ParcelUtils;
+
+public class School implements Parcelable {
+	public String school = null;
+	public String name = null;
+	public String email = null;
+	public String cityId = null;
+	public String id = null;
+
+	@Override
+	public String toString() {
+		return name;
+	}
+
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel out, int flags) {
+		ParcelUtils.writeStringToParcel(out, school);
+		ParcelUtils.writeStringToParcel(out, name);
+		ParcelUtils.writeStringToParcel(out, email);
+		ParcelUtils.writeStringToParcel(out, cityId);
+		ParcelUtils.writeStringToParcel(out, id);
+	}
+
+	public School() {
+	}
+
+	public School(Parcel in) {
+
+		school = ParcelUtils.readStringFromParcel(in);
+		name = ParcelUtils.readStringFromParcel(in);
+		email = ParcelUtils.readStringFromParcel(in);
+		cityId = ParcelUtils.readStringFromParcel(in);
+		id = ParcelUtils.readStringFromParcel(in);
+	}
+
+	public static final Parcelable.Creator<School> CREATOR = new Parcelable.Creator<School>() {
+		public School createFromParcel(Parcel in) {
+			return new School(in);
+		}
+
+		@Override
+		public School[] newArray(int size) {
+			return new School[size];
+		}
+	};
+
+}

@@ -1,0 +1,181 @@
+package com.xyhui.widget;
+
+import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import android.content.Context;
+import android.os.Handler;
+import android.os.Message;
+import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.util.AttributeSet;
+import android.view.MotionEvent;
+import android.view.View;
+
+import com.google.gson.reflect.TypeToken;
+import com.mslibs.utils.JSONUtils;
+import com.mslibs.utils.VolleyLog;
+import com.mslibs.widget.CRelativeLayout;
+import com.mslibs.widget.PagerIndicator;
+import com.xyhui.R;
+import com.xyhui.activity.PuApp;
+import com.xyhui.api.Api;
+import com.xyhui.api.CallBack;
+import com.xyhui.types.EventBanner;
+
+public class BannerLayout extends CRelativeLayout {
+
+	private ViewPager viewPager;
+	private BannerPagerAdapter bannerPagerAdapter;
+	private PagerIndicator pagerIndicator;
+	ArrayList<Object> mDataList;
+	Timer mTimer;
+	TimerTask task;
+
+	public BannerLayout(Context context) {
+		super(context);
+		this.setContentView(R.layout.widget_banner_layout);
+	}
+
+	public BannerLayout(Context context, AttributeSet attrs) {
+		super(context, attrs);
+		this.setContentView(R.layout.widget_banner_layout);
+	}
+
+	@Override
+	public void update() {
+		linkUiVar();
+		bindListener();
+		ensureUi();
+	}
+
+	@Override
+	public void linkUiVar() {
+		viewPager = (ViewPager) findViewById(R.id.viewPager);
+		pagerIndicator = (PagerIndicator) findViewById(R.id.pagerIndicator);
+		// setProgressBarResourceID(R.id.mProgressBarLayout);
+	}
+
+	@Override
+	public void bindListener() {
+		viewPager.setOnPageChangeListener(new OnPageChangeListener() {
+
+			@Override
+			public void onPageScrollStateChanged(int arg0) {
+
+			}
+
+			@Override
+			public void onPageScrolled(int arg0, float arg1, int arg2) {
+
+			}
+
+			@Override
+			public void onPageSelected(int arg0) {
+				pagerIndicator.setPagerIndex(arg0);
+				VolleyLog.d("setPagerIndex: %d", arg0);
+			}
+
+		});
+
+		viewPager.setOnTouchListener(new View.OnTouchListener() {
+
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+
+				viewPager.getParent().requestDisallowInterceptTouchEvent(true);
+
+				if (MotionEvent.ACTION_UP == event.getAction()) {
+					reload();
+				}
+				if (MotionEvent.ACTION_MOVE == event.getAction()) {
+					pause();
+				}
+
+				return false;
+			}
+		});
+	}
+
+	@Override
+	public void ensureUi() {
+		PuApp mainApp = (PuApp) mActivity.getApplication();
+
+		new Api(callback, mActivity).getRecommEventList(mainApp.getToken(), 0);
+	}
+
+	CallBack callback = new CallBack() {
+		@Override
+		public void onSuccess(String response) {
+			ArrayList<EventBanner> items = JSONUtils.fromJson(response,
+					new TypeToken<ArrayList<EventBanner>>() {
+					});
+
+			hiddenProgressLoading();
+			// 初始化适配器
+			bannerPagerAdapter = new BannerPagerAdapter(mActivity, mContext);
+
+			mDataList = new ArrayList<Object>();
+
+			if (items != null && items.size() > 0) {
+				for (int i = 0; i < items.size(); i++) {
+					mDataList.add(items.get(i));
+				}
+			}
+
+			bannerPagerAdapter.reload(mDataList);
+			viewPager.setAdapter(bannerPagerAdapter);
+
+			pagerIndicator.setPagerCount(bannerPagerAdapter.getCount());
+
+		}
+	};
+
+	@Override
+	public void reload() {
+
+		if (mTimer == null && task == null) {
+			mTimer = new Timer();
+
+			task = new TimerTask() {
+				public void run() {
+					Message message = new Message();
+					message.what = 1;
+					handler.sendMessage(message);
+				}
+			};
+
+			mTimer.schedule(task, 5000, 5000);
+		}
+	}
+
+	public void pause() {
+		if (mTimer != null && task != null) {
+			task.cancel();
+			mTimer.cancel();
+			task = null;
+			mTimer = null;
+		}
+	}
+
+	final Handler handler = new Handler() {
+		public void handleMessage(Message msg) {
+			switch (msg.what) {
+			case 1:
+				if (mDataList == null || mDataList.size() == 0) {
+					return;
+				}
+				int index = viewPager.getCurrentItem();
+				VolleyLog.d("getCurrentItem(index: %d)", index);
+				index++;
+				if (index >= mDataList.size()) {
+					index = 0;
+				}
+				viewPager.setCurrentItem(index, true);
+				break;
+			}
+			super.handleMessage(msg);
+		}
+	};
+}

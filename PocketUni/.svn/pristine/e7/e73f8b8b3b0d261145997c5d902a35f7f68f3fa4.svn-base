@@ -1,0 +1,153 @@
+package com.xyhui.activity;
+
+import android.graphics.Bitmap;
+import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import com.mslibs.utils.VolleyLog;
+import com.xyhui.R;
+import com.xyhui.utils.Params;
+import com.xyhui.widget.FLActivity;
+
+public class WebViewActivity extends FLActivity {
+
+	Button btn_back;
+	Button btn_refresh;
+	TextView navbar_TitleText;
+
+	LinearLayout emptyUrl_layout;
+	LinearLayout loading_layout;
+	LinearLayout timeout_layout;
+
+	WebView webView;
+
+	String title = "";
+	String url = "";
+	boolean isLoadingError = false;
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_webview);
+
+		if (getIntent().hasExtra(Params.INTENT_EXTRA.WEBVIEW_TITLE)) {
+			title = getIntent().getStringExtra(Params.INTENT_EXTRA.WEBVIEW_TITLE);
+		} else {
+			finish();
+			return;
+		}
+
+		linkUiVar();
+		bindListener();
+		ensureUi();
+	}
+
+	@Override
+	public void linkUiVar() {
+		btn_back = (Button) findViewById(R.id.btn_back);
+		btn_refresh = (Button) findViewById(R.id.btn_refresh);
+		navbar_TitleText = (TextView) findViewById(R.id.navbar_TitleText);
+
+		webView = (WebView) findViewById(R.id.webView);
+
+		emptyUrl_layout = (LinearLayout) findViewById(R.id.emptyUrl_layout);
+		loading_layout = (LinearLayout) findViewById(R.id.loading_layout);
+		timeout_layout = (LinearLayout) findViewById(R.id.timeout_layout);
+	}
+
+	@Override
+	public void bindListener() {
+		btn_back.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// 关闭返回
+				finish();
+			}
+		});
+
+		btn_refresh.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// 关闭返回
+				isLoadingError = false;
+				webView.reload();
+			}
+		});
+
+		webView.setWebViewClient(new WebViewClient() {
+
+			@Override
+			public void onPageStarted(WebView view, String url, Bitmap favicon) {
+				super.onPageStarted(view, url, favicon);
+				// 开始
+				VolleyLog.d("--------------------------onPageStarted--------------------------");
+				webView.removeAllViews();
+				loading_layout.setVisibility(View.VISIBLE);
+				btn_refresh.setEnabled(false);
+			}
+
+			@Override
+			public void onReceivedError(WebView view, int errorCode, String description,
+					String failingUrl) {
+				super.onReceivedError(view, errorCode, description, failingUrl);
+				// 加载失败
+				VolleyLog.d("--------------------------onReceivedError--------------------------");
+				isLoadingError = true;
+			}
+
+			@Override
+			public void onPageFinished(WebView view, String url) {
+				super.onPageFinished(view, url);
+				// 结束
+				VolleyLog.d("--------------------------onPageFinished--------------------------");
+				if (isLoadingError) {
+					timeout_layout.setVisibility(View.VISIBLE);
+				} else {
+					timeout_layout.setVisibility(View.GONE);
+				}
+				loading_layout.setVisibility(View.GONE);
+				btn_refresh.setVisibility(View.VISIBLE);
+				btn_refresh.setEnabled(true);
+			}
+		});
+	}
+
+	@Override
+	public void ensureUi() {
+		loading_layout.setVisibility(View.GONE);
+		timeout_layout.setVisibility(View.GONE);
+		btn_refresh.setVisibility(View.GONE);
+		btn_refresh.setEnabled(false);
+
+		navbar_TitleText.setText(title);
+
+		if (getIntent().hasExtra(Params.INTENT_EXTRA.WEBVIEW_URL)) {
+			url = getIntent().getStringExtra(Params.INTENT_EXTRA.WEBVIEW_URL);
+			emptyUrl_layout.setVisibility(View.GONE);
+			webView.setVisibility(View.VISIBLE);
+		} else {
+			emptyUrl_layout.setVisibility(View.VISIBLE);
+			webView.setVisibility(View.GONE);
+			return;
+		}
+
+		webView.getSettings().setSupportZoom(true);
+		webView.getSettings().setUseWideViewPort(false);
+		webView.getSettings().setLoadWithOverviewMode(false);
+		webView.getSettings().setSupportMultipleWindows(true);
+		webView.getSettings().setJavaScriptEnabled(true);
+		webView.getSettings().setBuiltInZoomControls(true);
+
+		webView.setInitialScale(0);
+
+		VolleyLog.d("--------------------------webView.loadUrl--------------------------");
+		webView.loadUrl(url);
+		webView.requestFocus();
+	}
+}

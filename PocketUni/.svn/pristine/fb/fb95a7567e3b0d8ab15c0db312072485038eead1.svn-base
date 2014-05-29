@@ -1,0 +1,18 @@
+package com.xyhui.types;
+
+import com.google.gson.JsonElement;
+
+public class WeiboComment {
+	public String comment_id = null;
+	public String uid = null;
+	public String content = null;
+	public String ctime = null;
+	public String reply_comment_id = null;
+	public String type = null;
+	public String isdel = null;
+	public String uname = null;
+	public User user = null;
+	public String timestamp = null;
+
+	public JsonElement status = null;
+}

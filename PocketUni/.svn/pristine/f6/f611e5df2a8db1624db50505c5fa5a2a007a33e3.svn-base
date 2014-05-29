@@ -1,0 +1,106 @@
+package com.xyhui.types;
+
+import java.util.ArrayList;
+
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.text.TextUtils;
+
+import com.mslibs.utils.ParcelUtils;
+
+public class DetailGroup implements Parcelable {
+
+	public String id = null;
+	public String uid = null;
+	public String name = null;
+	public String intro = null;
+
+	public String logo = null;
+	public String announce = null;
+	public String membercount = null;
+	public String threadcount = null;
+	public String type = null;
+	public String need_invite = null;
+	public String need_verify = null;
+	public String actor_level = null;
+	public String brower_level = null;
+	public String openWeibo = null;
+	public String openBlog = null;
+	public String openUploadFile = null;
+	public String whoUploadFile = null;
+	public String whoDownloadFile = null;
+	public String openAlbum = null;
+	public String whoCreateAlbum = null;
+	public String whoUploadPic = null;
+	public String anno = null;
+	public String ipshow = null;
+	public String invitepriv = null;
+
+	public String createalbumpriv = null;
+	public String uploadpicpriv = null;
+	public String ctime = null;
+	public String mtime = null;
+	public String status = null;
+	public String isrecom = null;
+	public String is_del = null;
+	public String cname0 = null;
+	public String cname1 = null;
+	public String schoolname = null;
+	public String cid0 = null;
+	public String cid1 = null;
+	public String type_name = null;
+
+	public ArrayList<Tag> tags = null;
+
+	public String filecount = null;
+	public String topiccount = null;
+	public String usrename = null;
+
+	public String tagstring = null;
+
+	public int isinvited = 0;
+	public int ismember = 0;
+	public int isadmin = 0;
+
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel out, int flags) {
+		ParcelUtils.writeStringToParcel(out, id);
+		ParcelUtils.writeStringToParcel(out, name);
+		ParcelUtils.writeStringToParcel(out, intro);
+		ParcelUtils.writeStringToParcel(out, logo);
+		ParcelUtils.writeStringToParcel(out, cname0);
+		ParcelUtils.writeStringToParcel(out, cid0);
+		ParcelUtils.writeStringToParcel(out, TextUtils.join(" , ", tags));
+	}
+
+	public DetailGroup() {
+	}
+
+	public DetailGroup(Parcel in) {
+
+		id = ParcelUtils.readStringFromParcel(in);
+		name = ParcelUtils.readStringFromParcel(in);
+		intro = ParcelUtils.readStringFromParcel(in);
+		logo = ParcelUtils.readStringFromParcel(in);
+		cname0 = ParcelUtils.readStringFromParcel(in);
+		cid0 = ParcelUtils.readStringFromParcel(in);
+		tagstring = ParcelUtils.readStringFromParcel(in);
+	}
+
+	public static final Parcelable.Creator<DetailGroup> CREATOR = new Parcelable.Creator<DetailGroup>() {
+		public DetailGroup createFromParcel(Parcel in) {
+			return new DetailGroup(in);
+		}
+
+		@Override
+		public DetailGroup[] newArray(int size) {
+			return new DetailGroup[size];
+		}
+	};
+
+}

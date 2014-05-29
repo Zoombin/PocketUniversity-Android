@@ -1,0 +1,122 @@
+package com.xyhui.service;
+
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.IntentCompat;
+import cn.jpush.android.api.JPushInterface;
+
+import com.mslibs.utils.JSONUtils;
+import com.mslibs.utils.VolleyLog;
+import com.xyhui.R;
+import com.xyhui.activity.LoadingActivity;
+import com.xyhui.activity.PuApp;
+import com.xyhui.activity.weibo.ChatDetailListActivity;
+import com.xyhui.types.ExtraMsg;
+import com.xyhui.utils.Params;
+
+public class JPushReceiver extends BroadcastReceiver {
+	@Override
+	public void onReceive(Context context, Intent intent) {
+		Bundle bundle = intent.getExtras();
+		VolleyLog.d("onReceive - " + intent.getAction());
+
+		if (JPushInterface.ACTION_REGISTRATION_ID.equals(intent.getAction())) {
+			VolleyLog.d("Unhandled intent");
+		} else if (JPushInterface.ACTION_MESSAGE_RECEIVED.equals(intent.getAction())) {
+			VolleyLog.d("收到了自定义消息。消息内容是：%s ", bundle.getString(JPushInterface.EXTRA_MESSAGE));
+			// 自定义消息不会展示在通知栏，完全要开发者写代码去处理
+			String extra = bundle.getString(JPushInterface.EXTRA_EXTRA);
+			VolleyLog.d(extra);
+
+			ExtraMsg extraObj = JSONUtils.fromJson(extra, ExtraMsg.class);
+
+			if (Params.JPush.TYPE_PRIVETE_MSG.equals(extraObj.type)) {
+				gotoChat(context, extraObj);
+			}
+		} else if (JPushInterface.ACTION_NOTIFICATION_RECEIVED.equals(intent.getAction())) {
+			VolleyLog.d("收到了通知");
+			// 在这里可以做些统计，或者做些其他工作
+		} else if (JPushInterface.ACTION_NOTIFICATION_OPENED.equals(intent.getAction())) {
+			// 在这里可以自己写代码去定义用户点击后的行为
+			VolleyLog.d("用户点击打开了通知");
+
+			// 统计用户打开通知的事件
+			JPushInterface.reportNotificationOpened(context,
+					bundle.getString(JPushInterface.EXTRA_MSG_ID));
+
+			// 清除该通知
+			int notificaitonId = bundle.getInt(JPushInterface.EXTRA_NOTIFICATION_ID);
+			JPushInterface.clearNotificationById(PuApp.get(), notificaitonId);
+
+			loadApp(context);
+		} else {
+			VolleyLog.d("Unhandled intent");
+		}
+	}
+
+	private void loadApp(Context context) {
+		Intent load = new Intent(context, LoadingActivity.class);
+		load.setFlags(IntentCompat.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+		context.startActivity(load);
+	}
+
+	private void gotoChat(Context context, ExtraMsg extra) {
+		if (PuApp.get().isLogon()) {
+			if (PuApp.get().getFrontPage().contains(ChatDetailListActivity.class.getSimpleName())) {
+				Intent chat = new Intent(context, ChatDetailListActivity.class);
+				chat.putExtra(Params.INTENT_EXTRA.MESSAGE_LISTID, extra.listid);
+				chat.putExtra(Params.INTENT_EXTRA.MESSAGE_ID, extra.uid);
+				chat.putExtra(Params.INTENT_EXTRA.USERNAME, extra.uname);
+				chat.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				context.startActivity(chat);
+			} else {
+				updateNotification(context, extra);
+			}
+		} else {
+			loadApp(context);
+		}
+	}
+
+	private void updateNotification(Context context, Object obj) {
+		String title = "";
+		String prompt = "";
+		Intent intent = null;
+		if (obj instanceof ExtraMsg) {
+			title = "收到了新私信";
+			prompt = String.format("来自%s的私信", ((ExtraMsg) obj).uname);
+
+			ExtraMsg extra = (ExtraMsg) obj;
+
+			if (null != extra) {
+				intent = new Intent(context, ChatDetailListActivity.class);
+				intent.putExtra(Params.INTENT_EXTRA.MESSAGE_LISTID, extra.listid);
+				intent.putExtra(Params.INTENT_EXTRA.MESSAGE_ID, extra.uid);
+				intent.putExtra(Params.INTENT_EXTRA.USERNAME, extra.uname);
+				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			}
+		}
+
+		NotificationManager notificationManager = (NotificationManager) context
+				.getSystemService(Context.NOTIFICATION_SERVICE);
+
+		PendingIntent pIntent = PendingIntent.getActivity(context, 5, intent,
+				PendingIntent.FLAG_UPDATE_CURRENT);
+
+		Notification n = new NotificationCompat.Builder(context)
+				.setSmallIcon(R.drawable.ic_launcher).setTicker(title)
+				.setWhen(System.currentTimeMillis()).setAutoCancel(true).setContentTitle(title)
+				.setContentText(prompt).setContentIntent(pIntent).build();
+
+		n.defaults |= Notification.DEFAULT_SOUND;
+
+		// 更新通知栏
+		notificationManager.notify(R.id.notification_update_installed, n);
+		VolleyLog.d("notification, notify(msg)");
+	}
+}

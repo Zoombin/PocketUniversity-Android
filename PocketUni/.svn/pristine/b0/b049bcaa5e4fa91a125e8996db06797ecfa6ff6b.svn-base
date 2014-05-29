@@ -1,0 +1,30 @@
+package com.xyhui.widget;
+
+import java.util.ArrayList;
+
+import android.app.Activity;
+import android.content.Context;
+
+import com.mslibs.widget.CPagerAdapter;
+
+public class LoadingPagerAdapter extends CPagerAdapter {
+
+	public LoadingPagerAdapter(Activity activity, Context context) {
+		super(activity, context);
+	}
+
+	public void reload(ArrayList<Object> dateList) {
+		mDataList = dateList;
+	}
+
+	@Override
+	public Object getItemView(int position) {
+		return mDataList.get(position);
+	}
+
+	@Override
+	public void reload() {
+
+	}
+
+}

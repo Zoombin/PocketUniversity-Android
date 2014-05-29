@@ -1,0 +1,46 @@
+package com.xyhui.types;
+
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import com.mslibs.utils.ParcelUtils;
+
+public class EventNews implements Parcelable {
+	public String id = null;
+	public String title = null;
+	public String cTime = null;
+	public String path = null;
+	public String content = null;
+
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel out, int flags) {
+		ParcelUtils.writeStringToParcel(out, id);
+		ParcelUtils.writeStringToParcel(out, title);
+		ParcelUtils.writeStringToParcel(out, cTime);
+	}
+
+	public EventNews() {
+	}
+
+	public EventNews(Parcel in) {
+		id = ParcelUtils.readStringFromParcel(in);
+		title = ParcelUtils.readStringFromParcel(in);
+		cTime = ParcelUtils.readStringFromParcel(in);
+	}
+
+	public static final Parcelable.Creator<EventNews> CREATOR = new Parcelable.Creator<EventNews>() {
+		public EventNews createFromParcel(Parcel in) {
+			return new EventNews(in);
+		}
+
+		@Override
+		public EventNews[] newArray(int size) {
+			return new EventNews[size];
+		}
+	};
+}

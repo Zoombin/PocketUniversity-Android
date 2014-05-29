@@ -1,0 +1,67 @@
+package com.xyhui.types;
+
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import com.mslibs.utils.ParcelUtils;
+
+public class Group implements Parcelable {
+	public String id = null;
+	public String name = null;
+	public String logo = null;
+	public String membercount = null;
+	public String ctime = null;
+	public String cid0 = null;
+	public String cid1 = null;
+	public String cname0 = null;
+	public String cname1 = null;
+	public String schoolname = null;
+
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel out, int flags) {
+		ParcelUtils.writeStringToParcel(out, id);
+		ParcelUtils.writeStringToParcel(out, name);
+		ParcelUtils.writeStringToParcel(out, logo);
+		ParcelUtils.writeStringToParcel(out, membercount);
+		ParcelUtils.writeStringToParcel(out, ctime);
+		ParcelUtils.writeStringToParcel(out, cid0);
+		ParcelUtils.writeStringToParcel(out, cid1);
+		ParcelUtils.writeStringToParcel(out, cname0);
+		ParcelUtils.writeStringToParcel(out, cname1);
+		ParcelUtils.writeStringToParcel(out, schoolname);
+	}
+
+	public Group() {
+
+	}
+
+	public Group(Parcel in) {
+		id = ParcelUtils.readStringFromParcel(in);
+		name = ParcelUtils.readStringFromParcel(in);
+		logo = ParcelUtils.readStringFromParcel(in);
+		membercount = ParcelUtils.readStringFromParcel(in);
+		ctime = ParcelUtils.readStringFromParcel(in);
+		cid0 = ParcelUtils.readStringFromParcel(in);
+		cid1 = ParcelUtils.readStringFromParcel(in);
+		cname0 = ParcelUtils.readStringFromParcel(in);
+		cname1 = ParcelUtils.readStringFromParcel(in);
+		schoolname = ParcelUtils.readStringFromParcel(in);
+	}
+
+	public static final Parcelable.Creator<Group> CREATOR = new Parcelable.Creator<Group>() {
+		public Group createFromParcel(Parcel in) {
+			return new Group(in);
+		}
+
+		@Override
+		public Group[] newArray(int size) {
+			return new Group[size];
+		}
+	};
+
+}

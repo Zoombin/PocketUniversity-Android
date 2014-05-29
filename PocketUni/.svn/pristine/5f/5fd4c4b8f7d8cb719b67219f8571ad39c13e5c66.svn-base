@@ -1,0 +1,15 @@
+package com.xyhui.types;
+
+public class MobileApp {
+	public MobileApp(String appName, int iconResId, String downloadUrl, String pkgName) {
+		mAppName = appName;
+		mIconResId = iconResId;
+		mDownloadUrl = downloadUrl;
+		mPkgName = pkgName;
+	}
+
+	public String mAppName = null;
+	public int mIconResId = -1;
+	public String mDownloadUrl = null;
+	public String mPkgName = null;
+}

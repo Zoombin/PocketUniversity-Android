@@ -1,0 +1,11 @@
+package com.xyhui.types;
+
+public class Cate {
+	public String t = null;
+	public String a = null;
+
+	@Override
+	public String toString() {
+		return t;
+	}
+}

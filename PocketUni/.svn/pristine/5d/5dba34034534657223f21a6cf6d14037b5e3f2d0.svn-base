@@ -1,0 +1,500 @@
+package com.xyhui.activity.group;
+
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
+import com.mslibs.utils.JSONUtils;
+import com.mslibs.utils.NotificationsUtil;
+import com.mslibs.utils.VolleyLog;
+import com.xyhui.R;
+import com.xyhui.activity.PuApp;
+import com.xyhui.activity.more.PhoneBindingActivity;
+import com.xyhui.api.Api;
+import com.xyhui.api.CallBack;
+import com.xyhui.api.Client;
+import com.xyhui.types.DetailGroup;
+import com.xyhui.types.DetailGroups;
+import com.xyhui.types.GroupTopic;
+import com.xyhui.types.GroupTopics;
+import com.xyhui.types.Response;
+import com.xyhui.utils.Params;
+import com.xyhui.utils.PrefUtil;
+import com.xyhui.utils.SpanUtils;
+import com.xyhui.widget.FLActivity;
+
+public class GroupViewActivity extends FLActivity {
+	Button btn_back;
+	Button btn_more;
+
+	ImageView img_avatar;
+	TextView text_group_name;
+	TextView text_group_info;
+
+	Button btn_group;
+
+	LinearLayout btn_params_blog;
+	TextView text_params_blog;
+
+	LinearLayout btn_params_doc;
+	TextView text_params_doc;
+
+	LinearLayout btn_params_user;
+	TextView text_params_user;
+
+	TextView text_notice;
+	TextView text_intro;
+
+	LinearLayout blog_layout;
+	LinearLayout new_bloglist_layout;
+	LinearLayout blog_getmore_layout;
+
+	LinearLayout unverify_layout;
+	TextView text_unverify;
+
+	String mGroupId = null;
+
+	private DetailGroup mDetailGroup = null;
+
+	private PuApp mainApp;
+
+	private int isMemeber = 0;
+	private boolean isAdmin = false;
+
+	private boolean isCreator = false;
+
+	public static final String IS_GROUP_CREATOR = "is_group_creator";
+
+	Builder builder;
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_group_view);
+
+		if (getIntent().hasExtra(Params.INTENT_EXTRA.GROUP_ID)) {
+			mGroupId = getIntent().getStringExtra(Params.INTENT_EXTRA.GROUP_ID);
+			VolleyLog.d("got groupid:%s", mGroupId);
+		} else {
+			VolleyLog.d("no groupid");
+			finish();
+			return;
+		}
+
+		mainApp = (PuApp) getApplication();
+		linkUiVar();
+		bindListener();
+		ensureUi();
+	}
+
+	@Override
+	public void linkUiVar() {
+		btn_back = (Button) findViewById(R.id.btn_back);
+
+		btn_more = (Button) findViewById(R.id.btn_more);
+
+		img_avatar = (ImageView) findViewById(R.id.img_avatar);
+		text_group_name = (TextView) findViewById(R.id.text_group_name);
+		text_group_info = (TextView) findViewById(R.id.text_group_info);
+
+		btn_group = (Button) findViewById(R.id.btn_group);
+
+		btn_params_blog = (LinearLayout) findViewById(R.id.btn_params_blog);
+		text_params_blog = (TextView) findViewById(R.id.text_params_blog);
+
+		btn_params_doc = (LinearLayout) findViewById(R.id.btn_params_doc);
+		text_params_doc = (TextView) findViewById(R.id.text_params_doc);
+
+		btn_params_user = (LinearLayout) findViewById(R.id.btn_params_user);
+		text_params_user = (TextView) findViewById(R.id.text_params_user);
+
+		text_notice = (TextView) findViewById(R.id.text_notice);
+		text_intro = (TextView) findViewById(R.id.text_intro);
+
+		blog_layout = (LinearLayout) findViewById(R.id.blog_layout);
+		new_bloglist_layout = (LinearLayout) findViewById(R.id.new_bloglist_layout);
+		blog_getmore_layout = (LinearLayout) findViewById(R.id.blog_getmore_layout);
+
+		unverify_layout = (LinearLayout) findViewById(R.id.unverify_layout);
+		text_unverify = (TextView) findViewById(R.id.text_unverify);
+	}
+
+	@Override
+	public void bindListener() {
+		btn_back.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// 关闭返回
+				finish();
+			}
+		});
+
+		btn_more.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				showPanel();
+			}
+		});
+
+		btn_group.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				final Button btn = (Button) v;
+				btn.setEnabled(false);
+
+				int isJoin = (Integer) btn.getTag();
+				if (isJoin == 1) {
+					// 离开部落
+					new AlertDialog.Builder(mContext).setMessage("确定要退出这个部落吗?")
+							.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog, int whichButton) {
+									showProgress();
+									new Api(joincallback, mActivity).quitgroup(mainApp.getToken(),
+											mGroupId);
+								}
+							}).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog, int whichButton) {
+									btn.setEnabled(true);
+									dialog.dismiss();
+								}
+							}).setCancelable(false).show();
+				} else {
+					String mobile = new PrefUtil().getPreference(Params.LOCAL.MOBILE);
+					if (TextUtils.isEmpty(mobile)) {
+						btn.setEnabled(true);
+
+						new AlertDialog.Builder(mActivity).setTitle("您还没有绑定手机, 现在去绑定吗?")
+								.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface dialog, int whichButton) {
+										Intent intent = new Intent();
+										intent.setClass(mActivity, PhoneBindingActivity.class);
+										mActivity.startActivity(intent);
+									}
+								}).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface dialog, int whichButton) {
+									}
+								}).show();
+					} else {
+						// 加入部落
+						showProgress();
+						new Api(joincallback, mActivity).joingroup(mainApp.getToken(), mGroupId);
+					}
+				}
+			}
+		});
+
+		blog_getmore_layout.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// 打开文章列表
+				Intent intent = new Intent();
+				intent.setClass(mActivity, GroupBlogListActivity.class);
+				intent.putExtra(Params.INTENT_EXTRA.GROUP_ID, mGroupId);
+				mActivity.startActivity(intent);
+			}
+		});
+
+		btn_params_blog.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// 打开文章列表
+				Intent intent = new Intent();
+				intent.setClass(mActivity, GroupBlogListActivity.class);
+				intent.putExtra(Params.INTENT_EXTRA.GROUP_ID, mGroupId);
+
+				intent.putExtra(Params.INTENT_EXTRA.GROUPMEMBER, isMemeber);
+
+				mActivity.startActivity(intent);
+			}
+		});
+
+		btn_params_doc.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// 打开文档列表
+				Intent intent = new Intent();
+				intent.setClass(mActivity, GroupDocListActivity.class);
+				intent.putExtra(Params.INTENT_EXTRA.GROUP_ID, mGroupId);
+				intent.putExtra(Params.INTENT_EXTRA.GROUPMEMBER, isMemeber);
+
+				mActivity.startActivity(intent);
+			}
+		});
+
+		btn_params_user.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// 打开成员列表
+				Intent intent = new Intent();
+				intent.setClass(mActivity, GroupUserListActivity.class);
+				intent.putExtra(Params.INTENT_EXTRA.GROUP_ID, mGroupId);
+				mActivity.startActivity(intent);
+			}
+		});
+
+		unverify_layout.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// 无事件，屏蔽后面的点击事件
+			}
+		});
+	}
+
+	@Override
+	public void ensureUi() {
+		unverify_layout.setVisibility(View.GONE);
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+
+		loadGroup();
+	}
+
+	public void loadGroup() {
+		showProgress();
+		new Api(callback, mActivity).group(mainApp.getToken(), mGroupId);
+	}
+
+	private void showPanel() {
+		builder = new AlertDialog.Builder(mActivity);
+		builder.setTitle("选择操作");
+
+		if (isAdmin) {
+			builder.setItems(R.array.group_operate_admin, new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int which) {
+
+					Intent intent = new Intent();
+
+					switch (which) {
+					case 0:
+						// 邀请好友
+						intent.setClass(mActivity, GroupInviteListActivity.class);
+						intent.putExtra(Params.INTENT_EXTRA.GROUP_ID, mGroupId);
+						break;
+					case 1:
+						// 修改公告
+						intent.setClass(mActivity, GroupNoticeEditActivity.class);
+						intent.putExtra(Params.INTENT_EXTRA.GROUP_ID, mGroupId);
+						break;
+					case 2:
+						// 部落设置
+						intent.setClass(mActivity, GroupEditActivity.class);
+						intent.putExtra(Params.INTENT_EXTRA.GROUP_ID, mDetailGroup);
+						break;
+					case 3:
+						// 成员管理
+						intent.setClass(mActivity, GroupMemberManageActivity.class);
+						intent.putExtra(Params.INTENT_EXTRA.GROUP_ID, mGroupId);
+						intent.putExtra(IS_GROUP_CREATOR, isCreator);
+						break;
+					}
+
+					mActivity.startActivity(intent);
+
+					dialog.cancel();
+				}
+			}).show();
+		} else {
+			builder.setItems(R.array.group_operate_normal, new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int which) {
+					if (0 == which) {
+						// 邀请好友
+						Intent intent = new Intent();
+						intent.setClass(mActivity, GroupInviteListActivity.class);
+						intent.putExtra(Params.INTENT_EXTRA.GROUP_ID, mGroupId);
+						mActivity.startActivity(intent);
+					}
+
+					dialog.cancel();
+				}
+			}).show();
+		}
+	}
+
+	CallBack callback = new CallBack() {
+		@Override
+		public void onSuccess(String response) {
+			dismissProgress();
+			DetailGroups group = JSONUtils.fromJson(response, DetailGroups.class);
+
+			if (null == group)
+				return;
+
+			if (!TextUtils.isEmpty(group.message)) {
+				unverify_layout.setVisibility(View.VISIBLE);
+				text_unverify.setText(group.message);
+				btn_more.setVisibility(View.GONE);
+				return;
+			}
+
+			mDetailGroup = group.data;
+
+			if (mDetailGroup == null)
+				return;
+
+			if (mDetailGroup.isadmin == 1) {
+				isAdmin = true;
+			} else {
+				isAdmin = false;
+			}
+
+			String localUid = new PrefUtil().getPreference(Params.LOCAL.UID);
+			isCreator = mDetailGroup.uid.equals(localUid);
+
+			btn_group.setTag(mDetailGroup.ismember);
+			if (mDetailGroup.ismember == 1) {
+				isMemeber = 1;
+				btn_group.setBackgroundResource(R.drawable.btn_selector_group_leave);
+				btn_more.setVisibility(View.VISIBLE);
+			} else {
+				btn_group.setBackgroundResource(R.drawable.btn_selector_group_join);
+				btn_more.setVisibility(View.GONE);
+			}
+
+			btn_group.setVisibility(View.VISIBLE);
+			btn_group.setEnabled(true);
+
+			if (!TextUtils.isEmpty(mDetailGroup.logo)
+					&& !"default.gif".equalsIgnoreCase(mDetailGroup.logo)) {
+				String logo = Client.UPLOAD_URL + mDetailGroup.logo;
+				VolleyLog.d(logo);
+				UrlImageViewHelper.setUrlDrawable(img_avatar, logo, R.drawable.group_avatar);
+			}
+
+			text_group_name.setText(mDetailGroup.name);
+
+			String info = "";
+
+			if (mDetailGroup.tags != null) {
+				info += "标签: " + TextUtils.join(" ", mDetailGroup.tags);
+			}
+			if (mDetailGroup.usrename != null) {
+				info += "\n创建者: " + mDetailGroup.usrename;
+			}
+
+			info += "\n创建时间：" + SpanUtils.getTimeString(mDetailGroup.ctime);
+
+			if (!TextUtils.isEmpty(mDetailGroup.schoolname)) {
+				info += "\n学校: " + mDetailGroup.schoolname;
+			}
+
+			if (mDetailGroup.cname0 != null) {
+				info += "\n分类: " + mDetailGroup.cname0;
+				if (mDetailGroup.cname1 != null) {
+					info += " " + mDetailGroup.cname1;
+				}
+			}
+
+			text_group_info.setText(info);
+
+			text_params_blog.setText(mDetailGroup.topiccount);
+
+			text_params_doc.setText(mDetailGroup.filecount);
+
+			text_params_user.setText(mDetailGroup.membercount);
+
+			text_notice.setText(mDetailGroup.announce);
+
+			text_intro.setText(mDetailGroup.intro);
+
+			showProgress();
+			new Api(bloglistcallback, mActivity).grouptopic(mainApp.getToken(), mGroupId, 5, 1);
+		}
+	};
+
+	CallBack bloglistcallback = new CallBack() {
+		@Override
+		public void onSuccess(String response) {
+			dismissProgress();
+
+			GroupTopics items = JSONUtils.fromJson(response, GroupTopics.class);
+			LayoutInflater mInflater = (LayoutInflater) mActivity.getBaseContext()
+					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+			blog_layout.setVisibility(View.VISIBLE);
+			new_bloglist_layout.removeAllViews();
+			if (items != null && items.data != null && !items.data.isEmpty()) {
+				for (int i = 0; i < items.data.size(); i++) {
+					GroupTopic item = (GroupTopic) items.data.get(i);
+
+					View blogItemView = mInflater.inflate(R.layout.list_item_group_blog, null);
+					blogItemView.setTag(item);
+					blogItemView.setOnClickListener(new OnClickListener() {
+
+						@Override
+						public void onClick(View v) {
+							GroupTopic item = (GroupTopic) v.getTag();
+							// 打开文章浏览
+							Intent intent = new Intent();
+							intent.setClass(mActivity, GroupBlogViewListActivity.class);
+							intent.putExtra(Params.INTENT_EXTRA.BLOG_ID, item.id);
+							intent.putExtra(Params.INTENT_EXTRA.GROUP_ID, mGroupId);
+							mActivity.startActivity(intent);
+						}
+					});
+
+					if (blogItemView != null) {
+						TextView text_title = (TextView) blogItemView
+								.findViewById(R.id.text_title);
+						text_title.setText(item.title);
+
+						TextView text_info = (TextView) blogItemView.findViewById(R.id.text_info);
+						text_info.setText(item.getDesc());
+					}
+
+					new_bloglist_layout.addView(blogItemView);
+				}
+			}
+
+		}
+	};
+
+	CallBack joincallback = new CallBack() {
+		@Override
+		public void onSuccess(String response) {
+			dismissProgress();
+
+			Response r = JSONUtils.fromJson(response, Response.class);
+
+			if (null != r) {
+				if (!TextUtils.isEmpty(r.response)) {
+					NotificationsUtil.ToastBottomMsg(mContext, r.response);
+					loadGroup();
+				} else if (!TextUtils.isEmpty(r.message)) {
+					NotificationsUtil.ToastBottomMsg(mContext, r.message);
+				}
+			}
+		}
+	};
+
+	CallBack delcallback = new CallBack() {
+		@Override
+		public void onSuccess(String response) {
+			dismissProgress();
+			Response r = JSONUtils.fromJson(response, Response.class);
+
+			if (null != r) {
+				if (!TextUtils.isEmpty(r.response)) {
+					NotificationsUtil.ToastBottomMsg(mContext, r.response);
+					finish();
+				} else if (!TextUtils.isEmpty(r.message)) {
+					NotificationsUtil.ToastBottomMsg(mContext, r.message);
+				}
+			}
+		}
+	};
+}

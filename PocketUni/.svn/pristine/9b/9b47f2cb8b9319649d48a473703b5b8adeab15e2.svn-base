@@ -1,0 +1,70 @@
+package com.xyhui.types;
+
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.text.TextUtils;
+
+import com.mslibs.utils.ParcelUtils;
+
+public class EventUser implements Parcelable {
+	public String id = null;
+	public String realname = null;
+	public String sex = null;
+	public String path = null;
+
+	public String ticket = null;
+	public String school = null;
+	public String sid = null;
+	public Boolean canVote = false;
+
+	public String getInfo() {
+		String result = "";
+		if (!TextUtils.isEmpty(sex)) {
+			result += "性别：";
+			if ("1".equalsIgnoreCase(sex)) {
+				result += "男";
+			} else {
+				result += "女";
+			}
+			result += "\n";
+		}
+		if (!TextUtils.isEmpty(school)) {
+			result += "学校：";
+			result += school;
+			result += "\n";
+		}
+		return result;
+	}
+
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel out, int flags) {
+		ParcelUtils.writeStringToParcel(out, id);
+		ParcelUtils.writeStringToParcel(out, realname);
+		ParcelUtils.writeStringToParcel(out, sex);
+	}
+
+	public EventUser() {
+	}
+
+	public EventUser(Parcel in) {
+		id = ParcelUtils.readStringFromParcel(in);
+		realname = ParcelUtils.readStringFromParcel(in);
+		sex = ParcelUtils.readStringFromParcel(in);
+	}
+
+	public static final Parcelable.Creator<EventUser> CREATOR = new Parcelable.Creator<EventUser>() {
+		public EventUser createFromParcel(Parcel in) {
+			return new EventUser(in);
+		}
+
+		@Override
+		public EventUser[] newArray(int size) {
+			return new EventUser[size];
+		}
+	};
+}

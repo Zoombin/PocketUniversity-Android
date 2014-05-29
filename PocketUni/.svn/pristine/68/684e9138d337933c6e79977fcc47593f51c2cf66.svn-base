@@ -1,0 +1,325 @@
+package com.xyhui.activity.event;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+
+import android.app.DatePickerDialog;
+import android.app.DatePickerDialog.OnDateSetListener;
+import android.app.Dialog;
+import android.app.TimePickerDialog;
+import android.app.TimePickerDialog.OnTimeSetListener;
+import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+import android.text.TextUtils;
+import android.text.format.DateFormat;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TimePicker;
+
+import com.mslibs.utils.JSONUtils;
+import com.mslibs.utils.NotificationsUtil;
+import com.xyhui.R;
+import com.xyhui.activity.PuApp;
+import com.xyhui.api.Api;
+import com.xyhui.api.CallBack;
+import com.xyhui.types.EventCat;
+import com.xyhui.types.Response;
+import com.xyhui.widget.FLActivity;
+
+public class EventLaunchActivity extends FLActivity {
+	private final static String EVENT_START_TIME = "starttime";
+	private final static String EVENT_END_TIME = "endtime";
+	private final static String EVENT_DEAD_TIME = "deadtime";
+
+	private final static String EVENT_START_DATE = "startdate";
+	private final static String EVENT_END_DATE = "enddate";
+	private final static String EVENT_DEAD_DATE = "deaddate";
+
+	private Button btn_back;
+	private Button btn_submit;
+
+	private EditText edit_event_name;
+	private EditText edit_event_intro;
+	private EditText edit_event_maxmember;
+	private EditText edit_event_loc;
+
+	private Spinner spinner_event_org;
+	private Spinner spinner_event_verifier;
+	private Spinner spinner_event_type;
+
+	private EditText edit_event_startdate;
+	private EditText edit_event_starttime;
+	private EditText edit_event_enddate;
+	private EditText edit_event_endtime;
+	private EditText edit_event_deaddate;
+	private EditText edit_event_deadtime;
+
+	private String mEventName;
+	private String mEventIntro;
+	private String mEventMaxmember;
+	private String mEventLoc;
+	private String mEventOrg;
+	private String mEventVerifier;
+	private String mEventType;
+
+	private String mEventStartdate;
+	private String mEventStarttime;
+	private String mEventEnddate;
+	private String mEventEndtime;
+	private String mEventDeaddate;
+	private String mEventDeadtime;
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_event_launch);
+
+		linkUiVar();
+		bindListener();
+		ensureUi();
+	}
+
+	@Override
+	public void linkUiVar() {
+		btn_back = (Button) findViewById(R.id.btn_back);
+		btn_submit = (Button) findViewById(R.id.btn_submit);
+
+		edit_event_name = (EditText) findViewById(R.id.edit_event_name);
+		edit_event_intro = (EditText) findViewById(R.id.edit_event_intro);
+		edit_event_maxmember = (EditText) findViewById(R.id.edit_event_maxmember);
+		edit_event_loc = (EditText) findViewById(R.id.edit_event_loc);
+		spinner_event_org = (Spinner) findViewById(R.id.spinner_event_org);
+		spinner_event_verifier = (Spinner) findViewById(R.id.spinner_event_verifier);
+		spinner_event_type = (Spinner) findViewById(R.id.spinner_event_type);
+		edit_event_startdate = (EditText) findViewById(R.id.edit_event_startdate);
+		edit_event_starttime = (EditText) findViewById(R.id.edit_event_starttime);
+		edit_event_enddate = (EditText) findViewById(R.id.edit_event_enddate);
+		edit_event_endtime = (EditText) findViewById(R.id.edit_event_endtime);
+		edit_event_deaddate = (EditText) findViewById(R.id.edit_event_deaddate);
+		edit_event_deadtime = (EditText) findViewById(R.id.edit_event_deadtime);
+	}
+
+	@Override
+	public void bindListener() {
+		btn_back.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// 关闭返回
+				finish();
+			}
+		});
+
+		btn_submit.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				showProgress("正在提交", "请稍候...");
+
+				checkWidgetData();
+
+				new Api(createcallback, mActivity).modifyGroup(PuApp.get().getToken(), null, null,
+						null, null, null, null, null);
+
+			}
+		});
+
+		edit_event_startdate.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				showDatePickerDialog(EVENT_START_DATE);
+			}
+		});
+
+		edit_event_starttime.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				showTimePickerDialog(EVENT_START_TIME);
+			}
+		});
+
+		edit_event_enddate.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				showDatePickerDialog(EVENT_END_DATE);
+			}
+		});
+
+		edit_event_endtime.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				showTimePickerDialog(EVENT_END_TIME);
+			}
+		});
+
+		edit_event_deaddate.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				showDatePickerDialog(EVENT_DEAD_DATE);
+			}
+		});
+
+		edit_event_deadtime.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				showTimePickerDialog(EVENT_DEAD_TIME);
+			}
+		});
+	}
+
+	@Override
+	public void ensureUi() {
+		setSpinner();
+	}
+
+	public static class DatePickerFragment extends DialogFragment implements OnDateSetListener {
+
+		@Override
+		public Dialog onCreateDialog(Bundle savedInstanceState) {
+			// Use the current date as the default date in the picker
+			final Calendar c = Calendar.getInstance();
+			int year = c.get(Calendar.YEAR);
+			int month = c.get(Calendar.MONTH);
+			int day = c.get(Calendar.DAY_OF_MONTH);
+
+			// Create a new instance of DatePickerDialog and return it
+			return new DatePickerDialog(getActivity(), this, year, month, day);
+		}
+
+		@Override
+		public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+			Calendar calendar = Calendar.getInstance();
+			calendar.set(year, monthOfYear, dayOfMonth);
+
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+			String date = format.format(calendar.getTime());
+
+			String tag = getTag().toString();
+			EditText edit;
+
+			if (tag.equals(EVENT_START_DATE)) {
+				edit = (EditText) getActivity().findViewById(R.id.edit_event_startdate);
+			} else if (tag.equals(EVENT_END_DATE)) {
+				edit = (EditText) getActivity().findViewById(R.id.edit_event_enddate);
+			} else {
+				edit = (EditText) getActivity().findViewById(R.id.edit_event_deaddate);
+			}
+
+			edit.setText(date);
+		}
+	}
+
+	public void showDatePickerDialog(String which) {
+		DialogFragment newFragment = new DatePickerFragment();
+		newFragment.show(getSupportFragmentManager(), which);
+	}
+
+	public static class TimePickerFragment extends DialogFragment implements OnTimeSetListener {
+
+		@Override
+		public Dialog onCreateDialog(Bundle savedInstanceState) {
+			// Use the current time as the default values for the picker
+			final Calendar c = Calendar.getInstance();
+			int hour = c.get(Calendar.HOUR_OF_DAY);
+			int minute = c.get(Calendar.MINUTE);
+
+			// Create a new instance of TimePickerDialog and return it
+			return new TimePickerDialog(getActivity(), this, hour, minute,
+					DateFormat.is24HourFormat(getActivity()));
+		}
+
+		@Override
+		public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+			Calendar calendar = Calendar.getInstance();
+			calendar.clear();
+
+			calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+			calendar.set(Calendar.MINUTE, minute);
+			calendar.set(Calendar.SECOND, 0);
+
+			SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
+			String date = format.format(calendar.getTime());
+
+			String tag = getTag().toString();
+			EditText edit;
+
+			if (tag.equals(EVENT_START_TIME)) {
+				edit = (EditText) getActivity().findViewById(R.id.edit_event_starttime);
+			} else if (tag.equals(EVENT_END_TIME)) {
+				edit = (EditText) getActivity().findViewById(R.id.edit_event_endtime);
+			} else {
+				edit = (EditText) getActivity().findViewById(R.id.edit_event_deadtime);
+			}
+
+			edit.setText(date);
+		}
+	}
+
+	public void showTimePickerDialog(String which) {
+		DialogFragment newFragment = new TimePickerFragment();
+		newFragment.show(getSupportFragmentManager(), which);
+	}
+
+	private void checkWidgetData() {
+		mEventName = edit_event_name.getText().toString();
+		mEventIntro = edit_event_intro.getText().toString();
+		mEventMaxmember = edit_event_maxmember.getText().toString();
+		mEventLoc = edit_event_loc.getText().toString();
+
+		mEventOrg = spinner_event_org.getSelectedItem().toString();
+		mEventVerifier = spinner_event_verifier.getSelectedItem().toString();
+		mEventType = spinner_event_type.getSelectedItem().toString();
+
+		mEventStartdate = edit_event_startdate.getText().toString();
+		mEventStarttime = edit_event_starttime.getText().toString();
+		mEventEnddate = edit_event_enddate.getText().toString();
+		mEventEndtime = edit_event_endtime.getText().toString();
+		mEventDeaddate = edit_event_deaddate.getText().toString();
+		mEventDeadtime = edit_event_deadtime.getText().toString();
+	}
+
+	private void setSpinner() {
+		ArrayAdapter<String> orgAdapter;
+		ArrayList<String> orgList = new ArrayList<String>();
+		orgList.add("归属组织");
+		orgAdapter = new ArrayAdapter<String>(this, R.layout.spinner_item_layout, orgList);
+		orgAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		spinner_event_org.setAdapter(orgAdapter);
+
+		ArrayAdapter<String> verifierAdapter;
+		ArrayList<String> verifierList = new ArrayList<String>();
+		verifierList.add("审核人");
+		verifierAdapter = new ArrayAdapter<String>(this, R.layout.spinner_item_layout,
+				verifierList);
+		verifierAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		spinner_event_verifier.setAdapter(verifierAdapter);
+
+		ArrayAdapter<EventCat> typeAdapter;
+		typeAdapter = new ArrayAdapter<EventCat>(this, R.layout.spinner_item_layout, PuApp.get()
+				.getLocalDataMgr().getEventCats());
+		typeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		spinner_event_type.setAdapter(typeAdapter);
+	}
+
+	CallBack createcallback = new CallBack() {
+		@Override
+		public void onSuccess(String response) {
+			dismissProgress();
+
+			Response r = JSONUtils.fromJson(response, Response.class);
+
+			if (null != r) {
+				if (!TextUtils.isEmpty(r.response)) {
+					NotificationsUtil.ToastBottomMsg(mContext, r.response);
+					finish();
+				} else if (!TextUtils.isEmpty(r.message)) {
+					NotificationsUtil.ToastBottomMsg(mContext, r.message);
+				}
+			}
+		}
+	};
+}

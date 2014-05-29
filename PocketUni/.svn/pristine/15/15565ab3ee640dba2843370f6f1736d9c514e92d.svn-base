@@ -1,0 +1,67 @@
+package com.xyhui.types;
+
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import com.google.gson.annotations.SerializedName;
+import com.mslibs.utils.ParcelUtils;
+
+public class Message implements Parcelable {
+	public String message_id = null;
+	public String list_id = null;
+	public String member_uid = null;
+	public String talk_uid = null;
+	public String message_num = null;
+	public String ctime = null;
+	public String list_ctime = null;
+	public String type = null;
+	public String title = null;
+	public String member_num = null;
+	public String content = null;
+	public String from_uname = null;
+	public String talk_uname = null;
+	public String from_face = null;
+	public String timestmap = null;
+	public int from_uid = 0;
+	public String uid = null;
+	@SerializedName("new")
+	public String isNew = null;
+
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel out, int flags) {
+		ParcelUtils.writeStringToParcel(out, list_id);
+		ParcelUtils.writeStringToParcel(out, from_uid + "");
+		ParcelUtils.writeStringToParcel(out, talk_uid);
+		ParcelUtils.writeStringToParcel(out, from_uname);
+		ParcelUtils.writeStringToParcel(out, talk_uname);
+	}
+
+	public Message() {
+
+	}
+
+	public Message(Parcel in) {
+		list_id = ParcelUtils.readStringFromParcel(in);
+		uid = ParcelUtils.readStringFromParcel(in);
+		talk_uid = ParcelUtils.readStringFromParcel(in);
+		from_uname = ParcelUtils.readStringFromParcel(in);
+		talk_uname = ParcelUtils.readStringFromParcel(in);
+	}
+
+	public static final Parcelable.Creator<Message> CREATOR = new Parcelable.Creator<Message>() {
+		public Message createFromParcel(Parcel in) {
+			return new Message(in);
+		}
+
+		@Override
+		public Message[] newArray(int size) {
+			return new Message[size];
+		}
+	};
+
+}

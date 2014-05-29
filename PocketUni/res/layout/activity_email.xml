@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fcfcfc" >
+
+    <LinearLayout
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="44dip"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="12dip" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="中国移动139邮箱客户端下载"
+            android:textColor="#333"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dip"
+            android:layout_marginTop="8dip"
+            android:scaleType="fitXY"
+            android:src="@drawable/weibo_split" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="欢迎使用ADC邮箱（中国移动139邮箱）\n　　移动139手机邮箱是基于国际最先进的pushmail技术之上的业务，通过安全连接，将邮件推送到手机终端，使用户可以在手机端进行查阅、撰写、回复、转发及附件处理等。移动139手机邮箱允许用户出差在外时都能随时能通过手机接收、发送、转发邮件。"
+            android:textColor="#09c"
+            android:textSize="12sp" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dip"
+            android:layout_marginTop="8dip"
+            android:scaleType="fitXY"
+            android:src="@drawable/weibo_split" />
+
+        <ImageView
+            android:layout_width="140dip"
+            android:layout_height="140dip"
+            android:background="#fff"
+            android:padding="2dip"
+            android:scaleType="fitXY"
+            android:src="@drawable/email_qrcode" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="扫描二维码即可下载"
+            android:layout_marginTop="6dip"
+            android:textColor="#999"
+            android:textSize="12sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dip"
+            android:gravity="center_horizontal"
+            android:text="下载地址：http://file1.popspace.com/apk/10/064/442/ab3c1b6d-17d1-45a4-8102-dc5d8df89b53.apk"
+            android:textColor="#999"
+            android:textSize="12sp" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dip"
+            android:layout_marginTop="8dip"
+            android:scaleType="fitXY"
+            android:src="@drawable/weibo_split" />
+
+        <LinearLayout
+            android:id="@+id/btn_download"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/btn_selector_user_params"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingLeft="26dip"
+            android:paddingRight="26dip" >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ico_more_download" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="16dip"
+                android:shadowColor="#fff"
+                android:shadowDx="0"
+                android:shadowDy="1"
+                android:shadowRadius="0.01"
+                android:text="下载邮箱客户端"
+                android:textColor="#666"
+                android:textSize="16sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/navbar"
+        android:layout_width="match_parent"
+        android:layout_height="50dip"
+        android:background="@drawable/bar_navigation_bg" >
+
+        <TextView
+            android:id="@+id/navbar_TitleText"
+            style="@style/navigation_title"
+            android:layout_width="wrap_content"
+            android:layout_height="44dip"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:gravity="center_vertical"
+            android:text="PocketUni 邮箱下载" />
+
+        <Button
+            android:id="@+id/btn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="2dip"
+            android:background="@drawable/btn_selector_navbar_backicon" />
+    </RelativeLayout>
+
+</RelativeLayout>

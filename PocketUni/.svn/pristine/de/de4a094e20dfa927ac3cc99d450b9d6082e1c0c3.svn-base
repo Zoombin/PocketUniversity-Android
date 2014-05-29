@@ -1,0 +1,63 @@
+package com.xyhui.types;
+
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import com.mslibs.utils.ParcelUtils;
+
+public class Maplist implements Parcelable {
+	public String id = null;
+	public String title = null;
+	public String school = null;
+	public String uid = null;
+	public String ctime = null;
+	public String desc = null;
+	public String sort = null;
+
+	public String lat = null;
+	public String lng = null;
+
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel out, int flags) {
+		ParcelUtils.writeStringToParcel(out, id);
+		ParcelUtils.writeStringToParcel(out, title);
+		ParcelUtils.writeStringToParcel(out, school);
+		ParcelUtils.writeStringToParcel(out, uid);
+		ParcelUtils.writeStringToParcel(out, ctime);
+		ParcelUtils.writeStringToParcel(out, desc);
+		ParcelUtils.writeStringToParcel(out, lat);
+		ParcelUtils.writeStringToParcel(out, lng);
+	}
+
+	public Maplist() {
+	}
+
+	public Maplist(Parcel in) {
+
+		id = ParcelUtils.readStringFromParcel(in);
+		title = ParcelUtils.readStringFromParcel(in);
+		school = ParcelUtils.readStringFromParcel(in);
+		uid = ParcelUtils.readStringFromParcel(in);
+		ctime = ParcelUtils.readStringFromParcel(in);
+		desc = ParcelUtils.readStringFromParcel(in);
+		lat = ParcelUtils.readStringFromParcel(in);
+		lng = ParcelUtils.readStringFromParcel(in);
+
+	}
+
+	public static final Parcelable.Creator<Maplist> CREATOR = new Parcelable.Creator<Maplist>() {
+		public Maplist createFromParcel(Parcel in) {
+			return new Maplist(in);
+		}
+
+		@Override
+		public Maplist[] newArray(int size) {
+			return new Maplist[size];
+		}
+	};
+}

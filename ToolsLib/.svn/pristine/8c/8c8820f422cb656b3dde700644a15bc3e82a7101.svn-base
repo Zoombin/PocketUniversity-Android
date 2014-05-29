@@ -1,0 +1,58 @@
+package com.mslibs.widget;
+
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+
+public class CPagerItem extends RelativeLayout {
+
+	private int mWidth = 0;
+	private int mHeight = 0;
+	private LayoutInflater mInflater;
+	private ProgressBar mProgressBar;
+
+	public CPagerItem(Context context) {
+		super(context);
+		mInflater = (LayoutInflater) getContext()
+				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT,
+				LayoutParams.MATCH_PARENT);
+		setLayoutParams(params);
+	}
+
+	public void setContentView(int resource) {
+		View view = mInflater.inflate(resource, null);
+		LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT,
+				LayoutParams.MATCH_PARENT);
+		view.setLayoutParams(params);
+		addView(view);
+	}
+
+	public void setFrame(int width, int height) {
+		mWidth = width;
+		mHeight = height;
+	}
+
+	public void showProgressLoading() {
+
+		// 添加滚动条
+		if (mProgressBar == null) {
+			mProgressBar = new ProgressBar(getContext());
+			LayoutParams params = new LayoutParams(30, 30);
+			params.leftMargin = (mWidth - 30) / 2;
+			params.topMargin = (mHeight - 30) / 2;
+			mProgressBar.setLayoutParams(params);
+			addView(mProgressBar);
+		}
+		bringChildToFront(mProgressBar);
+		mProgressBar.setVisibility(View.VISIBLE);
+	}
+
+	public void hiddenProgressLoading() {
+		if (mProgressBar != null) {
+			mProgressBar.setVisibility(View.GONE);
+		}
+	}
+}

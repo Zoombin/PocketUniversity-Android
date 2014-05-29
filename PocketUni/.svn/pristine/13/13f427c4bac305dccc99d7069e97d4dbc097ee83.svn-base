@@ -1,0 +1,13 @@
+package com.xyhui.types;
+
+public class Tag {
+	public String group_tag_id = null;
+	public String gid = null;
+	public String tag_id = null;
+	public String tag_name = null;
+
+	@Override
+	public String toString() {
+		return tag_name;
+	}
+}

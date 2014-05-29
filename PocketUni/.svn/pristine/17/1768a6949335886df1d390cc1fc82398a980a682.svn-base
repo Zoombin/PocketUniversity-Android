@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#fcfcfc"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/layout_user"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="120dip" >
+
+            <ImageView
+                android:id="@+id/img_user_bg"
+                android:layout_width="match_parent"
+                android:layout_height="120dip"
+                android:scaleType="fitXY"
+                android:src="@drawable/user_bg" />
+
+            <ImageView
+                android:id="@+id/img_avatar"
+                android:layout_width="50dip"
+                android:layout_height="50dip"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="4dip"
+                android:layout_marginTop="4dip"
+                android:background="@drawable/user_avatar_mask"
+                android:cropToPadding="true"
+                android:padding="4dip"
+                android:scaleType="fitXY"
+                android:src="@drawable/avatar00" />
+
+            <ImageView
+                android:layout_width="50dip"
+                android:layout_height="50dip"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="4dip"
+                android:layout_marginTop="4dip"
+                android:src="@drawable/user_avatar_mask_top" />
+
+            <TextView
+                android:id="@+id/text_nickname"
+                android:layout_width="wrap_content"
+                android:layout_height="38dip"
+                android:layout_alignTop="@+id/img_avatar"
+                android:layout_marginLeft="8dip"
+                android:layout_toRightOf="@+id/img_avatar"
+                android:gravity="center_vertical"
+                android:shadowColor="#000"
+                android:shadowDx="0"
+                android:shadowDy="2"
+                android:shadowRadius="0.01"
+                android:text="用户昵称"
+                android:textColor="#fff"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/text_info"
+                android:layout_width="wrap_content"
+                android:layout_height="20dip"
+                android:layout_alignBottom="@+id/img_avatar"
+                android:layout_marginLeft="8dip"
+                android:layout_toRightOf="@+id/img_avatar"
+                android:gravity="center_vertical"
+                android:shadowColor="#000"
+                android:shadowDx="0"
+                android:shadowDy="2"
+                android:shadowRadius="0.01"
+                android:text="江苏 苏州 男"
+                android:textColor="#fff"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btn_follow"
+                android:layout_width="98dip"
+                android:layout_height="42dip"
+                android:layout_alignLeft="@+id/img_avatar"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="4dip"
+                android:background="@drawable/btn_selector_follow_add"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/btn_message"
+                android:layout_width="98dip"
+                android:layout_height="42dip"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="4dip"
+                android:layout_marginLeft="4dip"
+                android:layout_toRightOf="@+id/btn_follow"
+                android:background="@drawable/btn_selector_message"
+                android:visibility="gone" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/user_params_bg"
+            android:orientation="horizontal"
+            android:padding="4dip" >
+
+            <LinearLayout
+                android:id="@+id/btn_params_weibo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/btn_selector_user_params"
+                android:gravity="center"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/text_params_weibo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:shadowColor="#fff"
+                    android:shadowDx="0"
+                    android:shadowDy="1"
+                    android:shadowRadius="0.01"
+                    android:text="2012"
+                    android:textColor="#666"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:shadowColor="#fff"
+                    android:shadowDx="0"
+                    android:shadowDy="1"
+                    android:shadowRadius="0.01"
+                    android:text="微博"
+                    android:textColor="#999"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/btn_params_followed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/btn_selector_user_params"
+                android:gravity="center"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/text_params_followed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:shadowColor="#fff"
+                    android:shadowDx="0"
+                    android:shadowDy="1"
+                    android:shadowRadius="0.01"
+                    android:text="169"
+                    android:textColor="#666"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:shadowColor="#fff"
+                    android:shadowDx="0"
+                    android:shadowDy="1"
+                    android:shadowRadius="0.01"
+                    android:text="关注"
+                    android:textColor="#999"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/btn_params_follows"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/btn_selector_user_params"
+                android:gravity="center"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/text_params_follows"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:shadowColor="#fff"
+                    android:shadowDx="0"
+                    android:shadowDy="1"
+                    android:shadowRadius="0.01"
+                    android:text="357"
+                    android:textColor="#666"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:shadowColor="#fff"
+                    android:shadowDx="0"
+                    android:shadowDy="1"
+                    android:shadowRadius="0.01"
+                    android:text="粉丝"
+                    android:textColor="#999"
+                    android:textSize="12sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            android:src="@drawable/weibo_split" />
+    </LinearLayout>
+
+</LinearLayout>

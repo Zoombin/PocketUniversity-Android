@@ -1,0 +1,218 @@
+package com.xyhui.activity.more;
+
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+
+import com.mslibs.api.CallBack;
+import com.mslibs.utils.JSONUtils;
+import com.mslibs.utils.NotificationsUtil;
+import com.xyhui.R;
+import com.xyhui.activity.PuApp;
+import com.xyhui.api.Api;
+import com.xyhui.types.Response;
+import com.xyhui.utils.Preferences;
+import com.xyhui.widget.FLActivity;
+
+public class PhoneBindingActivity extends FLActivity {
+	Button btn_back;
+
+	TextView text_bound_tips;
+	EditText edit_phone_num;
+	EditText edit_password;
+	Button btn_get_msm_code;
+	TextView text_send_tips;
+	EditText edit_msm_code;
+	Button btn_bind;
+
+	private PuApp mainApp;
+
+	boolean isBound = false;
+
+	protected String phone = null;
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_account_cellphone);
+
+		mainApp = (PuApp) getApplication();
+
+		linkUiVar();
+		bindListener();
+		ensureUi();
+	}
+
+	@Override
+	public void linkUiVar() {
+		btn_back = (Button) findViewById(R.id.btn_back);
+
+		text_bound_tips = (TextView) findViewById(R.id.text_bound_tips);
+		edit_phone_num = (EditText) findViewById(R.id.edit_phone_num);
+		edit_password = (EditText) findViewById(R.id.edit_password);
+		btn_get_msm_code = (Button) findViewById(R.id.btn_get_msm_code);
+		text_send_tips = (TextView) findViewById(R.id.text_send_tips);
+		edit_msm_code = (EditText) findViewById(R.id.edit_msm_code);
+		btn_bind = (Button) findViewById(R.id.btn_bind);
+	}
+
+	@Override
+	public void bindListener() {
+
+		btn_back.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// 关闭返回
+				finish();
+			}
+		});
+
+		btn_get_msm_code.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// 获取手机短信验证码
+				phone = edit_phone_num.getText().toString().trim();
+
+				if (TextUtils.isEmpty(phone)) {
+					NotificationsUtil.ToastBottomMsg(mContext, "请填写手机号");
+					return;
+				}
+
+				String pass = edit_password.getText().toString().trim();
+
+				if (TextUtils.isEmpty(pass)) {
+					NotificationsUtil.ToastBottomMsg(mContext, "请填写密码");
+					return;
+				}
+				btn_get_msm_code.setEnabled(false);
+				text_send_tips.setText("正在获取, 请稍候");
+
+				closeKeyboard(edit_phone_num);
+				new Api(smscallback).mobileSendSms(mainApp.getToken(), phone, pass);
+			}
+		});
+
+		btn_bind.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+
+				String code = edit_msm_code.getText().toString().trim();
+
+				if (TextUtils.isEmpty(code)) {
+					NotificationsUtil.ToastBottomMsg(mContext, "请填写验证码");
+					return;
+				}
+
+				btn_bind.setEnabled(false);
+				text_send_tips.setText("正在验证, 请稍候");
+
+				closeKeyboard(edit_msm_code);
+
+				new Api(bindcallback).mobileBind(mainApp.getToken(), phone, code);
+
+			}
+		});
+	}
+
+	@Override
+	public void ensureUi() {
+
+		edit_msm_code.setVisibility(View.GONE);
+		btn_bind.setVisibility(View.GONE);
+
+		showProgress();
+		new Api(callback).getMobile(mainApp.getToken());
+
+	}
+
+	CallBack callback = new CallBack() {
+
+		@Override
+		public void onSuccess(String response) {
+			dismissProgress();
+			Response result = JSONUtils.fromJson(response, Response.class);
+
+			if (!TextUtils.isEmpty(result.response)) {
+				mainApp.setPreference(Preferences.LOCAL.MOBILE, result.response);
+				text_bound_tips.setText("当前绑定手机号：" + result.response);
+				edit_phone_num.setHint("输入变更绑定的手机号码");
+			} else {
+				text_bound_tips.setText("当前绑定手机号：无");
+				mainApp.setPreference(Preferences.LOCAL.MOBILE, null);
+			}
+
+		}
+	};
+
+	CallBack smscallback = new CallBack() {
+
+		@Override
+		public void onSuccess(String response) {
+
+			Response result = JSONUtils.fromJson(response, Response.class);
+
+			if (result.status == 1) {
+				text_bound_tips.setVisibility(View.GONE);
+				text_send_tips.setText("手机短信验证码已经发出，请耐心等待");
+				edit_msm_code.setVisibility(View.VISIBLE);
+				btn_bind.setVisibility(View.VISIBLE);
+				edit_phone_num.setVisibility(View.GONE);
+				edit_password.setVisibility(View.GONE);
+				btn_get_msm_code.setVisibility(View.GONE);
+
+			} else if (!TextUtils.isEmpty(result.msg)) {
+				NotificationsUtil.ToastBottomMsg(mContext, result.msg);
+				btn_get_msm_code.setEnabled(true);
+			} else {
+				NotificationsUtil.ToastBottomMsg(mContext, "发送短信失败");
+				btn_get_msm_code.setEnabled(true);
+			}
+		}
+
+		@Override
+		public void onFailure(String message) {
+			NotificationsUtil.ToastBottomMsg(mContext, "发送短信失败");
+			btn_get_msm_code.setEnabled(true);
+		}
+	};
+
+	CallBack bindcallback = new CallBack() {
+
+		@Override
+		public void onSuccess(String response) {
+
+			Response result = JSONUtils.fromJson(response, Response.class);
+
+			if (result.status == 1) {
+
+				mainApp.setPreference(Preferences.LOCAL.MOBILE, phone);
+
+				text_send_tips.setText("成功绑定手机号：" + phone);
+
+				edit_msm_code.setVisibility(View.GONE);
+				btn_bind.setVisibility(View.GONE);
+				edit_phone_num.setVisibility(View.GONE);
+				edit_password.setVisibility(View.GONE);
+				btn_get_msm_code.setVisibility(View.GONE);
+
+			} else if (!TextUtils.isEmpty(result.msg)) {
+				NotificationsUtil.ToastBottomMsg(mContext, result.msg);
+				btn_bind.setEnabled(true);
+			} else {
+				NotificationsUtil.ToastBottomMsg(mContext, "验证失败");
+				btn_bind.setEnabled(true);
+			}
+
+		}
+
+		@Override
+		public void onFailure(String message) {
+			NotificationsUtil.ToastBottomMsg(mContext, "验证失败");
+			btn_bind.setEnabled(true);
+		}
+	};
+}

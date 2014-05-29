@@ -1,0 +1,15 @@
+package com.xyhui.types;
+
+
+public class Comment {
+	public String comment_id = null;
+	public String uid = null;
+	public String content = null;
+	public String ctime = null;
+	public String uname = null;
+	public int timestamp = 0;
+
+	public Comment() {
+
+	}
+}

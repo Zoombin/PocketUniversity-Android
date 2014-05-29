@@ -1,0 +1,87 @@
+package com.xyhui.activity.group;
+
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+
+import com.mslibs.utils.JSONUtils;
+import com.mslibs.utils.NotificationsUtil;
+import com.xyhui.R;
+import com.xyhui.api.CallBack;
+import com.xyhui.types.Response;
+import com.xyhui.utils.Preferences;
+import com.xyhui.widget.FLActivity;
+
+public class GroupBlogEditActivity extends FLActivity {
+	Button btn_back;
+	Button btn_submit;
+
+	protected String group_id;
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_blog_edit);
+
+		if (getIntent().hasExtra(Preferences.INTENT_EXTRA.GROUP_ID)) {
+			group_id = getIntent().getStringExtra(Preferences.INTENT_EXTRA.GROUP_ID);
+		} else {
+			finish();
+		}
+
+		linkUiVar();
+		bindListener();
+		ensureUi();
+	}
+
+	@Override
+	public void linkUiVar() {
+		btn_back = (Button) findViewById(R.id.btn_back);
+		btn_submit = (Button) findViewById(R.id.btn_submit);
+	}
+
+	@Override
+	public void bindListener() {
+		btn_back.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// 关闭返回
+				finish();
+			}
+		});
+
+		btn_submit.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// 提交创建部落
+				showProgress("正在提交", ",请稍候...");
+			}
+		});
+
+	}
+
+	@Override
+	public void ensureUi() {
+
+	}
+
+	CallBack createcallback = new CallBack() {
+		@Override
+		public void onSuccess(String response) {
+			dismissProgress();
+			Response r = JSONUtils.fromJson(response, Response.class);
+
+			if (null != r) {
+				if (!TextUtils.isEmpty(r.response)) {
+					NotificationsUtil.ToastBottomMsg(mContext, r.response);
+					finish();
+				} else if (!TextUtils.isEmpty(r.message)) {
+					NotificationsUtil.ToastBottomMsg(mContext, r.message);
+				}
+			}
+		}
+	};
+
+}

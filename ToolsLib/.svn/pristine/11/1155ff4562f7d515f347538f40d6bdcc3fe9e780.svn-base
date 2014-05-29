@@ -1,0 +1,40 @@
+package com.mslibs.widget;
+
+import android.app.Activity;
+import android.content.Context;
+import android.util.AttributeSet;
+import android.view.LayoutInflater;
+import android.widget.RelativeLayout;
+
+public class CRelativeLayout extends RelativeLayout {
+
+	private LayoutInflater mInflater;
+
+	private int mResourceID;
+
+	public CRelativeLayout(Context context) {
+		super(context);
+		mInflater = ((Activity) getContext()).getLayoutInflater();
+	}
+
+	public CRelativeLayout(Context context, AttributeSet attrs) {
+		super(context, attrs);
+		mInflater = ((Activity) getContext()).getLayoutInflater();
+	}
+
+	public void setContentView(int id) {
+		mResourceID = id;
+	}
+
+	public void addContentView(int id) {
+		addView(mInflater.inflate(id, null));
+	}
+
+	@Override
+	protected void onFinishInflate() {
+		super.onFinishInflate();
+		if (mResourceID != 0) {
+			((Activity) getContext()).getLayoutInflater().inflate(mResourceID, this);
+		}
+	}
+}

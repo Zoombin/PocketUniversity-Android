@@ -1,0 +1,98 @@
+package com.xyhui.activity;
+
+import android.app.TabActivity;
+import android.content.Intent;
+import android.os.Build;
+import android.os.Bundle;
+import android.widget.FrameLayout;
+import android.widget.TabHost;
+
+import com.mslibs.utils.JSONUtils;
+import com.xyhui.R;
+import com.xyhui.api.Api;
+import com.xyhui.api.CallBack;
+import com.xyhui.types.School;
+import com.xyhui.utils.Params;
+import com.xyhui.utils.PrefUtil;
+import com.xyhui.utils.TableOperate;
+
+@SuppressWarnings("deprecation")
+public class MainActivity extends TabActivity implements TabHost.OnTabChangeListener {
+
+	static final long DELAYED_GOTO_DURATION = 200;
+
+	private TabHost mTabHost;
+	private PrefUtil mPrefUtil;
+
+	Tab1HomeActivity tabIndexActivity;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
+
+		initTabHost();
+		initData();
+	}
+
+	private void initTabHost() {
+		if (mTabHost != null) {
+			throw new IllegalStateException("Trying to intialize already initializd TabHost");
+		}
+
+		mTabHost = getTabHost();
+
+		TableOperate.addTab(mTabHost, "主页", R.drawable.tab_selector_index, "index", new Intent(
+				this, Tab1HomeActivity.class));
+		TableOperate.addTab(mTabHost, "微博", R.drawable.tab_selector_weibo, "weibo", new Intent(
+				this, Tab2WeiboActivity.class));
+		TableOperate.addTab(mTabHost, "应用", R.drawable.tab_selector_app, "app", new Intent(this,
+				Tab3AppActivity.class));
+		TableOperate.addTab(mTabHost, "好友", R.drawable.tab_selector_friend, "friend", new Intent(
+				this, Tab4FriendActivity.class));
+		TableOperate.addTab(mTabHost, "更多", R.drawable.tab_selector_more, "more", new Intent(this,
+				Tab5MoreActivity.class));
+
+		// Fix layout for 1.5.
+		if (Build.VERSION.SDK_INT < 4) {
+			FrameLayout flTabContent = (FrameLayout) findViewById(android.R.id.tabcontent);
+			flTabContent.setPadding(0, 0, 0, 0);
+		}
+	}
+
+	private void initData() {
+		mPrefUtil = new PrefUtil();
+		tabIndexActivity = (Tab1HomeActivity) getLocalActivityManager().getActivity("index");
+
+		if (mPrefUtil.getPreference(Params.LOCAL.CITYID) == null
+				|| mPrefUtil.getPreference(Params.LOCAL.SCHOOLID) == null) {
+			tabIndexActivity.showProgress();
+			new Api(userSchoolCallback, this).getUserSchool(PuApp.get().getToken());
+		}
+
+		if (!PuApp.get().getLocalDataMgr().catDataArrived()) {
+			PuApp.get().getLocalDataMgr().setEventCats(this);
+			PuApp.get().getLocalDataMgr().setCourseCats(this);
+			PuApp.get().getLocalDataMgr().setGroupCats(this);
+			PuApp.get().getLocalDataMgr().setEventOrgs(this);
+		}
+	}
+
+	@Override
+	public void onTabChanged(String tabId) {
+
+	}
+
+	CallBack userSchoolCallback = new CallBack() {
+
+		@Override
+		public void onSuccess(String response) {
+			tabIndexActivity.dismissProgress();
+			School userSchool = JSONUtils.fromJson(response, School.class);
+			if (null != userSchool) {
+				mPrefUtil.setPreference(Params.LOCAL.CITYID, userSchool.cityId);
+				mPrefUtil.setPreference(Params.LOCAL.SCHOOLID, userSchool.id);
+			}
+		}
+	};
+}

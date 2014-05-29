@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/signin_bg" >
+
+    <LinearLayout
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="44dip"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingTop="80dip" >
+
+        <EditText
+            android:id="@+id/edit_new_password"
+            android:layout_width="250dip"
+            android:layout_height="44dip"
+            android:layout_marginTop="12dip"
+            android:background="@drawable/edit_selector_signin"
+            android:hint="新密码"
+            android:inputType="textPassword"
+            android:padding="8dip"
+            android:textColor="#fff"
+            android:textSize="14sp" >
+
+            <requestFocus />
+        </EditText>
+
+        <EditText
+            android:id="@+id/edit_repeat_password"
+            android:layout_width="250dip"
+            android:layout_height="44dip"
+            android:layout_marginTop="12dip"
+            android:background="@drawable/edit_selector_signin"
+            android:hint="确认新密码"
+            android:inputType="textPassword"
+            android:padding="8dip"
+            android:textColor="#fff"
+            android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/edit_password_email"
+            android:layout_width="250dip"
+            android:layout_height="44dip"
+            android:layout_marginTop="12dip"
+            android:background="@drawable/edit_selector_signin"
+            android:hint="密保邮箱"
+            android:inputType="textEmailAddress"
+            android:padding="8dip"
+            android:textColor="#fff"
+            android:textSize="14sp" />
+
+        <Button
+            android:id="@+id/btn_submit"
+            android:layout_width="250dip"
+            android:layout_height="44dip"
+            android:layout_marginTop="12dip"
+            android:background="@drawable/btn_selector_signin"
+            android:text="确认初始化"
+            android:textColor="#fff" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/navbar"
+        android:layout_width="match_parent"
+        android:layout_height="50dip"
+        android:background="@drawable/bar_navigation_bg" >
+
+        <Button
+            android:id="@+id/btn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="2dip"
+            android:background="@drawable/btn_selector_navbar_backicon" />
+
+        <TextView
+            android:id="@+id/navbar_TitleText"
+            style="@style/navigation_title"
+            android:layout_width="wrap_content"
+            android:layout_height="44dip"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:gravity="center_vertical"
+            android:text="账号初始化" />
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#fcfcfc"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/left_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dip" >
+
+        <ImageView
+            android:id="@+id/img_avatar_left"
+            android:layout_width="34dip"
+            android:layout_height="34dip"
+            android:layout_alignParentLeft="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/avatar00" />
+
+        <ImageView
+            android:layout_width="34dip"
+            android:layout_height="34dip"
+            android:layout_alignParentLeft="true"
+            android:src="@drawable/avatar_mask" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/img_avatar_left"
+            android:layout_marginLeft="8dip"
+            android:layout_marginRight="46dip"
+            android:layout_toRightOf="@+id/img_avatar_left"
+            android:gravity="left"
+            android:orientation="vertical" >
+
+            <com.xyhui.widget.SpannedTextViewContent
+                android:id="@+id/text_message_left"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/message_bg_left"
+                android:gravity="center_vertical|left"
+                android:paddingBottom="10dip"
+                android:paddingTop="8dip"
+                android:text="私信内容"
+                android:textColor="#000"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/text_date_left"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="今天11:33"
+                android:textColor="#aaa"
+                android:textSize="12sp" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/right_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dip" >
+
+        <ImageView
+            android:id="@+id/img_avatar_right"
+            android:layout_width="34dip"
+            android:layout_height="34dip"
+            android:layout_alignParentRight="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/avatar00" />
+
+        <ImageView
+            android:layout_width="34dip"
+            android:layout_height="34dip"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/avatar_mask" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/img_avatar_right"
+            android:layout_marginLeft="46dip"
+            android:layout_marginRight="8dip"
+            android:layout_toLeftOf="@+id/img_avatar_right"
+            android:gravity="right"
+            android:orientation="vertical" >
+
+            <com.xyhui.widget.SpannedTextViewContent
+                android:id="@+id/text_message_right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/message_bg_right"
+                android:gravity="center_vertical|left"
+                android:paddingBottom="10dip"
+                android:paddingTop="8dip"
+                android:text="私信内容"
+                android:textColor="#000"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/text_date_right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="今天11:33"
+                android:textColor="#aaa"
+                android:textSize="12sp" />
+        </LinearLayout>
+    </RelativeLayout>
+
+</LinearLayout>

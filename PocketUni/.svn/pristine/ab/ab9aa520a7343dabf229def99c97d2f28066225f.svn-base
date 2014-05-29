@@ -1,0 +1,282 @@
+package com.xyhui.activity.app;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.Toast;
+
+import com.alipay.android.app.sdk.AliPay;
+import com.mslibs.utils.VolleyLog;
+import com.xyhui.R;
+import com.xyhui.alipay.Keys;
+import com.xyhui.alipay.Result;
+import com.xyhui.alipay.Rsa;
+import com.xyhui.widget.FLActivity;
+
+public class ChargeActivity extends FLActivity {
+
+	private ImageButton mBtn10;
+	private ImageButton mBtn50;
+	private ImageButton mBtn100;
+	private ImageButton mBtn200;
+
+	private ImageButton mBtnCustom;
+	private EditText mEditFee;
+
+	private Button mBtnSubmit;
+
+	private String mFee;
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_charge);
+
+		linkUiVar();
+		bindListener();
+		ensureUi();
+	}
+
+	@Override
+	public void linkUiVar() {
+
+		mBtn10 = (ImageButton) findViewById(R.id.btn_10);
+		mBtn50 = (ImageButton) findViewById(R.id.btn_50);
+		mBtn100 = (ImageButton) findViewById(R.id.btn_100);
+		mBtn200 = (ImageButton) findViewById(R.id.btn_200);
+
+		mBtnCustom = (ImageButton) findViewById(R.id.btn_custom);
+		mEditFee = (EditText) findViewById(R.id.edit_fee);
+
+		mBtnSubmit = (Button) findViewById(R.id.btn_submit);
+	}
+
+	@Override
+	public void bindListener() {
+		mBtn10.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				mFee = "10";
+				refreshBackground(mBtn10);
+				mEditFee.setEnabled(false);
+			}
+		});
+
+		mBtn50.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				mFee = "50";
+				refreshBackground(mBtn50);
+				mEditFee.setEnabled(false);
+			}
+		});
+
+		mBtn100.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				mFee = "100";
+				refreshBackground(mBtn100);
+				mEditFee.setEnabled(false);
+			}
+		});
+
+		mBtn200.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				mFee = "200";
+				refreshBackground(mBtn200);
+				mEditFee.setEnabled(false);
+			}
+		});
+
+		mBtnCustom.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				mEditFee.setEnabled(true);
+				refreshBackground(mBtnCustom);
+				mEditFee.requestFocus();
+				openKeyboard();
+			}
+		});
+
+		mBtnSubmit.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				if (mEditFee.isEnabled()) {
+					mFee = mEditFee.getText().toString();
+				}
+
+				startPay(new Product("PU币冲值", mFee, mFee));
+			}
+		});
+	}
+
+	@Override
+	public void ensureUi() {
+		mBtn10.performClick();
+	}
+
+	private void refreshBackground(ImageButton btn) {
+		mBtn10.setImageResource(R.drawable.checkbox_n);
+		mBtn50.setImageResource(R.drawable.checkbox_n);
+		mBtn100.setImageResource(R.drawable.checkbox_n);
+		mBtn200.setImageResource(R.drawable.checkbox_n);
+		mBtnCustom.setImageResource(R.drawable.checkbox_n);
+		btn.setImageResource(R.drawable.checkbox_o);
+	}
+
+	private String getNewOrderInfo(Product product) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("partner=\"");
+		sb.append(Keys.DEFAULT_PARTNER);
+
+		sb.append("\"&out_trade_no=\"");
+		sb.append(getOutTradeNo());
+
+		sb.append("\"&subject=\"");
+		sb.append(product.getSubject());
+
+		sb.append("\"&body=\"");
+		sb.append(product.getBody());
+
+		sb.append("\"&total_fee=\"");
+		sb.append(product.getPrice());
+
+		sb.append("\"&notify_url=\"");
+		// 网址需要做URL编码
+		try {
+			sb.append(URLEncoder.encode("http://notify.java.jpxx.org/index.jsp", "UTF-8"));
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+
+		sb.append("\"&service=\"mobile.securitypay.pay");
+		sb.append("\"&_input_charset=\"utf-8");
+
+		sb.append("\"&show_url=\"");
+		try {
+			sb.append(URLEncoder.encode("http://m.alipay.com", "UTF_8"));
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+
+		sb.append("\"&payment_type=\"1");
+
+		sb.append("\"&seller_id=\"");
+		sb.append(Keys.DEFAULT_SELLER);
+
+		sb.append("\"&it_b_pay=\"1m");
+		sb.append("\"");
+
+		return new String(sb);
+	}
+
+	private String getOutTradeNo() {
+		SimpleDateFormat format = new SimpleDateFormat("MMddHHmmss");
+		Date date = new Date();
+		String key = format.format(date);
+
+		java.util.Random r = new java.util.Random();
+		key += r.nextInt();
+		key = key.substring(0, 15);
+		VolleyLog.d("outTradeNo: %s", key);
+		return key;
+	}
+
+	private String getSignType() {
+		return "sign_type=\"RSA\"";
+	}
+
+	private void startPay(Product product) {
+		try {
+			Log.i("ExternalPartner", "onItemClick");
+			String info = getNewOrderInfo(product);
+			String sign = Rsa.sign(info, Keys.PRIVATE);
+			sign = URLEncoder.encode(sign, "UTF-8");
+			info += "&sign=\"" + sign + "\"&" + getSignType();
+			Log.i("ExternalPartner", "start pay");
+			// start the pay.
+			VolleyLog.d("info = %s", info);
+
+			final String orderInfo = info;
+			new Thread() {
+				public void run() {
+					AliPay alipay = new AliPay(ChargeActivity.this, mHandler);
+
+					// 设置为沙箱模式，不设置默认为线上环境
+					// alipay.setSandBox(true);
+
+					String result = alipay.pay(orderInfo);
+
+					VolleyLog.d("result = %s", result);
+
+					Message.obtain(mHandler, 0, result).sendToTarget();
+				}
+			}.start();
+
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			Toast.makeText(ChargeActivity.this, "请求远程服务失败", Toast.LENGTH_SHORT).show();
+		}
+	}
+
+	Handler mHandler = new Handler() {
+		public void handleMessage(Message msg) {
+			Result result = new Result((String) msg.obj);
+			Toast.makeText(ChargeActivity.this, result.getResult(), Toast.LENGTH_SHORT).show();
+		};
+	};
+
+	class Product {
+		private String mSubject;
+		private String mBody;
+		private String mPrice;
+
+		public Product(String subject, String body, String price) {
+			setSubject(subject);
+			setBody(body);
+			setPrice(price);
+		}
+
+		public String getSubject() {
+			return mSubject;
+		}
+
+		public void setSubject(String mSubject) {
+			this.mSubject = mSubject;
+		}
+
+		public String getBody() {
+			return mBody;
+		}
+
+		public void setBody(String mBody) {
+			this.mBody = mBody;
+		}
+
+		public String getPrice() {
+			return mPrice;
+		}
+
+		public void setPrice(String mPrice) {
+			this.mPrice = mPrice;
+		}
+	}
+}

@@ -1,0 +1,394 @@
+package com.xyhui.activity;
+
+import java.util.ArrayList;
+import java.util.Random;
+
+import android.app.AlertDialog;
+import android.app.DownloadManager;
+import android.app.DownloadManager.Query;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
+import android.os.Bundle;
+import android.os.Environment;
+import android.os.Handler;
+import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.ImageView;
+
+import com.google.gson.reflect.TypeToken;
+import com.mslibs.api.CallBack;
+import com.mslibs.utils.JSONUtils;
+import com.mslibs.utils.NotificationsUtil;
+import com.mslibs.utils.VolleyLog;
+import com.xyhui.R;
+import com.xyhui.api.Api;
+import com.xyhui.types.City;
+import com.xyhui.types.Response;
+import com.xyhui.types.School;
+import com.xyhui.utils.Preferences;
+import com.xyhui.utils.ServerThreadPool;
+import com.xyhui.utils.Storage;
+import com.xyhui.widget.FLActivity;
+import com.xyhui.widget.LoadingPagerAdapter;
+
+public class LoadingActivity extends FLActivity {
+
+	/** 跳转到下一个Activity的延时时间 **/
+	private final int DELAYED_GOTO_DURATION = 500;
+
+	private int delayTimes = 0;
+	private final int MAX_DELAY_TIMES = 15;
+
+	private int downloadStat;
+
+	private final int DOWNLOAD_STATUS_SERVICE_UNAVAILABLE = 0;
+	private final int DOWNLOAD_STATUS_DOWNLOADING = 1;
+	private final int DOWNLOAD_STATUS_COMPLETED = 2;
+
+	private int queryTimes = 0;
+	private final int MAX_QUERY_TIMES = 5;
+
+	private boolean queryCompleted = false;
+
+	private Cursor cur;
+	private String url;
+
+	private Handler mHandler = new Handler();
+
+	boolean isFirstLaunch = true;
+	boolean isLogon = false;
+
+	ImageView img_loading_bg;
+	ViewPager viewPager;
+	LoadingPagerAdapter mLoadingPagerAdapter;
+	private PuApp mainApp;
+
+	// 版本信息
+	private Response versionInfo;
+
+	private long downloadId;
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_loading);
+
+		mainApp = (PuApp) getApplication();
+		mainApp.clearAllData();
+		isFirstLaunch = mainApp.getBoolPreference(Preferences.LOCAL.FIRSTRUN);
+		linkUiVar();
+		bindListener();
+		ensureUi();
+	}
+
+	@Override
+	public void linkUiVar() {
+		img_loading_bg = (ImageView) findViewById(R.id.img_loading_bg);
+		viewPager = (ViewPager) findViewById(R.id.viewPager);
+	}
+
+	@Override
+	public void bindListener() {
+
+	}
+
+	@Override
+	public void ensureUi() {
+
+		// 检测是否首次启动 默认 isFirstLaunch = true
+		if (isFirstLaunch) {
+			FirstLaunch();
+		} else {
+			img_loading_bg.setVisibility(View.GONE);
+			viewPager.setVisibility(View.GONE);
+			update();
+		}
+
+		new Api(cityListCB).getCitys();
+		new Api(schoolListCB).getSchools();
+
+		if (mainApp.isLogon()) {
+			mainApp.setEventCats();
+			mainApp.setCourseCats();
+			mainApp.setGroupCats();
+			mainApp.setUserData();
+		}
+	}
+
+	public void FirstLaunch() {
+		img_loading_bg.setVisibility(View.VISIBLE);
+		img_loading_bg.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				mainApp.setPreference(Preferences.LOCAL.FIRSTRUN, false);
+				update();
+			}
+		});
+	}
+
+	public void signinOrMain() {
+		mHandler.postDelayed(new Runnable() {
+			public void run() {
+				VolleyLog.d("*******signinOrMain******* \n DelayTimes= %d", delayTimes);
+				if (mainApp.isLogon() && mainApp.allDataArrived()) {
+					Intent intent = new Intent();
+					if (!mainApp.isVerified()) {
+						intent.setClass(LoadingActivity.this, AccountBindingActivity.class);
+					} else if (!mainApp.isInited()) {
+						intent.setClass(LoadingActivity.this, UserInitActivity.class);
+					} else {
+						intent.setClass(LoadingActivity.this, MainActivity.class);
+					}
+					startActivity(intent);
+					finish();
+				} else if (!mainApp.isLogon() && mainApp.citySchoolArrived()) {
+					Intent intent = new Intent(LoadingActivity.this, SigninActivity.class);
+					startActivity(intent);
+					finish();
+				} else if (delayTimes > MAX_DELAY_TIMES) {
+					NotificationsUtil.ToastTopMsg(mContext, "暂时无法获取数据");
+					finish();
+				} else {
+					delayTimes++;
+					signinOrMain();
+				}
+
+			}
+		}, DELAYED_GOTO_DURATION);
+	}
+
+	public void update() {
+
+		new Api(callback).getVersion();
+
+	}
+
+	CallBack callback = new CallBack() {
+		@Override
+		public void onSuccess(String response) {
+			VolleyLog.d("LoadingActivity callback onSuccess");
+			versionInfo = JSONUtils.fromJson(response, Response.class);
+			checkVersion();
+		}
+
+		@Override
+		public void onFailure(String message) {
+			finish();
+		}
+	};
+
+	private void checkVersion() {
+		if (versionInfo == null) {
+			signinOrMain();
+			return;
+		}
+
+		String version = versionInfo.version;
+		url = versionInfo.response;
+
+		String current_version = getVersion();
+
+		VolleyLog.d("version: %s \n current_version: %s", version, current_version);
+
+		if (TextUtils.isEmpty(version) || TextUtils.isEmpty(url)
+				|| current_version.compareTo(version) >= 0) {
+			VolleyLog.d("LoadingActivity: no need update");
+			signinOrMain();
+
+		} else {
+			checkDownloadService();
+
+		}
+	}
+
+	private void download() {
+		mHandler.postDelayed(new Runnable() {
+			public void run() {
+				if (queryCompleted || queryTimes > MAX_QUERY_TIMES) {
+					downloadStat = DOWNLOAD_STATUS_DOWNLOADING;
+
+					VolleyLog.d("DownloadId: %d", downloadId);
+
+					if (null == cur) {
+						downloadStat = DOWNLOAD_STATUS_SERVICE_UNAVAILABLE;
+						VolleyLog.d("*******Cursor*******\n %s", "null");
+					} else if (cur.moveToFirst()) {
+						int columnIndex = cur.getColumnIndex(DownloadManager.COLUMN_STATUS);
+						int status = cur.getInt(columnIndex);
+
+						VolleyLog.d("*******Cursor******* \n Status: %d DownloadId: %d", status,
+								downloadId);
+
+						if (DownloadManager.STATUS_SUCCESSFUL == status
+								|| DownloadManager.STATUS_FAILED == status) {
+							downloadStat = DOWNLOAD_STATUS_COMPLETED;
+						}
+					} else {
+						VolleyLog.d("*******Cursor******* \n no results");
+						downloadStat = DOWNLOAD_STATUS_COMPLETED;
+					}
+
+					if (DOWNLOAD_STATUS_SERVICE_UNAVAILABLE == downloadStat) {
+						new AlertDialog.Builder(LoadingActivity.this).setTitle("无法下载更新")
+								.setMessage("你的手机目前无法下载更新，你可以到http://pocketuni.net扫描二维码下载安装")
+								.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface dialog, int whichButton) {
+										signinOrMain();
+									}
+								}).setCancelable(false).show();
+
+					} else if (DOWNLOAD_STATUS_COMPLETED == downloadStat) {
+						new AlertDialog.Builder(LoadingActivity.this).setTitle("升级应用程序")
+								.setMessage("程序有新的版本可用, 现在就升级吗?")
+								.setPositiveButton("立即升级", new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface dialog, int whichButton) {
+										signinOrMain();
+										if (storageAvailableForDownload()) {
+											startDownload(url);
+										} else {
+											NotificationsUtil.ToastTopMsg(mContext,
+													"sd卡当前不可用或者空间不足");
+										}
+									}
+								}).setNeutralButton("暂不升级", new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface dialog, int whichButton) {
+										signinOrMain();
+									}
+								}).setCancelable(false).show();
+					} else {
+						signinOrMain();
+					}
+				} else {
+					queryTimes++;
+					download();
+				}
+			}
+		}, DELAYED_GOTO_DURATION);
+
+	}
+
+	private void checkDownloadService() {
+		queryCompleted = false;
+
+		ServerThreadPool.getInstance().add(new Runnable() {
+			public void run() {
+				DownloadManager manager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
+				Query query = new Query();
+				downloadId = mainApp.getLongPreference(Preferences.LOCAL.DOWNLOAD_ID);
+				query.setFilterById(downloadId);
+				VolleyLog.d("ServerThread DownloadId: %d", downloadId);
+				cur = manager.query(query);
+				queryCompleted = true;
+			}
+		});
+
+		download();
+	}
+
+	private void startDownload(String url) {
+		Random ran = new Random(System.currentTimeMillis());
+		String filename = "xyhui." + ran.nextInt(100000) + ".apk";
+		DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
+		request.setDescription("Pocketuni Android手机客户端");
+		request.setTitle("开始下载新版本");
+
+		String downloaddir = Environment.DIRECTORY_DOWNLOADS;
+
+		if (downloaddir.contains("://")) {
+			downloaddir = "download";
+		}
+
+		VolleyLog.d("url = %s dir = %s filename = %s", url, downloaddir, filename);
+		Environment.getExternalStoragePublicDirectory(downloaddir).mkdir();
+		request.setDestinationInExternalPublicDir(downloaddir, filename);
+
+		DownloadManager manager = (DownloadManager) mActivity
+				.getSystemService(Context.DOWNLOAD_SERVICE);
+
+		downloadId = manager.enqueue(request);
+
+		mainApp.setPreference(Preferences.LOCAL.DOWNLOAD_ID, downloadId);
+
+		String message = "开始下载新版本";
+		NotificationsUtil.ToastLongMessage(mContext, message);
+	}
+
+	/**
+	 * Checks whether the space is enough for download.
+	 * 
+	 * @param current
+	 *            the download needs to check whether the space is enough
+	 * @return
+	 */
+	private boolean storageAvailableForDownload() {
+		// Make sure the space can satisfy the current download, so
+		// we will add the size of running downloads.
+		long neededspace = Storage.APK_SIZE + Storage.RESERVED_SPACE;
+
+		// Calculate the needed space for current download.
+		long cacheSpace = Storage.cachePartitionAvailableSpace();
+		long dataSpace = Storage.dataPartitionAvailableSpace();
+		long externalStorageSpace = Storage.externalStorageAvailableSpace();
+		VolleyLog
+				.d("[Needed space : %s], Cache partition space : %s, Data partition space : %s, External storage space : %s",
+						Storage.readableSize(neededspace), Storage.readableSize(cacheSpace),
+						Storage.readableSize(dataSpace),
+						Storage.readableSize(externalStorageSpace));
+
+		if (Storage.externalStorageAvailable()) {
+			if (externalStorageSpace < neededspace) {
+				return false;
+			}
+		} else {
+			if (dataSpace < neededspace) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	CallBack schoolListCB = new CallBack() {
+		@Override
+		public void onSuccess(String response) {
+			mainApp.setPreference(Preferences.LOCAL.SCHOOLLIST, response);
+
+			ArrayList<School> schools = JSONUtils.fromJson(response,
+					new TypeToken<ArrayList<School>>() {
+					});
+
+			if (null != schools) {
+				School allschool = new School();
+				allschool.name = "选择学校";
+				allschool.school = "0";
+
+				schools.add(0, allschool);
+			}
+
+			mainApp.setSchools(schools);
+		}
+	};
+
+	CallBack cityListCB = new CallBack() {
+		@Override
+		public void onSuccess(String response) {
+			mainApp.setPreference(Preferences.LOCAL.CITYLIST, response);
+
+			ArrayList<City> citys = JSONUtils.fromJson(response, new TypeToken<ArrayList<City>>() {
+			});
+
+			if (null != citys) {
+				City allCity = new City();
+				allCity.city = "选择城市";
+				allCity.id = "0";
+				citys.add(0, allCity);
+			}
+
+			mainApp.setCitys(citys);
+		}
+	};
+}

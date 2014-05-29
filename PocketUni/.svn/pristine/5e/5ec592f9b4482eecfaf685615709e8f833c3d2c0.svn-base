@@ -1,0 +1,49 @@
+package com.xyhui.activity.app;
+
+import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
+import com.xyhui.R;
+import com.xyhui.widget.FLActivity;
+
+public class MobileZoneListActivity extends FLActivity {
+	Button btn_back;
+
+	PullToRefreshListView mobile_zone_listview;
+	MobileZoneList mobileZoneListView;
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_mobileapp_list);
+
+		linkUiVar();
+		bindListener();
+		ensureUi();
+	}
+
+	@Override
+	public void linkUiVar() {
+		btn_back = (Button) findViewById(R.id.btn_back);
+		mobile_zone_listview = (PullToRefreshListView) findViewById(R.id.mobileapp_listview);
+	}
+
+	@Override
+	public void bindListener() {
+		btn_back.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// 关闭返回
+				finish();
+			}
+		});
+	}
+
+	@Override
+	public void ensureUi() {
+		mobileZoneListView = new MobileZoneList(mobile_zone_listview, mActivity);
+	}
+}

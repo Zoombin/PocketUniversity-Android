@@ -1,0 +1,178 @@
+package com.xyhui.activity.app;
+
+import android.annotation.SuppressLint;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
+import android.webkit.WebSettings.LayoutAlgorithm;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.Button;
+import android.widget.LinearLayout;
+
+import com.mslibs.utils.VolleyLog;
+import com.xyhui.R;
+import com.xyhui.utils.DownloadImpl;
+import com.xyhui.utils.Params;
+import com.xyhui.utils.PrefUtil;
+import com.xyhui.widget.FLActivity;
+
+/**
+ * @创建人： dengzh
+ * @创建时间:2013-12-11 下午2:38:07
+ * @版本 V1.0
+ * @Copyright (c) 2013 by 苏州威博世网络科技有限公司.
+ */
+public class GameCenterActivity extends FLActivity {
+
+	private Button btnRefresh;
+	private Button btnBack;
+	private WebView wv;
+
+	private LinearLayout loading_layout;
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_game_center);
+
+		linkUiVar();
+		bindListener();
+		ensureUi();
+	}
+
+	@Override
+	public void linkUiVar() {
+		btnBack = (Button) findViewById(R.id.btn_back);
+		btnRefresh = (Button) findViewById(R.id.btn_refresh);
+		wv = (WebView) findViewById(R.id.webView);
+		loading_layout = (LinearLayout) findViewById(R.id.loading_layout);
+	}
+
+	@Override
+	public void bindListener() {
+		btnBack.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// 关闭返回
+				finish();
+			}
+		});
+
+		btnRefresh.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				wv.loadUrl(wv.getUrl());
+			}
+		});
+	}
+
+	@SuppressLint("SetJavaScriptEnabled")
+	@SuppressWarnings("deprecation")
+	@Override
+	public void ensureUi() {
+		WebSettings settings = wv.getSettings();
+		settings.setJavaScriptEnabled(true);
+		settings.setAppCacheEnabled(true);
+		settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+		settings.setDefaultZoom(WebSettings.ZoomDensity.FAR);
+		settings.setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN); // 自动适应屏幕
+
+		// WebView中用来跟页面交互js的类,其中的方法,可以在页面上通过Android.方法名(参数)来调用
+		wv.addJavascriptInterface(new WebAppInterface(this), "Android");
+		wv.loadUrl("http://pu.websharp.com.cn/mobile_android/index.aspx");
+		wv.setWebChromeClient(new WebChromeClient() {
+
+		});
+		wv.setWebViewClient(new WebViewClient() {
+			@Override
+			public void onPageStarted(WebView view, String url, Bitmap favicon) {
+				super.onPageStarted(view, url, favicon);
+				// 开始
+				VolleyLog.d("--------------------------onPageStarted--------------------------");
+				wv.removeAllViews();
+				loading_layout.setVisibility(View.VISIBLE);
+				btnRefresh.setEnabled(false);
+			}
+
+			@Override
+			public void onPageFinished(WebView view, String url) {
+				super.onPageFinished(view, url);
+				// 结束
+				VolleyLog.d("--------------------------onPageFinished--------------------------");
+				loading_layout.setVisibility(View.GONE);
+				btnRefresh.setEnabled(true);
+			}
+
+			@Override
+			public boolean shouldOverrideUrlLoading(WebView view, String url) {
+				view.loadUrl(url);
+				return true;
+			}
+		});
+	}
+
+	/**
+	 * @创建人： dengzh
+	 * @创建时间:2013-12-11 下午2:39:25
+	 * @版本 V1.0
+	 * @Copyright (c) 2013 by 苏州威博世网络科技有限公司.
+	 */
+	class WebAppInterface {
+		Context mContext;
+
+		/** Instantiate the interface and set the context */
+		WebAppInterface(Context c) {
+			mContext = c;
+		}
+
+		/**
+		 * 得到已经下载或安装的游戏信息
+		 */
+		public String GetAppInstallInfo() {
+			// 在这里
+			// 1.sqlite中查出通过游戏频道有过下载的游戏
+			// 2.遍历你客户端中所装的应用,找出已下载的游戏,是否已经安装
+			// 3.找出已下载的游戏,是不是已经下载完成
+			// 建议可以存在sqlite中,按如下格式返回
+			return "游戏1的名称#游戏1的图标#游戏1的是否安装#游戏1的启动路径#游戏1的下载地址" + "|"
+					+ "游戏2的名称#游戏2的图标#游戏2的是否安装#游戏2的启动路径#游戏2的下载地址";
+		}
+
+		/**
+		 * 下载apk
+		 */
+		public void downloadApp(String apkUrl, String openPackage, String gameName, String gameUID) {
+			DownloadImpl download = new DownloadImpl(mContext, apkUrl, gameName, openPackage
+					+ ".apk");
+			download.startDownload();
+		}
+
+		/**
+		 * 在这儿可以启动一个启用程序
+		 */
+		public void openApplication(String gameUID) {
+
+			PrefUtil prefUtil = new PrefUtil();
+			String oauth_token = prefUtil.getPreference(Params.LOCAL.TOKEN);
+			String oauth_token_secret = prefUtil.getPreference(Params.LOCAL.SECRET);
+			if (!TextUtils.isEmpty(oauth_token) && !TextUtils.isEmpty(oauth_token_secret)) {
+
+			}
+
+			Intent intent = new Intent();
+			intent.addCategory(Intent.CATEGORY_DEFAULT);
+			ComponentName cn = new ComponentName(gameUID, gameUID + ".PuOpenActivity");
+			intent.setComponent(cn);
+			startActivity(intent);
+		}
+	}
+}

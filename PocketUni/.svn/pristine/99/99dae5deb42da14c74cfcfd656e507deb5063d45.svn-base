@@ -1,0 +1,18 @@
+package com.xyhui.widget;
+
+import android.content.Context;
+
+import com.mslibs.widget.CPagerAdapter;
+
+public class BannerPagerAdapter extends CPagerAdapter {
+	public BannerPagerAdapter(Context context) {
+		super(context);
+	}
+
+	@Override
+	public Object getItemView(int position) {
+		BannerPagerItem item = new BannerPagerItem(getContext());
+		item.reload(getDataList().get(position));
+		return item;
+	}
+}

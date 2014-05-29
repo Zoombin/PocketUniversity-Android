@@ -1,0 +1,82 @@
+package com.xyhui.activity.group;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
+import com.xyhui.R;
+import com.xyhui.utils.Preferences;
+import com.xyhui.widget.FLActivity;
+
+public class GroupDocListActivity extends FLActivity {
+	Button btn_back;
+	Button btn_newdoc;
+	PullToRefreshListView doc_listview;
+	GroupDocList mGroupDocListView;
+
+	String GID = null;
+	int isMemeber = 0;
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_doc_list);
+
+		if (getIntent().hasExtra(Preferences.INTENT_EXTRA.GROUP_ID)) {
+			GID = getIntent().getStringExtra(Preferences.INTENT_EXTRA.GROUP_ID);
+		} else {
+			finish();
+			return;
+		}
+
+		if (getIntent().hasExtra(Preferences.INTENT_EXTRA.GROUPMEMBER)) {
+			isMemeber = getIntent().getIntExtra(Preferences.INTENT_EXTRA.GROUPMEMBER, 0);
+		}
+
+		linkUiVar();
+		bindListener();
+		ensureUi();
+	}
+
+	@Override
+	public void linkUiVar() {
+		btn_back = (Button) findViewById(R.id.btn_back);
+		btn_newdoc = (Button) findViewById(R.id.btn_newdoc);
+		doc_listview = (PullToRefreshListView) findViewById(R.id.doc_listview);
+	}
+
+	@Override
+	public void bindListener() {
+		btn_back.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// 关闭返回
+				finish();
+			}
+		});
+
+		btn_newdoc.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// 新建文档
+				Intent intent = new Intent();
+				intent.setClass(mActivity, GroupDocUploadActivity.class);
+				intent.putExtra(Preferences.INTENT_EXTRA.GROUP_ID, GID);
+				mActivity.startActivity(intent);
+			}
+		});
+
+	}
+
+	@Override
+	public void ensureUi() {
+		if (isMemeber != 1) {
+			btn_newdoc.setVisibility(View.GONE);
+		}
+		mGroupDocListView = new GroupDocList(doc_listview, mActivity, GID);
+	}
+
+}

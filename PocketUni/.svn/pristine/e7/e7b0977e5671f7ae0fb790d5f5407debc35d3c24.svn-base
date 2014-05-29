@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <ScrollView
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="6dip"
+        android:layout_marginLeft="6dip"
+        android:layout_marginTop="50dip"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <EditText
+                android:id="@+id/edit_event_name"
+                android:layout_width="250dip"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_margin="8dip"
+                android:hint="活动名称"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/edit_event_intro"
+                android:layout_width="250dip"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/edit_event_name"
+                android:layout_margin="8dip"
+                android:gravity="left"
+                android:hint="活动简介"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/edit_event_maxmember"
+                android:layout_width="250dip"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/edit_event_intro"
+                android:layout_margin="8dip"
+                android:hint="活动人数"
+                android:inputType="number"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/edit_event_loc"
+                android:layout_width="250dip"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/edit_event_maxmember"
+                android:layout_margin="8dip"
+                android:hint="活动地点"
+                android:textSize="16sp" />
+
+            <Spinner
+                android:id="@+id/spinner_event_org"
+                android:layout_width="200dip"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/edit_event_loc"
+                android:layout_margin="8dip" />
+
+            <Spinner
+                android:id="@+id/spinner_event_verifier"
+                android:layout_width="200dip"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/spinner_event_org"
+                android:layout_margin="8dip" />
+
+            <Spinner
+                android:id="@+id/spinner_event_type"
+                android:layout_width="200dip"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/spinner_event_verifier"
+                android:layout_margin="8dip" />
+
+            <EditText
+                android:id="@+id/edit_event_startdate"
+                android:layout_width="150dip"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/spinner_event_type"
+                android:layout_margin="8dip"
+                android:focusable="false"
+                android:hint="活动开始日期"
+                android:inputType="none"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/edit_event_starttime"
+                android:layout_width="150dip"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/edit_event_startdate"
+                android:layout_margin="8dip"
+                android:layout_toRightOf="@+id/edit_event_startdate"
+                android:focusable="false"
+                android:hint="活动开始时间"
+                android:inputType="none"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/edit_event_enddate"
+                android:layout_width="150dip"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/edit_event_startdate"
+                android:layout_margin="8dip"
+                android:focusable="false"
+                android:hint="活动结束日期"
+                android:inputType="none"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/edit_event_endtime"
+                android:layout_width="150dip"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/edit_event_enddate"
+                android:layout_margin="8dip"
+                android:layout_toRightOf="@+id/edit_event_enddate"
+                android:focusable="false"
+                android:hint="活动结束时间"
+                android:inputType="none"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/edit_event_deaddate"
+                android:layout_width="150dip"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/edit_event_enddate"
+                android:layout_margin="8dip"
+                android:focusable="false"
+                android:hint="报名截止日期"
+                android:inputType="none"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/edit_event_deadtime"
+                android:layout_width="150dip"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/edit_event_deaddate"
+                android:layout_margin="8dip"
+                android:layout_toRightOf="@+id/edit_event_deaddate"
+                android:focusable="false"
+                android:hint="报名截止时间"
+                android:inputType="none"
+                android:textSize="16sp" />
+        </RelativeLayout>
+    </ScrollView>
+
+    <RelativeLayout
+        android:id="@+id/navbar"
+        android:layout_width="match_parent"
+        android:layout_height="50dip"
+        android:background="@drawable/bar_navigation_bg" >
+
+        <TextView
+            android:id="@+id/navbar_TitleText"
+            style="@style/navigation_title"
+            android:layout_width="wrap_content"
+            android:layout_height="44dip"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="发起活动" />
+
+        <Button
+            android:id="@+id/btn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="2dip"
+            android:background="@drawable/btn_selector_navbar_backicon" />
+
+        <Button
+            android:id="@+id/btn_submit"
+            style="@style/navbar_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="2dip"
+            android:background="@drawable/btn_selector_navbar"
+            android:text="提交" />
+    </RelativeLayout>
+
+</RelativeLayout>

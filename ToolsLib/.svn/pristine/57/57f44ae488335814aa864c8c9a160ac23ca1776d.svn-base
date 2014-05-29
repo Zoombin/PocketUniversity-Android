@@ -1,0 +1,85 @@
+package com.mslibs.widget;
+
+import android.content.Context;
+import android.util.AttributeSet;
+import android.widget.LinearLayout;
+
+import com.ms.R;
+import com.mslibs.utils.VolleyLog;
+
+public class PagerIndicator extends CLinearLayout {
+
+	private int mPagerCount = 0;
+	private LinearLayout currentPoint = null;
+
+	public PagerIndicator(Context context) {
+		super(context);
+		this.setContentView(R.layout.widget_pager_indicator);
+	}
+
+	public PagerIndicator(Context context, AttributeSet attrs) {
+		super(context, attrs);
+		this.setContentView(R.layout.widget_pager_indicator);
+
+	}
+
+	public void setPagerCount(int count) {
+		mPagerCount = count;
+		if (this.getChildCount() > 0) {
+			this.removeAllViews();
+		}
+
+		for (int i = 0; i < mPagerCount; i++) {
+			LinearLayout item = new LinearLayout(mContext);
+			LayoutParams params = new LayoutParams(10, 10);
+			params.setMargins(4, 6, 4, 6);
+			item.setLayoutParams(params);
+			if (i == 0) {
+				item.setBackgroundResource(R.drawable.rounded8_o);
+				currentPoint = item;
+			} else {
+				item.setBackgroundResource(R.drawable.rounded8_n);
+			}
+			this.addView(item);
+		}
+	}
+
+	public void setPagerIndex(int index) {
+		if (index < getChildCount()) {
+			LinearLayout item = (LinearLayout) this.getChildAt(index);
+			item.setBackgroundResource(R.drawable.rounded8_o);
+			VolleyLog.d("setPagerIndex: %d item: %s", index, item.toString());
+			if (currentPoint != null) {
+				currentPoint.setBackgroundResource(R.drawable.rounded8_n);
+				VolleyLog.d("currentPoint: %s", currentPoint.toString());
+			}
+			currentPoint = item;
+		}
+	}
+
+	@Override
+	public void update() {
+
+	}
+
+	@Override
+	public void linkUiVar() {
+
+	}
+
+	@Override
+	public void bindListener() {
+
+	}
+
+	@Override
+	public void ensureUi() {
+
+	}
+
+	@Override
+	public void reload() {
+
+	}
+
+}

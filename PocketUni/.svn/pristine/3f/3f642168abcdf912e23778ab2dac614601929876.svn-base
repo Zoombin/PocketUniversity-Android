@@ -1,0 +1,10 @@
+package com.xyhui.types;
+
+public class WeiboTopic {
+	public String name = null;
+	public String count = null;
+
+	public String getTopic() {
+		return name + " (" + count + ") ";
+	}
+}

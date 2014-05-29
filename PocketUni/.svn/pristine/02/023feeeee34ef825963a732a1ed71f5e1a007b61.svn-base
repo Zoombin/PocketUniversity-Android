@@ -1,0 +1,29 @@
+package com.xyhui.types;
+
+import com.google.gson.annotations.SerializedName;
+
+public class Message {
+	public String message_id = null;
+	public String list_id = null;
+	public String member_uid = null;
+	public String talk_uid = null;
+	public String message_num = null;
+	public String ctime = null;
+	public String list_ctime = null;
+	public String type = null;
+	public String title = null;
+	public String member_num = null;
+	public String content = null;
+	public String from_uname = null;
+	public String talk_uname = null;
+	public String from_face = null;
+	public String timestmap = null;
+	public int from_uid = 0;
+	public String uid = null;
+	@SerializedName("new")
+	public String isNew = null;
+
+	public Message() {
+
+	}
+}

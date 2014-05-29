@@ -1,0 +1,37 @@
+package com.mslibs.widget;
+
+import android.content.Context;
+import android.util.AttributeSet;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.RelativeLayout;
+
+public class CPagerItem extends RelativeLayout {
+
+	private LayoutInflater mInflater;
+
+	public CPagerItem(Context context) {
+		this(context, null);
+	}
+
+	public CPagerItem(Context context, AttributeSet attrs) {
+		this(context, attrs, 0);
+	}
+
+	public CPagerItem(Context context, AttributeSet attrs, int defStyle) {
+		super(context, attrs, defStyle);
+		mInflater = (LayoutInflater) getContext()
+				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT,
+				LayoutParams.MATCH_PARENT);
+		setLayoutParams(params);
+	}
+
+	public void setContentView(int resource) {
+		View view = mInflater.inflate(resource, null);
+		LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT,
+				LayoutParams.MATCH_PARENT);
+		view.setLayoutParams(params);
+		addView(view);
+	}
+}

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#fcfcfc"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dip" >
+
+        <LinearLayout
+            android:id="@+id/img_avatar_linear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#ddd"
+            android:layout_centerVertical="true"
+            android:padding="1dip" >
+
+            <ImageView
+                android:id="@+id/img_avatar"
+                android:layout_width="80dip"
+                android:layout_height="100dip"
+                android:background="#fff"
+                android:cropToPadding="true"
+                android:padding="2dip"
+                android:scaleType="centerCrop"
+                android:src="@drawable/img_default" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/img_avatar_linear"
+            android:layout_marginLeft="15dip"
+            android:layout_marginRight="5dip"
+            android:layout_toRightOf="@+id/img_avatar_linear"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/text_nickname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:shadowColor="#90ffffff"
+                android:shadowDx="0"
+                android:shadowDy="2"
+                android:shadowRadius="0.01"
+                android:text="《School Days:Yes or No》城市轨道交通学院"
+                android:textColor="#000"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/text_params"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dip"
+                android:text="性别：男\n学校：苏州大学 城市轨道交通学院"
+                android:textColor="#aaa"
+                android:textSize="12sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="0dip"
+                android:padding="0dip"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/text_vote"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="902 票"
+                    android:textColor="#f00"
+                    android:textSize="14sp" />
+
+                <Button
+                    android:id="@+id/btn_vote"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/btn_event_red"
+                    android:paddingLeft="12dip"
+                    android:paddingRight="12dip"
+                    android:text="投TA一票"
+                    android:textColor="#fff"
+                    android:textSize="13sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1.5dip"
+        android:scaleType="fitXY"
+        android:src="@drawable/weibo_split" />
+
+</LinearLayout>

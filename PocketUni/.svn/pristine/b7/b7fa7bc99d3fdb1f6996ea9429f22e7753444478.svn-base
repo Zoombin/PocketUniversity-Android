@@ -1,0 +1,38 @@
+package com.xyhui.types;
+
+import android.text.TextUtils;
+
+public class EventUser {
+	public String id = null;
+	public String realname = null;
+	public String sex = null;
+	public String path = null;
+
+	public String ticket = null;
+	public String school = null;
+	public String sid = null;
+	public Boolean canVote = false;
+
+	public String getInfo() {
+		String result = "";
+		if (!TextUtils.isEmpty(sex)) {
+			result += "性别：";
+			if ("1".equalsIgnoreCase(sex)) {
+				result += "男";
+			} else {
+				result += "女";
+			}
+			result += "\n";
+		}
+		if (!TextUtils.isEmpty(school)) {
+			result += "学校：";
+			result += school;
+			result += "\n";
+		}
+		return result;
+	}
+
+	public EventUser() {
+
+	}
+}

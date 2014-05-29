@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fcfcfc" >
+
+    <com.handmark.pulltorefresh.library.PullToRefreshListView
+        android:id="@+id/hot_group_listview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/spinnerbar"
+        android:cacheColorHint="#00000000"
+        android:divider="@null"
+        android:orientation="vertical" />
+
+    <com.handmark.pulltorefresh.library.PullToRefreshListView
+        android:id="@+id/my_group_listview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/spinnerbar"
+        android:layout_marginTop="88dip"
+        android:cacheColorHint="#00000000"
+        android:divider="@null"
+        android:orientation="vertical" />
+
+    <LinearLayout
+        android:id="@+id/spinnerbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ad_banner"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="43dip"
+            android:orientation="horizontal" >
+
+            <Spinner
+                android:id="@+id/spinner_group_dpart"
+                android:layout_width="0dip"
+                android:layout_height="44dip"
+                android:layout_weight="1" />
+
+            <Spinner
+                android:id="@+id/spinner_group_school"
+                android:layout_width="0dip"
+                android:layout_height="44dip"
+                android:layout_weight="1" />
+
+            <Spinner
+                android:id="@+id/spinner_group_year"
+                android:layout_width="0dip"
+                android:layout_height="44dip"
+                android:layout_weight="1"
+                android:visibility="invisible" />
+
+            <Spinner
+                android:id="@+id/spinner_group_category"
+                android:layout_width="0dip"
+                android:layout_height="44dip"
+                android:layout_weight="1"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            android:src="@drawable/weibo_split" />
+    </LinearLayout>
+
+    <com.xyhui.widget.AdBannerLayout
+        android:id="@+id/ad_banner"
+        android:layout_width="match_parent"
+        android:layout_height="50dip"
+        android:layout_below="@+id/toolbar"
+        android:layout_marginTop="-6dip" />
+
+    <LinearLayout
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="50dip"
+        android:layout_below="@+id/navbar"
+        android:layout_marginTop="-6dip"
+        android:background="@drawable/bar_tool_bg" >
+
+        <Button
+            android:id="@+id/btn_hot_group"
+            android:layout_width="wrap_content"
+            android:layout_height="44dip"
+            android:layout_weight="1"
+            android:background="@drawable/btn_selector_notice_sort"
+            android:text="热门部落"
+            android:textSize="13sp" />
+
+        <Button
+            android:id="@+id/btn_my_group"
+            android:layout_width="wrap_content"
+            android:layout_height="44dip"
+            android:layout_weight="1"
+            android:background="@drawable/btn_selector_notice_sort"
+            android:text="我的部落"
+            android:textSize="13sp" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/navbar"
+        android:layout_width="match_parent"
+        android:layout_height="50dip"
+        android:background="@drawable/bar_navigation_bg" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="44dip"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/navbar_TitleText"
+                style="@style/navigation_title"
+                android:layout_width="wrap_content"
+                android:layout_height="44dip"
+                android:gravity="center_vertical"
+                android:text="部落" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="2dip"
+            android:background="@drawable/btn_selector_navbar_backicon" />
+
+        <Button
+            android:id="@+id/btn_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="2dip"
+            android:background="@drawable/btn_selector_navbar_search" />
+    </RelativeLayout>
+
+</RelativeLayout>

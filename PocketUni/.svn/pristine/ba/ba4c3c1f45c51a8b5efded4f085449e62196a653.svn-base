@@ -1,0 +1,149 @@
+package com.xyhui.activity.app;
+
+import java.util.ArrayList;
+
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.ListView;
+
+import com.mslibs.widget.CActivity;
+import com.mslibs.widget.CListView;
+import com.mslibs.widget.CListViewParam;
+import com.xyhui.R;
+import com.xyhui.activity.PuApp;
+import com.xyhui.types.MobileApp;
+import com.xyhui.utils.DownloadImpl;
+
+public class MobileZoneList extends CListView {
+
+	private PuApp mApplication;
+
+	public MobileZoneList(ListView lv, Activity activity) {
+		super(lv, activity);
+		mApplication = (PuApp) activity.getApplication();
+		initListViewStart();
+	}
+
+	@Override
+	public void initListItemResource() {
+		this.setListItemResource(R.layout.list_item_mobileapp);
+	}
+
+	@Override
+	public void ensureUi() {
+		mPerpage = 10;
+
+		super.ensureUi();
+
+		super.setItemOnclickLinstener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				int i = (Integer) v.getTag();
+				final MobileApp app = (MobileApp) mListItems.get(i);
+
+				if (mApplication.isInstalled(app)) {
+					launchApp(app);
+				} else {
+					new AlertDialog.Builder(mActivity).setTitle("下载").setMessage("点击确定开始下载")
+							.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog, int whichButton) {
+									downloadApp(app);
+								}
+							}).setNeutralButton("取消", new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog, int whichButton) {
+
+								}
+							}).setCancelable(false).show();
+				}
+			}
+		});
+	}
+
+	@Override
+	public ArrayList<CListViewParam> matchListItem(Object obj, int index) {
+
+		final MobileApp item = (MobileApp) obj;
+		ArrayList<CListViewParam> LVP = new ArrayList<CListViewParam>();
+
+		LVP.add(new CListViewParam(R.id.img_app, item.mIconResId, true));
+		LVP.add(new CListViewParam(R.id.text_title, item.mAppName, true));
+
+		String isInstalled;
+		if (mApplication.isInstalled(item)) {
+			isInstalled = "打开";
+		} else {
+			isInstalled = "下载";
+		}
+
+		LVP.add(new CListViewParam(R.id.btn_download, isInstalled, true));
+
+		return LVP;
+	}
+
+	@Override
+	public void asyncData() {
+		super.asyncData();
+		initAppData();
+	}
+
+	private void initAppData() {
+		mListItems.clear();
+		mDateList.clear();
+
+		mListItems
+				.add(new MobileApp(
+						"139邮箱",
+						R.drawable.mobile_app_mail,
+						"http://file1.popspace.com/apk/10/064/442/ab3c1b6d-17d1-45a4-8102-dc5d8df89b53.apk",
+						"cn.cj.pe"));
+		mListItems.add(new MobileApp("139出行", R.drawable.mobile_app_cx,
+				"http://wap.139sz.cn/cx/download.php?id=1", "com.android.suzhoumap"));
+		mListItems.add(new MobileApp("无线智慧城", R.drawable.mobile_app_city,
+				"http://wap.139sz.cn/g3club/3gfly/?a=app&m=down&id=12912", "com.jscity"));
+		mListItems.add(new MobileApp("苏州生活", R.drawable.mobile_app_life,
+				"http://wap.139sz.cn/MobileSZSH_V1.apk", "com.xwtech.szlife"));
+		mListItems.add(new MobileApp("139分享", R.drawable.mobile_app_share,
+				"http://wap.139sz.cn/g3club/3gfly/?a=app&m=down&id=75654",
+				"com.diypda.g3downmarket"));
+		mListItems.add(new MobileApp("农家乐", R.drawable.mobile_app_njl,
+				"http://wap.139sz.cn/g3club/3gfly/?a=app&m=down&id=65105", "com.szmobile.sznjl"));
+		mListItems.add(new MobileApp("139答应", R.drawable.mobile_app_dy,
+				"http://www.apk.anzhi.com/data1/apk/201309/16/com.cplatform.xqw_14035600.apk",
+				"com.cplatform.xqw"));
+
+		if (actionType == REFRESH) {
+			refreshListViewFinish();
+		} else {
+			initListViewFinish();
+		}
+
+		actionType = IDLE;
+		((CActivity) mActivity).dismissProgress();
+	}
+
+	private void launchApp(MobileApp app) {
+		String packageName = app.mPkgName;
+		Intent mIntent = mContext.getPackageManager().getLaunchIntentForPackage(packageName);
+
+		if (mIntent != null) {
+			try {
+				mContext.startActivity(mIntent);
+			} catch (ActivityNotFoundException err) {
+
+			}
+		}
+	}
+
+	private void downloadApp(MobileApp app) {
+		String appName = app.mAppName;
+		String filename = "139" + appName + ".apk";
+
+		DownloadImpl download = new DownloadImpl(mContext, app.mDownloadUrl, appName, filename);
+		download.startDownload();
+	}
+}
