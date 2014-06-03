@@ -29,10 +29,12 @@ import com.citicbank.cyberpay.util.PayClient;
 import com.mslibs.utils.MD5;
 import com.mslibs.utils.VolleyLog;
 import com.xyhui.R;
+import com.xyhui.activity.PuApp;
 import com.xyhui.activity.WebViewActivity;
 import com.xyhui.alipay.Keys;
 import com.xyhui.alipay.Result;
 import com.xyhui.alipay.Rsa;
+import com.xyhui.utils.DownloadImpl;
 import com.xyhui.utils.Params;
 import com.xyhui.utils.PrefUtil;
 import com.xyhui.widget.FLActivity;
@@ -67,7 +69,7 @@ public class ChargeActivity extends FLActivity {
 	 * 中信：商户编号
 	 */
 	private final String MERID = "MERID";
-	
+
 	/**
 	 * 应当从服务器获取
 	 */
@@ -77,11 +79,14 @@ public class ChargeActivity extends FLActivity {
 	 * 中信：商户订单号
 	 */
 	private final String ORDERNO = "ORDERNO";
-	
+
 	/**
 	 * 应当从服务器获取
 	 */
 	private String mOrderNo = "20130910094025";
+
+	private final String CYBERPAY_PKG_NAME = "com.citicbank.cyberpay.ui";
+	private final String CYBERPAY_APK_DOWNLOAD = "http://down.apk.hiapk.com/down?aid=2683557&em=13";
 
 	/**
 	 * 声明工具类对象
@@ -234,16 +239,31 @@ public class ChargeActivity extends FLActivity {
 	 * 中信支付(参数应该从服务器获取，而不是现在写死的)
 	 */
 	private void startCyberPay() {
-		mMainPay.registerCallBack(mICyberPayListener);
+		if (!PuApp.get().isInstalled(CYBERPAY_PKG_NAME)) {
+			new AlertDialog.Builder(mActivity).setTitle("下载").setMessage("点击确定下载异度支付客户端")
+					.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int whichButton) {
+							DownloadImpl download = new DownloadImpl(mActivity,
+									CYBERPAY_APK_DOWNLOAD, "异度支付客户端", "CyberPay.apk");
+							download.startDownload();
+						}
+					}).setNeutralButton("取消", new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int whichButton) {
+							dialog.cancel();
+						}
+					}).setCancelable(false).show();
+		} else {
+			mMainPay.registerCallBack(mICyberPayListener);
 
-		JSONObject json_data = new JSONObject();
-		try {
-			json_data.put(MERID, mMerID);
-			json_data.put(ORDERNO, mOrderNo);
-		} catch (JSONException e) {
-			e.printStackTrace();
+			JSONObject json_data = new JSONObject();
+			try {
+				json_data.put(MERID, mMerID);
+				json_data.put(ORDERNO, mOrderNo);
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+			mMainPay.startPay(json_data.toString());
 		}
-		mMainPay.startPay(json_data.toString());
 	}
 
 	// 客户端支付结果的回调函数
