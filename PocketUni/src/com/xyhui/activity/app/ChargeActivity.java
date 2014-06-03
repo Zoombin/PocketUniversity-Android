@@ -5,12 +5,16 @@ import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
+import android.os.RemoteException;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -20,6 +24,8 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.alipay.android.app.sdk.AliPay;
+import com.citicbank.cyberpay.aidl.ICyberPayRegister;
+import com.citicbank.cyberpay.util.PayClient;
 import com.mslibs.utils.MD5;
 import com.mslibs.utils.VolleyLog;
 import com.xyhui.R;
@@ -60,14 +66,27 @@ public class ChargeActivity extends FLActivity {
 	/**
 	 * 中信：商户编号
 	 */
-	// private final String MERID = "MERID";
-	// private final String mMerID = "302305051920001";
+	private final String MERID = "MERID";
+	
+	/**
+	 * 应当从服务器获取
+	 */
+	private String mMerID = "302305051920001";
 
 	/**
 	 * 中信：商户订单号
 	 */
-	// private final String ORDERNO = "ORDERNO";
-	// private final String mOrderNo = "20130910094025";
+	private final String ORDERNO = "ORDERNO";
+	
+	/**
+	 * 应当从服务器获取
+	 */
+	private String mOrderNo = "20130910094025";
+
+	/**
+	 * 声明工具类对象
+	 */
+	private PayClient mMainPay = new PayClient(mActivity);
 
 	@Override
 	public void linkUiVar() {
@@ -173,7 +192,7 @@ public class ChargeActivity extends FLActivity {
 							break;
 						case 2:
 							// 中信支付
-							// startCyberPay();
+							startCyberPay();
 							break;
 						case 3:
 							dialog.cancel();
@@ -212,45 +231,41 @@ public class ChargeActivity extends FLActivity {
 	}
 
 	/**
-	 * 中信支付
+	 * 中信支付(参数应该从服务器获取，而不是现在写死的)
 	 */
-	// private void startCyberPay() {
-	// final CyberPay mCyberPay = new CyberPay();
-	//
-	// /**
-	// * 实现安全支付的回调
-	// */
-	// // 插件的回调函数
-	// final CyberPayListener mCallback = new CyberPayListener() {
-	// @Override
-	// public void onPayEnd(String data) {
-	// try {
-	// if ("01".equals(data)) {
-	// // 支付成功
-	// } else if ("02".equals(data)) {
-	// // 支付失败
-	// } else if ("03".equals(data)) {
-	// // 支付取消
-	// }
-	// mCyberPay.unregisterCallback(this);
-	// } catch (Exception e) {
-	// e.printStackTrace();
-	// }
-	// }
-	// };
-	//
-	// // 为安全支付服务注册一个回调
-	// mCyberPay.registerCallback(mCallback);
-	// // 调用安全支付服务的pay方法
-	// JSONObject json_data = new JSONObject();
-	// try {
-	// json_data.put(MERID, mMerID);
-	// json_data.put(ORDERNO, mOrderNo);
-	// } catch (JSONException e) {
-	// e.printStackTrace();
-	// }
-	// mCyberPay.pay(mActivity, json_data.toString());
-	// }
+	private void startCyberPay() {
+		mMainPay.registerCallBack(mICyberPayListener);
+
+		JSONObject json_data = new JSONObject();
+		try {
+			json_data.put(MERID, mMerID);
+			json_data.put(ORDERNO, mOrderNo);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		mMainPay.startPay(json_data.toString());
+	}
+
+	// 客户端支付结果的回调函数
+	private ICyberPayRegister mICyberPayListener = new ICyberPayRegister.Stub() {
+		@Override
+		public void payEnd(String data) throws RemoteException {
+			if ("01".equals(data)) {
+				// 支付成功
+			} else if ("02".equals(data)) {
+				// 支付失败
+			} else if ("03".equals(data)) {
+				// 支付取消
+			} else if ("04".equals(data)) {
+				// 未安装客户端
+			}
+			try {
+				mMainPay.unregisterCallBack(mICyberPayListener);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	};
 
 	/**
 	 * @return 跳转到建行支付页面的链接

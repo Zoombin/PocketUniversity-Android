@@ -72,10 +72,6 @@ public class PuApp extends Application {
 		JPushInterface.init(this);
 
 		initMapManager();
-
-		// 初始化异度支付框架
-		// new InitCyberPay(this).initFramework();
-
 	}
 
 	public static PuApp get() {

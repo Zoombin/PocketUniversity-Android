@@ -55,6 +55,7 @@
     <string-array name="app_charge">
         <item>建行支付</item>
         <item>支付宝支付</item>
+        <item>中信支付</item>
         <item>取消操作</item>
     </string-array>
 </resources>

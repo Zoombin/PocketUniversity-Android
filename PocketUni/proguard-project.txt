@@ -88,3 +88,9 @@
     *;   
 }
 
+#CyberPay
+-keepattributes Exceptions,InnerClasses
+-keep class android.support.v4.**{*;}
+-keep class org.dom4j.**{*;}
+-keep class com.citicbank.cyberpay.**{*;}
+

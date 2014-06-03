@@ -51,13 +51,6 @@
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
     
-    <!-- CyberPay 中信 -->
-    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
-    <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
-    <uses-permission android:name="com.android.launcher.permission.UNINSTALL_SHORTCUT" />
-    <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
-    <uses-permission android:name="android.permission.READ_SMS" />
-
     <application
         android:name=".activity.PuApp"
         android:allowBackup="true"
@@ -169,7 +162,7 @@
         <!-- Required SDK核心功能 -->
         <receiver android:name="cn.jpush.android.service.AlarmReceiver" />
 
-        <!-- User defined.    用户自定义的广播接收器 -->
+        <!-- User defined. 用户自定义的广播接收器 -->
         <receiver
             android:name="com.xyhui.service.JPushReceiver"
             android:enabled="true" >
@@ -189,14 +182,14 @@
             </intent-filter>
         </receiver>
 
-        <!-- Required  . Enable it you can get statistics data with channel -->
+        <!-- Required. Enable it you can get statistics data with channel -->
         <meta-data
             android:name="JPUSH_CHANNEL"
             android:value="developer-default" />
         <meta-data
             android:name="JPUSH_APPKEY"
             android:value="0c4385e4c0b4daea0f51c0a6" />
-        <!-- </>值来自开发者平台取得的AppKey -->
+        <!-- 值来自开发者平台取得的AppKey -->
 
         <activity
             android:name="com.alipay.android.app.sdk.WapPayActivity"
@@ -228,7 +221,6 @@
             android:windowSoftInputMode="adjustPan" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -521,82 +513,6 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         
-        <!-- CyberPay 中信 -->
-        <activity
-            android:name="com.citicbank.cyberpay.assist.ui.CBWebviewActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.citicbank.cyberpay.assist.ui.CheckingPhoneNumberActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.citicbank.cyberpay.assist.ui.FindPasswordActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.citicbank.cyberpay.assist.ui.LoginActivity"
-            android:screenOrientation="portrait" >
-        </activity>
-        <activity
-            android:name="com.citicbank.cyberpay.assist.ui.LoginCiticBankActivity"
-            android:screenOrientation="portrait" >
-        </activity>
-        <activity
-            android:name="com.citicbank.cyberpay.assist.ui.LoginPersonalBankActivity"
-            android:screenOrientation="portrait" >
-        </activity>
-        <activity
-            android:name="com.citicbank.cyberpay.assist.ui.LoginMobileBankActivity"
-            android:screenOrientation="portrait" >
-        </activity>
-        <activity
-            android:name="com.citicbank.cyberpay.assist.ui.MainPayActivity"
-            android:screenOrientation="portrait" >
-        </activity>
-        <activity
-            android:name="com.citicbank.cyberpay.assist.ui.PayCommonCreditCardsInputActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.citicbank.cyberpay.assist.ui.PayCommonCardsInputActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.citicbank.cyberpay.assist.ui.PayCreditCardsInputActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.citicbank.cyberpay.assist.ui.PayNewCardsInputActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.citicbank.cyberpay.assist.ui.PayPersonBankCardsActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.citicbank.cyberpay.assist.ui.PayResultActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.citicbank.cyberpay.assist.ui.PaySupportBanksActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.citicbank.cyberpay.assist.ui.RegisterActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.citicbank.cyberpay.assist.ui.ReplenishDataActivity"
-            android:screenOrientation="portrait" >
-        </activity>
-        <activity
-            android:name="com.citicbank.cyberpay.assist.ui.ReplenishPhoneNumber"
-            android:screenOrientation="portrait" >
-        </activity>
-        <activity
-            android:name="com.citicbank.cyberpay.assist.ui.ResetPasswrodActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.citicbank.cyberpay.assist.ui.SafeIdentificationActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.citicbank.cyberpay.assist.ui.UsedBankCardListActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.citicbank.cyberpay.assist.ui.SafeCheckingActivity"
-            android:screenOrientation="portrait" >
-        </activity>
-
         <!-- service -->
         <service
             android:name="com.baidu.location.f"
