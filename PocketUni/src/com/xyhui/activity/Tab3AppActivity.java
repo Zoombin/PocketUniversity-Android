@@ -55,14 +55,17 @@ public class Tab3AppActivity extends FLTabActivity {
 	private ImageButton btn_app_qnh;
 	private ImageButton btn_app_miaopai;
 	private ImageButton btn_app_love;
+	private ImageButton btn_app_dushuhu;
 
 	private AdBannerLayout ad_banner;
 
 	private TextView txt_volunteer;
 	private TextView txt_operator_zone;
 	private TextView txt_qnh;
+	private TextView txt_dushuhu;
 
 	private String mCityId;
+	private String mSchoolId;
 	private MobileApp mVolunteerApp;
 
 	@Override
@@ -85,12 +88,15 @@ public class Tab3AppActivity extends FLTabActivity {
 		btn_app_qnh = (ImageButton) findViewById(R.id.btn_app_qnh);
 		btn_app_miaopai = (ImageButton) findViewById(R.id.btn_app_miaopai);
 		btn_app_love = (ImageButton) findViewById(R.id.btn_app_love);
+		btn_app_dushuhu = (ImageButton) findViewById(R.id.btn_app_dushuhu);
 
 		ad_banner = (AdBannerLayout) findViewById(R.id.ad_banner);
 
 		txt_volunteer = (TextView) findViewById(R.id.txt_app_volunteer);
 		txt_operator_zone = (TextView) findViewById(R.id.text_operator_zone);
 		txt_qnh = (TextView) findViewById(R.id.text_qnh);
+		txt_dushuhu = (TextView) findViewById(R.id.txt_dushuhu);
+		
 	}
 
 	@Override
@@ -169,6 +175,39 @@ public class Tab3AppActivity extends FLTabActivity {
 				// 打开培训
 				Intent intent = new Intent(mActivity, TrainListActivity.class);
 				startActivity(intent);
+			}
+		});
+		
+		btn_app_dushuhu.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				final MobileApp app = new MobileApp(
+						"独墅湖超市",
+						null,
+						R.drawable.app_icon_dushuhu,
+						"http://dushuhu.me/redirect.php?source=pu_android",
+						"me.dushuhu.android");
+				
+				// 打开志愿者打卡器
+				if (PuApp.get().isInstalled(app)) {
+					showProgress();
+					launchApp(app);
+				} else {
+					new AlertDialog.Builder(mActivity).setTitle("下载").setMessage("点击确定开始下载")
+							.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog, int whichButton) {
+									Intent intent = new Intent();
+									intent.setAction("android.intent.action.VIEW");
+									intent.setData(Uri.parse("http://dushuhu.me/redirect.php?source=pu_android"));
+									mActivity.startActivity(intent);
+								}
+							}).setNeutralButton("取消", new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog, int whichButton) {
+
+								}
+							}).setCancelable(false).show();
+				}
 			}
 		});
 
@@ -332,11 +371,17 @@ public class Tab3AppActivity extends FLTabActivity {
 		txt_qnh.setSelected(true);
 
 		mCityId = new PrefUtil().getPreference(Params.LOCAL.CITYID);
+		mSchoolId = new PrefUtil().getPreference(Params.LOCAL.SCHOOLID);
 
 		if (mCityId.equals(SUZHOU_CITY_ID)) {
 			txt_operator_zone.setText("移动专区");
 		} else {
 			txt_operator_zone.setText("运营商专区");
+		}
+
+		if(!mSchoolId.equals("473") && !mSchoolId.equals("472") && !mSchoolId.equals("62") && !mSchoolId.equals("4") && !mSchoolId.equals("393") && !mSchoolId.equals("393")) {
+		   btn_app_dushuhu.setVisibility(4);
+		   txt_dushuhu.setVisibility(4);
 		}
 
 		txt_operator_zone.setSelected(true);

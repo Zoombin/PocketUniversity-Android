@@ -415,6 +415,34 @@
                     android:textSize="14sp" />
             </RelativeLayout>
             
+     		 <RelativeLayout
+                android:id="@+id/layout_app_dushuhu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="6dip"
+                android:layout_weight="1" >
+
+                <ImageButton
+                    android:id="@+id/btn_app_dushuhu"
+                    android:layout_width="66dip"
+                    android:layout_height="66dip"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/btn_selector_app"
+                    android:padding="3dip"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/app_icon_dushuhu" />
+
+                <TextView
+                    android:id="@+id/txt_dushuhu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/btn_app_dushuhu"
+                    android:gravity="center"
+                    android:text="独墅湖超市"
+                    android:textColor="#333"
+                    android:textSize="14sp" />
+            </RelativeLayout>
+            
             <RelativeLayout
                 android:id="@+id/layout_app_train"
                 android:layout_width="wrap_content"
