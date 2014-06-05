@@ -42,8 +42,8 @@ public class Tab3AppActivity extends FLTabActivity {
 	private ImageButton btn_message;
 	private ImageButton btn_activity;
 	private ImageButton btn_group;
-	private ImageButton btn_jqt;
-	private ImageButton btn_train;
+	//private ImageButton btn_jqt;
+	//private ImageButton btn_train;
 	private ImageButton btn_travel;
 	private ImageButton btn_volunteer;
 	private ImageButton btn_course;
@@ -75,8 +75,8 @@ public class Tab3AppActivity extends FLTabActivity {
 		btn_message = (ImageButton) findViewById(R.id.btn_app_xntz);
 		btn_activity = (ImageButton) findViewById(R.id.btn_app_xyhd);
 		btn_group = (ImageButton) findViewById(R.id.btn_app_st);
-		btn_jqt = (ImageButton) findViewById(R.id.btn_app_jqt);
-		btn_train = (ImageButton) findViewById(R.id.btn_app_train);
+		//btn_jqt = (ImageButton) findViewById(R.id.btn_app_jqt);
+		//btn_train = (ImageButton) findViewById(R.id.btn_app_train);
 		btn_travel = (ImageButton) findViewById(R.id.btn_app_ly);
 		btn_volunteer = (ImageButton) findViewById(R.id.btn_app_volunteer);
 		btn_course = (ImageButton) findViewById(R.id.btn_course);
@@ -129,54 +129,54 @@ public class Tab3AppActivity extends FLTabActivity {
 			}
 		});
 
-		btn_jqt.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
+//		btn_jqt.setOnClickListener(new OnClickListener() {
+//			@Override
+//			public void onClick(View v) {
+//
+//				final MobileApp app = new MobileApp("街区淘", null, R.drawable.app_icon_jqt,
+//						"http://www.jiequtao.com/app/download", "com.bangqu.jiequtao");
+//
+//				// 打开街区淘
+//				if (PuApp.get().isInstalled(app)) {
+//					String packageName = app.mPkgName;
+//					Intent mIntent = getPackageManager().getLaunchIntentForPackage(packageName);
+//
+//					if (mIntent != null) {
+//						try {
+//							String school = new PrefUtil().getPreference(Params.LOCAL.SCHOOLNAME);
+//							mIntent.putExtra(Params.INTENT_EXTRA.LOCATION, school);
+//							startActivity(mIntent);
+//						} catch (ActivityNotFoundException err) {
+//
+//						}
+//					}
+//				} else {
+//					new AlertDialog.Builder(mActivity).setTitle("下载")
+//							.setMessage("此应用目前只适合在无锡地区使用，是否下载？")
+//							.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+//								public void onClick(DialogInterface dialog, int whichButton) {
+//									Uri uri = Uri.parse(app.mDownloadUrl);
+//									Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+//									startActivity(intent);
+//									dialog.dismiss();
+//								}
+//							}).setNeutralButton("取消", new DialogInterface.OnClickListener() {
+//								public void onClick(DialogInterface dialog, int whichButton) {
+//									dialog.dismiss();
+//								}
+//							}).setCancelable(false).show();
+//				}
+//			}
+//		});
 
-				final MobileApp app = new MobileApp("街区淘", null, R.drawable.app_icon_jqt,
-						"http://www.jiequtao.com/app/download", "com.bangqu.jiequtao");
-
-				// 打开街区淘
-				if (PuApp.get().isInstalled(app)) {
-					String packageName = app.mPkgName;
-					Intent mIntent = getPackageManager().getLaunchIntentForPackage(packageName);
-
-					if (mIntent != null) {
-						try {
-							String school = new PrefUtil().getPreference(Params.LOCAL.SCHOOLNAME);
-							mIntent.putExtra(Params.INTENT_EXTRA.LOCATION, school);
-							startActivity(mIntent);
-						} catch (ActivityNotFoundException err) {
-
-						}
-					}
-				} else {
-					new AlertDialog.Builder(mActivity).setTitle("下载")
-							.setMessage("此应用目前只适合在无锡地区使用，是否下载？")
-							.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-								public void onClick(DialogInterface dialog, int whichButton) {
-									Uri uri = Uri.parse(app.mDownloadUrl);
-									Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-									startActivity(intent);
-									dialog.dismiss();
-								}
-							}).setNeutralButton("取消", new DialogInterface.OnClickListener() {
-								public void onClick(DialogInterface dialog, int whichButton) {
-									dialog.dismiss();
-								}
-							}).setCancelable(false).show();
-				}
-			}
-		});
-
-		btn_train.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				// 打开培训
-				Intent intent = new Intent(mActivity, TrainListActivity.class);
-				startActivity(intent);
-			}
-		});
+//		btn_train.setOnClickListener(new OnClickListener() {
+//			@Override
+//			public void onClick(View v) {
+//				// 打开培训
+//				Intent intent = new Intent(mActivity, TrainListActivity.class);
+//				startActivity(intent);
+//			}
+//		});
 		
 		btn_app_dushuhu.setOnClickListener(new OnClickListener() {
 			@Override
