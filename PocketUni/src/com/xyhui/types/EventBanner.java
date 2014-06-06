@@ -45,7 +45,7 @@ public class EventBanner extends Banner {
 	public boolean hasFav = false;
 
 	public String getTips() {
-		return "活动时间：" + sTime + " 至 " + eTime + "\n发起人：" + uname + "\n参加人数（" + joinCount + "）";
+		return "活动时间：" + sTime + " 至 " + eTime + "\n发起人：" + uname + "\n参加人数（" + joinCount + "）"+"\n活动评分："+note+"分";
 	}
 
 	public String getNotice() {
