@@ -510,6 +510,14 @@ public class Api extends BaseApi {
 		params.put("page", page + "");
 		Client.get("Event", "eventList", params, handler);
 	}
+	
+	public void getRecommendEventList(RequestParams params, String school,
+			int count, int page) {
+		params.put("school", school);
+		params.put("count", count + "");
+		params.put("page", page + "");
+		Client.get("Event", "recommList", params, handler);
+	}
 
 	public void getMyEventList(RequestParams params, String action, int count, int page) {
 		params.put("action", action);

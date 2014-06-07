@@ -35,15 +35,20 @@ public class EventListActivity extends FLActivity {
 	private Button btn_back;
 	private Button btn_operate;
 	private Button btn_all_event;
+	private Button btn_recommend_event;
 	private Button btn_my_event;
-	private Button btn_create;
-	private Button btn_join;
-	private Button btn_favor;
+	private Button btn_wofaqide;
+	private Button btn_weikaishide;
+	private Button btn_yikaishide;
+	private Button btn_woshoucangde;
 	private Button btn_selected;
 
 	private PullToRefreshListView all_event_listview;
 	private EventList all_EventListView;
 	private LinearLayout all_event_toolbar;
+
+	private PullToRefreshListView recommend_event_listview;
+	private EventList recommend_EventListView;
 
 	private PullToRefreshListView my_event_listview;
 	private EventList my_EventListView;
@@ -77,6 +82,7 @@ public class EventListActivity extends FLActivity {
 		btn_operate = (Button) findViewById(R.id.btn_operate);
 
 		btn_all_event = (Button) findViewById(R.id.btn_all_event);
+		btn_recommend_event = (Button) findViewById(R.id.btn_recommend_event);
 		btn_my_event = (Button) findViewById(R.id.btn_my_event);
 
 		all_event_toolbar = (LinearLayout) findViewById(R.id.all_event_toolbar);
@@ -85,15 +91,19 @@ public class EventListActivity extends FLActivity {
 		spinner_org = (Spinner) findViewById(R.id.spinner_sort);
 		all_event_listview = (PullToRefreshListView) findViewById(R.id.all_event_listview);
 
+		recommend_event_listview = (PullToRefreshListView) findViewById(R.id.recommend_event_listview);
+
 		ad_banner = (AdBannerLayout) findViewById(R.id.ad_banner);
 
 		my_event_toolbar = (LinearLayout) findViewById(R.id.my_event_toolbar);
-		btn_create = (Button) findViewById(R.id.btn_create);
-		btn_create.setTag(EventList.EVENT_MY_CREATE);
-		btn_join = (Button) findViewById(R.id.btn_join);
-		btn_join.setTag(EventList.EVENT_MY_JOIN);
-		btn_favor = (Button) findViewById(R.id.btn_favor);
-		btn_favor.setTag(EventList.EVENT_MY_FAVOR);
+		btn_wofaqide = (Button) findViewById(R.id.btn_wofaqide);
+		btn_wofaqide.setTag(EventList.EVENT_WOFAQIDE);
+		btn_weikaishide = (Button) findViewById(R.id.btn_weikaishide);
+		btn_weikaishide.setTag(EventList.EVENT_WEIKAISHI);
+		btn_yikaishide = (Button) findViewById(R.id.btn_yikaishide);
+		btn_yikaishide.setTag(EventList.EVENT_YIKAISHI);
+		btn_woshoucangde = (Button) findViewById(R.id.btn_woshoucangde);
+		btn_woshoucangde.setTag(EventList.EVENT_WOSHOUCANG);
 		my_event_listview = (PullToRefreshListView) findViewById(R.id.my_event_listview);
 
 	}
@@ -117,26 +127,53 @@ public class EventListActivity extends FLActivity {
 			@Override
 			public void onClick(View v) {
 				btn_all_event.setSelected(true);
+				btn_recommend_event.setSelected(false);
 				btn_my_event.setSelected(false);
 				all_event_toolbar.setVisibility(View.VISIBLE);
 				my_event_toolbar.setVisibility(View.GONE);
+				
 				all_event_listview.setVisibility(View.VISIBLE);
+				recommend_event_listview.setVisibility(View.GONE);
 				my_event_listview.setVisibility(View.GONE);
+			}
+		});
+
+		btn_recommend_event.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				btn_all_event.setSelected(false);
+				btn_recommend_event.setSelected(true);
+				btn_my_event.setSelected(false);
+				all_event_toolbar.setVisibility(View.GONE);
+				my_event_toolbar.setVisibility(View.GONE);
+				
+				all_event_listview.setVisibility(View.GONE);
+				recommend_event_listview.setVisibility(View.VISIBLE);
+				my_event_listview.setVisibility(View.GONE);
+
+				if (recommend_EventListView == null) {
+					recommend_EventListView = new EventList(
+							recommend_event_listview, mActivity,
+							EventList.EVENT_RECOMMEND);
+				}
 			}
 		});
 		btn_my_event.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				btn_all_event.setSelected(false);
+				btn_recommend_event.setSelected(false);
 				btn_my_event.setSelected(true);
 				all_event_toolbar.setVisibility(View.GONE);
 				my_event_toolbar.setVisibility(View.VISIBLE);
+				
 				all_event_listview.setVisibility(View.GONE);
+				recommend_event_listview.setVisibility(View.GONE);
 				my_event_listview.setVisibility(View.VISIBLE);
 
 				if (my_EventListView == null) {
-					my_EventListView = new EventList(my_event_listview, mActivity,
-							EventList.EVENT_MY_CREATE);
+					my_EventListView = new EventList(my_event_listview,
+							mActivity, EventList.EVENT_WOFAQIDE);
 				}
 			}
 		});
@@ -151,20 +188,23 @@ public class EventListActivity extends FLActivity {
 				btn_selected.setSelected(true);
 
 				if (my_EventListView == null) {
-					my_EventListView = new EventList(my_event_listview, mActivity,
-							(Integer) btn_selected.getTag());
+					my_EventListView = new EventList(my_event_listview,
+							mActivity, (Integer) btn_selected.getTag());
 				} else {
-					my_EventListView.refresh((Integer) btn_selected.getTag(), "", "");
+					my_EventListView.refresh((Integer) btn_selected.getTag(),
+							"", "");
 				}
 			}
 		};
-		btn_create.setOnClickListener(myEventOCL);
-		btn_join.setOnClickListener(myEventOCL);
-		btn_favor.setOnClickListener(myEventOCL);
+		btn_wofaqide.setOnClickListener(myEventOCL);
+		btn_weikaishide.setOnClickListener(myEventOCL);
+		btn_yikaishide.setOnClickListener(myEventOCL);
+		btn_woshoucangde.setOnClickListener(myEventOCL);
 
 		spinner_city.setOnItemSelectedListener(new OnItemSelectedListener() {
 			@Override
-			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+			public void onItemSelected(AdapterView<?> parent, View view,
+					int position, long id) {
 				setSchoolSpinner();
 			}
 
@@ -176,13 +216,15 @@ public class EventListActivity extends FLActivity {
 
 		spinner_school.setOnItemSelectedListener(new OnItemSelectedListener() {
 			@Override
-			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+			public void onItemSelected(AdapterView<?> parent, View view,
+					int position, long id) {
 				int i = spinner_school.getSelectedItemPosition();
 				if (schools != null && i < schools.size()) {
 					schoolId = schools.get(i).school;
 				}
 
-				new Api(eventOrgListCB, mActivity).getOrgList(PuApp.get().getToken(), schoolId);
+				new Api(eventOrgListCB, mActivity).getOrgList(PuApp.get()
+						.getToken(), schoolId);
 			}
 
 			@Override
@@ -192,7 +234,8 @@ public class EventListActivity extends FLActivity {
 
 		spinner_org.setOnItemSelectedListener(new OnItemSelectedListener() {
 			@Override
-			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+			public void onItemSelected(AdapterView<?> parent, View view,
+					int position, long id) {
 				search();
 			}
 
@@ -220,15 +263,17 @@ public class EventListActivity extends FLActivity {
 		ad_banner.init(Banner.TYPE_EVENT);
 
 		btn_all_event.setSelected(true);
+		btn_recommend_event.setSelected(false);
 		btn_my_event.setSelected(false);
 		all_event_toolbar.setVisibility(View.VISIBLE);
 		my_event_toolbar.setVisibility(View.GONE);
 		all_event_listview.setVisibility(View.VISIBLE);
+		recommend_event_listview.setVisibility(View.GONE);
 		my_event_listview.setVisibility(View.GONE);
 
 		setCitySpinner();
 
-		btn_selected = btn_create;
+		btn_selected = btn_wofaqide;
 		btn_selected.setSelected(true);
 	}
 
@@ -236,28 +281,31 @@ public class EventListActivity extends FLActivity {
 		Builder builder = new AlertDialog.Builder(mActivity);
 		builder.setTitle("选择操作");
 
-		builder.setItems(R.array.event_operate, new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int which) {
+		builder.setItems(R.array.event_operate,
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) {
 
-				Intent intent = new Intent();
+						Intent intent = new Intent();
 
-				switch (which) {
-				case 0:
-					// 打开搜索活动
-					intent.setClass(mActivity, EventSearchActivity.class);
-					startActivity(intent);
-					break;
-				case 1:
-					// 发起活动
-					intent.setClass(mActivity, EventLaunchActivity.class);
-					startActivity(intent);
-					break;
-				case 2:
-					dialog.cancel();
-					break;
-				}
-			}
-		}).show();
+						switch (which) {
+						case 0:
+							// 打开搜索活动
+							intent.setClass(mActivity,
+									EventSearchActivity.class);
+							startActivity(intent);
+							break;
+						case 1:
+							// 发起活动
+							intent.setClass(mActivity,
+									EventLaunchActivity.class);
+							startActivity(intent);
+							break;
+						case 2:
+							dialog.cancel();
+							break;
+						}
+					}
+				}).show();
 
 	}
 
@@ -266,8 +314,10 @@ public class EventListActivity extends FLActivity {
 
 		if (null != citys) {
 			// 将可选内容与ArrayAdapter连接起来
-			cityAdapter = new ArrayAdapter<City>(this, R.layout.spinner_item_layout, citys);
-			cityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+			cityAdapter = new ArrayAdapter<City>(this,
+					R.layout.spinner_item_layout, citys);
+			cityAdapter
+					.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 			// 将adapter 添加到spinner中
 			spinner_city.setAdapter(cityAdapter);
 
@@ -331,8 +381,10 @@ public class EventListActivity extends FLActivity {
 			}
 
 			// 将可选内容与ArrayAdapter连接起来
-			schoolAdapter = new ArrayAdapter<School>(this, R.layout.spinner_item_layout, schools);
-			schoolAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+			schoolAdapter = new ArrayAdapter<School>(this,
+					R.layout.spinner_item_layout, schools);
+			schoolAdapter
+					.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 			// 将adapter添加到spinner中
 			spinner_school.setAdapter(schoolAdapter);
 
@@ -350,7 +402,8 @@ public class EventListActivity extends FLActivity {
 			// 将可选内容与ArrayAdapter连接起来
 			orgAdapter = new ArrayAdapter<EventCat>(EventListActivity.this,
 					R.layout.spinner_item_layout, mOrgs);
-			orgAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+			orgAdapter
+					.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 			// 将adapter 添加到spinner中
 			spinner_org.setAdapter(orgAdapter);
 			// 默认选择
@@ -369,8 +422,8 @@ public class EventListActivity extends FLActivity {
 		if (all_EventListView != null) {
 			all_EventListView.search(schoolId, sortid, null);
 		} else {
-			all_EventListView = new EventList(all_event_listview, mActivity, EventList.EVENT_ALL,
-					schoolId, sortid, "");
+			all_EventListView = new EventList(all_event_listview, mActivity,
+					EventList.EVENT_ALL, schoolId, sortid, "");
 		}
 	}
 

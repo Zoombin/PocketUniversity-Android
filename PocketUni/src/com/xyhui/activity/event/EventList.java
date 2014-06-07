@@ -24,10 +24,12 @@ public class EventList extends CListView {
 	private String mCatID;
 
 	public static final int EVENT_ALL = 0;
-	public static final int EVENT_SEARCH = 1;
-	public static final int EVENT_MY_CREATE = 2;
-	public static final int EVENT_MY_JOIN = 3;
-	public static final int EVENT_MY_FAVOR = 4;
+	public static final int EVENT_RECOMMEND = 1;
+	public static final int EVENT_SEARCH = 2;
+	public static final int EVENT_WOFAQIDE = 3;
+	public static final int EVENT_WEIKAISHI = 4;
+	public static final int EVENT_YIKAISHI = 5;
+	public static final int EVENT_WOSHOUCANG = 6;
 
 	private int event_type = EVENT_ALL;
 	private String keyword;
@@ -38,8 +40,8 @@ public class EventList extends CListView {
 		initListViewStart();
 	}
 
-	public EventList(PullToRefreshListView lv, Activity activity, int type, String sid,
-			String cid, String key) {
+	public EventList(PullToRefreshListView lv, Activity activity, int type,
+			String sid, String cid, String key) {
 		super(lv, activity);
 		event_type = type;
 		keyword = key;
@@ -73,8 +75,8 @@ public class EventList extends CListView {
 	@Override
 	public void ensureUi() {
 		mPerpage = 10;
-		super.setGetMoreResource(R.layout.list_item_getmore, R.id.list_item_getmore_title,
-				"查看更多活动");
+		super.setGetMoreResource(R.layout.list_item_getmore,
+				R.id.list_item_getmore_title, "查看更多活动");
 		super.ensureUi();
 		super.setGetMoreClickListener(new OnClickListener() {
 			@Override
@@ -105,8 +107,8 @@ public class EventList extends CListView {
 		EventBanner item = (EventBanner) obj;
 		ArrayList<CListViewParam> LVP = new ArrayList<CListViewParam>();
 
-		CListViewParam avatarLVP = new CListViewParam(R.id.img_avatar, R.drawable.img_default,
-				true);
+		CListViewParam avatarLVP = new CListViewParam(R.id.img_avatar,
+				R.drawable.img_default, true);
 		avatarLVP.setImgAsync(true);
 		avatarLVP.setItemTag(item.cover);
 		LVP.add(avatarLVP);
@@ -137,7 +139,8 @@ public class EventList extends CListView {
 					mListItems.add(mT.get(i));
 				}
 			} else {
-				NotificationsUtil.ToastTopMsg(PuApp.get().getBaseContext(), "没有搜索到相关信息");
+				NotificationsUtil.ToastTopMsg(PuApp.get().getBaseContext(),
+						"没有搜索到相关信息");
 				return;
 			}
 		}
@@ -148,19 +151,26 @@ public class EventList extends CListView {
 		super.asyncData();
 
 		if (EVENT_ALL == event_type || EVENT_SEARCH == event_type) {
-			new Api(callback, mActivity).getEventList(PuApp.get().getToken(), mSchoolID, mCatID,
-					keyword, mPerpage, page);
-		} else {
+			new Api(callback, mActivity).getEventList(PuApp.get().getToken(),
+					mSchoolID, mCatID, keyword, mPerpage, page);
+		}else 
+		if (EVENT_RECOMMEND == event_type) {
+			new Api(callback, mActivity).getRecommendEventList(PuApp.get()
+					.getToken(), mSchoolID, mPerpage, page);
+		}
+		 else {
 			String action = null;
-			if (EVENT_MY_CREATE == event_type) {
+			if (EVENT_WOFAQIDE == event_type) {
 				action = "launch";
-			} else if (EVENT_MY_JOIN == event_type) {
-				action = "join";
-			} else if (EVENT_MY_FAVOR == event_type) {
+			} else if (EVENT_WEIKAISHI == event_type) {
+				action = "noStarted";
+			} else if (EVENT_YIKAISHI == event_type) {
+				action = "started";
+			} else if (EVENT_WOSHOUCANG == event_type) {
 				action = "fav";
 			}
-			new Api(callback, mActivity).getMyEventList(PuApp.get().getToken(), action, mPerpage,
-					page);
+			new Api(callback, mActivity).getMyEventList(PuApp.get().getToken(),
+					action, mPerpage, page);
 		}
 	}
 }
