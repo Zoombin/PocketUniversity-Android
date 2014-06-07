@@ -3,9 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#fcfcfc" >
-
-    <LinearLayout
+    android:background="#fcfcfc" ><LinearLayout
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -17,31 +15,6 @@
             android:layout_width="match_parent"
             android:layout_height="50dip"
             android:layout_marginTop="-6dip" />
-
-        <LinearLayout
-            android:id="@+id/all_event_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="43dip"
-            android:orientation="horizontal" >
-
-            <Spinner
-                android:id="@+id/spinner_city"
-                android:layout_width="0dip"
-                android:layout_height="44dip"
-                android:layout_weight="1" />
-
-            <Spinner
-                android:id="@+id/spinner_school"
-                android:layout_width="0dip"
-                android:layout_height="44dip"
-                android:layout_weight="1" />
-
-            <Spinner
-                android:id="@+id/spinner_sort"
-                android:layout_width="0dip"
-                android:layout_height="44dip"
-                android:layout_weight="1" />
-        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/my_event_toolbar"
