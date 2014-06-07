@@ -70,6 +70,9 @@ public class EventBanner extends Banner {
 				result += "(" + costExplain + ")";
 			}
 		}
+		if (!TextUtils.isEmpty(note)) {
+			result += "\n活动评分：" + note + "分";
+		}
 		if (!TextUtils.isEmpty(description)) {
 			result += "\n活动简介：" + description;
 		}
