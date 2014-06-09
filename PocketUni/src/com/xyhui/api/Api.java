@@ -538,6 +538,13 @@ public class Api extends BaseApi {
 		params.put("page", page + "");
 		Client.get("Event", "newsList", params, handler);
 	}
+	
+	public void getEventCommentsList(RequestParams params, String id, int count, int page) {
+		params.put("eid", id);
+		params.put("count", count + "");
+		params.put("p", page + "");
+		Client.get("Event", "commentList", params, handler);
+	}
 
 	public void getEventPhotoList(RequestParams params, String id, int count, int page) {
 

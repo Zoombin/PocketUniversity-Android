@@ -21,6 +21,15 @@
         android:layout_marginTop="44dip"
         android:numColumns="2" >
     </GridView>
+    
+     <com.handmark.pulltorefresh.library.PullToRefreshListView
+        android:id="@+id/event_comment_listview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="44dip"
+        android:cacheColorHint="#00000000"
+        android:divider="@null"
+        android:orientation="vertical" />
 
     <RelativeLayout
         android:id="@+id/navbar"
@@ -34,32 +43,50 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/btn_comments"
+            android:layout_toRightOf="@+id/btn_back"
             android:gravity="center"
             android:orientation="horizontal" >
 
             <Button
                 android:id="@+id/btn_event_news"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:background="@drawable/btn_selector_nav_following"
                 android:shadowColor="#000"
                 android:shadowDx="0"
                 android:shadowDy="-1"
                 android:shadowRadius="0.01"
-                android:text="活动新闻"
+                android:text="最新消息"
                 android:textColor="#fff"
                 android:textSize="12sp" />
 
             <Button
                 android:id="@+id/btn_event_photo"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:background="@drawable/btn_selector_nav_followed"
+                android:layout_weight="1"
+                android:background="@drawable/btn_selector_nav_mid"
                 android:shadowColor="#000"
                 android:shadowDx="0"
                 android:shadowDy="-1"
                 android:shadowRadius="0.01"
                 android:text="现场花絮"
+                android:textColor="#fff"
+                android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/btn_event_comments"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/btn_selector_nav_followed"
+                android:shadowColor="#000"
+                android:shadowDx="0"
+                android:shadowDy="-1"
+                android:shadowRadius="0.01"
+                android:text="活动评论"
                 android:textColor="#fff"
                 android:textSize="12sp" />
         </LinearLayout>
@@ -71,6 +98,14 @@
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="2dip"
             android:background="@drawable/btn_selector_navbar_backicon" />
+
+        <Button
+            android:id="@+id/btn_comments"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="2dip"
+            android:background="@drawable/btn_selector_navbar_edit" />
     </RelativeLayout>
 
 </RelativeLayout>
