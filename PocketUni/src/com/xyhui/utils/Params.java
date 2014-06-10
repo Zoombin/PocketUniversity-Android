@@ -3,6 +3,9 @@ package com.xyhui.utils;
 public class Params {
 
 	public static class INTENT_EXTRA {
+		public static final String EVENT_COMMENT_EDIT = "intent.event.comment.edit";
+		public static final String EVENT_TOID = "intent.event.toid";
+		public static final String EVENT_ID = "intent.event.id";
 		public static final String WEIBO_EDIT = "intent.weibo.edit";
 		public static final String WEIBO_ITEM = "intent.weibo.item";
 		public static final String WEIBO = "intent.weibo";
@@ -17,6 +20,7 @@ public class Params {
 		public static final String USER_ID = "intent.user.id";
 		public static final String GROUP_ID = "intent.group.id";
 		public static final String BLOG_ID = "intent.blog.id";
+		public static final String EVENT_COMMENT_TOID = "intent.event.comment.toid";
 		public static final String DOC_ID = "intent.doc.id";
 		public static final String DOC = "intent.doc";
 		public static final String MESSAGE_LISTID = "intent.message.listid";
@@ -75,6 +79,7 @@ public class Params {
 		public static final String REFRESH = "action.refresh";
 
 		public static final String BLOGLIST = "action.refresh.bloglist";
+		public static final String EVENTLIST = "action.refresh.eventlist";
 		public static final String WEIBOLIST = "action.refresh.weibolist";
 		public static final String BLOGVIEW = "action.refresh.blogview";
 		public static final String WEIBOVIEW = "action.refresh.weiboview";

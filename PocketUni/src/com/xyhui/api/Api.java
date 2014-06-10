@@ -48,7 +48,8 @@ public class Api extends BaseApi {
 		Client.get("Statuses", "friends_timeline", params, handler);
 	}
 
-	public void user_timeline(RequestParams params, String user_id, int count, int page) {
+	public void user_timeline(RequestParams params, String user_id, int count,
+			int page) {
 		params.put("user_id", user_id);
 		params.put("count", "" + count);
 		params.put("page", "" + page);
@@ -143,8 +144,8 @@ public class Api extends BaseApi {
 		Client.get("Statuses", "destroy", params, handler);
 	}
 
-	public void comment(RequestParams params, String reply_comment_id, String weibo_id,
-			String comment_content, String transpond) {
+	public void comment(RequestParams params, String reply_comment_id,
+			String weibo_id, String comment_content, String transpond) {
 		params.put("reply_comment_id", reply_comment_id);
 		params.put("weibo_id", weibo_id);
 		params.put("comment_content", comment_content);
@@ -153,8 +154,16 @@ public class Api extends BaseApi {
 		Client.get("Statuses", "comment", params, handler);
 	}
 
-	public void repost(RequestParams params, String reply_weibo_id, String content,
-			String transpond_id) {
+	public void eventcomment(RequestParams params, String eid, String comment,
+			String toId) {
+		params.put("eid", eid);
+		params.put("comment", comment);
+		params.put("toId", toId);
+		Client.get("event", "addComment", params, handler);
+	}
+
+	public void repost(RequestParams params, String reply_weibo_id,
+			String content, String transpond_id) {
 		params.put("reply_weibo_id", reply_weibo_id);
 		params.put("content", content);
 		params.put("transpond_id", transpond_id);
@@ -162,22 +171,24 @@ public class Api extends BaseApi {
 		Client.get("Statuses", "repost", params, handler);
 	}
 
-	public void following(RequestParams params, String user_id, int count, int page) {
+	public void following(RequestParams params, String user_id, int count,
+			int page) {
 		params.put("user_id", user_id);
 		params.put("count", "" + count);
 		params.put("page", "" + page);
 		Client.get("Statuses", "following", params, handler);
 	}
 
-	public void followers(RequestParams params, String user_id, int count, int page) {
+	public void followers(RequestParams params, String user_id, int count,
+			int page) {
 		params.put("user_id", user_id);
 		params.put("count", "" + count);
 		params.put("page", "" + page);
 		Client.get("Statuses", "followers", params, handler);
 	}
 
-	public void searchuser(RequestParams params, String sid, String dpartId, String keyword,
-			int count, int page) {
+	public void searchuser(RequestParams params, String sid, String dpartId,
+			String keyword, int count, int page) {
 		params.put("sid", sid);
 		params.put("sid1", dpartId);
 		params.put("key", keyword);
@@ -200,8 +211,8 @@ public class Api extends BaseApi {
 		Client.get("Sitelist", "authorize", params, handler);
 	}
 
-	public void register(String sid, String number, String nickname, String password,
-			String repassword) {
+	public void register(String sid, String number, String nickname,
+			String password, String repassword) {
 		RequestParams params = new RequestParams();
 		params.put("sid", sid);
 		params.put("number", number);
@@ -211,7 +222,8 @@ public class Api extends BaseApi {
 		Client.get("Sitelist", "register", params, handler);
 	}
 
-	public void getAnnounceList(RequestParams params, String school, int cid, int limit, int offset) {
+	public void getAnnounceList(RequestParams params, String school, int cid,
+			int limit, int offset) {
 		params.put("school", school);
 		params.put("cid", "" + cid);
 		params.put("limit", "" + limit);
@@ -272,7 +284,8 @@ public class Api extends BaseApi {
 		Client.get("Favorites", "isFavorite", params, handler);
 	}
 
-	public void groupsearch(RequestParams params, String keyword, int count, int page) {
+	public void groupsearch(RequestParams params, String keyword, int count,
+			int page) {
 		params.put("key", keyword);
 		params.put("count", count + "");
 		params.put("p", page + "");
@@ -304,8 +317,8 @@ public class Api extends BaseApi {
 		Client.get("Group", "group", params, handler);
 	}
 
-	public void createGroup(RequestParams params, String name, String sid, String cid,
-			String info, String tag, String pic) {
+	public void createGroup(RequestParams params, String name, String sid,
+			String cid, String info, String tag, String pic) {
 
 		params.put("cid0", cid);
 		params.put("name", name);
@@ -327,8 +340,8 @@ public class Api extends BaseApi {
 
 	}
 
-	public void modifyGroup(RequestParams params, String gid, String name, String sid, String cid,
-			String info, String tag, String pic) {
+	public void modifyGroup(RequestParams params, String gid, String name,
+			String sid, String cid, String info, String tag, String pic) {
 
 		params.put("gid", gid);
 		params.put("cid0", cid);
@@ -352,7 +365,8 @@ public class Api extends BaseApi {
 
 	}
 
-	public void groupmember(RequestParams params, String gid, String ismember, int count, int page) {
+	public void groupmember(RequestParams params, String gid, String ismember,
+			int count, int page) {
 		params.put("gid", gid);
 		params.put("ismember", ismember);
 		params.put("count", count + "");
@@ -406,15 +420,16 @@ public class Api extends BaseApi {
 		Client.get("Group", "viewtopic", params, handler);
 	}
 
-	public void replytopic(RequestParams params, String gid, String tid, String content) {
+	public void replytopic(RequestParams params, String gid, String tid,
+			String content) {
 		params.put("gid", gid);
 		params.put("tid", tid);
 		params.put("content", content);
 		Client.get("Group", "replytopic", params, handler);
 	}
 
-	public void newtopic(RequestParams params, String gid, String title, String content,
-			String flash, String pic) {
+	public void newtopic(RequestParams params, String gid, String title,
+			String content, String flash, String pic) {
 		params.put("gid", gid);
 		params.put("title", title);
 		params.put("flash", flash);
@@ -457,7 +472,8 @@ public class Api extends BaseApi {
 		Client.get("Group", "uploadfile", params, handler);
 	}
 
-	public void profileupdate(RequestParams params, String nickname, String sex, File file) {
+	public void profileupdate(RequestParams params, String nickname,
+			String sex, File file) {
 		params.put("nickname", nickname);
 		params.put("sex", sex);
 
@@ -473,8 +489,8 @@ public class Api extends BaseApi {
 		Client.get("UserProfile", "update", params, handler);
 	}
 
-	public void profilepassword(RequestParams params, String oldpassword, String password,
-			String repassword) {
+	public void profilepassword(RequestParams params, String oldpassword,
+			String password, String repassword) {
 		params.put("oldpassword", oldpassword);
 		params.put("password", password);
 		params.put("repassword", repassword);
@@ -500,8 +516,8 @@ public class Api extends BaseApi {
 		Client.get("Event", "recommEventList", params, handler);
 	}
 
-	public void getEventList(RequestParams params, String school, String cid, String keyword,
-			int count, int page) {
+	public void getEventList(RequestParams params, String school, String cid,
+			String keyword, int count, int page) {
 		params.put("school", school);
 		// params.put("cid", cid);
 		params.put("orgId", cid);
@@ -510,7 +526,7 @@ public class Api extends BaseApi {
 		params.put("page", page + "");
 		Client.get("Event", "eventList", params, handler);
 	}
-	
+
 	public void getRecommendEventList(RequestParams params, String school,
 			int count, int page) {
 		params.put("school", school);
@@ -519,7 +535,8 @@ public class Api extends BaseApi {
 		Client.get("Event", "recommList", params, handler);
 	}
 
-	public void getMyEventList(RequestParams params, String action, int count, int page) {
+	public void getMyEventList(RequestParams params, String action, int count,
+			int page) {
 		params.put("action", action);
 		params.put("count", count + "");
 		params.put("page", page + "");
@@ -531,22 +548,30 @@ public class Api extends BaseApi {
 		Client.get("Event", "event", params, handler);
 	}
 
-	public void getEventNewsList(RequestParams params, String id, int count, int page) {
+	public void getEventNewsList(RequestParams params, String id, int count,
+			int page) {
 
 		params.put("id", id);
 		params.put("count", count + "");
 		params.put("page", page + "");
 		Client.get("Event", "newsList", params, handler);
 	}
-	
-	public void getEventCommentsList(RequestParams params, String id, int count, int page) {
+
+	public void getEventCommentsList(RequestParams params, String id,
+			int count, int page) {
 		params.put("eid", id);
 		params.put("count", count + "");
 		params.put("p", page + "");
 		Client.get("Event", "commentList", params, handler);
 	}
 
-	public void getEventPhotoList(RequestParams params, String id, int count, int page) {
+	public void getDeleteComment(RequestParams params, String id) {
+		params.put("id", id);
+		Client.get("Event", "delComment", params, handler);
+	}
+
+	public void getEventPhotoList(RequestParams params, String id, int count,
+			int page) {
 
 		params.put("id", id);
 		params.put("count", count + "");
@@ -554,7 +579,8 @@ public class Api extends BaseApi {
 		Client.get("Event", "photoList", params, handler);
 	}
 
-	public void getPlayerList(RequestParams params, String id, String key, int count, int page) {
+	public void getPlayerList(RequestParams params, String id, String key,
+			int count, int page) {
 
 		params.put("id", id);
 		params.put("key", key);
@@ -604,8 +630,8 @@ public class Api extends BaseApi {
 		Client.get("Course", "CatList", params, handler);
 	}
 
-	public void getCourseList(RequestParams params, String action, String school, String cid,
-			String keyword, int count, int page) {
+	public void getCourseList(RequestParams params, String action,
+			String school, String cid, String keyword, int count, int page) {
 		params.put("action", action);
 		params.put("school", school);
 		params.put("cid", cid);
@@ -615,7 +641,8 @@ public class Api extends BaseApi {
 		Client.get("Course", "courseList", params, handler);
 	}
 
-	public void getMyCourseList(RequestParams params, String action, int count, int page) {
+	public void getMyCourseList(RequestParams params, String action, int count,
+			int page) {
 		getCourseList(params, action, "0", "0", "", count, page);
 	}
 
@@ -687,7 +714,8 @@ public class Api extends BaseApi {
 		Client.get("User", "initUser", params, handler);
 	}
 
-	public void memberAction(RequestParams params, String gid, String uid, String action) {
+	public void memberAction(RequestParams params, String gid, String uid,
+			String action) {
 		params.put("gid", gid);
 		params.put("uid", uid);
 		params.put("action", action);
@@ -757,9 +785,10 @@ public class Api extends BaseApi {
 		Client.get("Event", "csOrga", params, handler);
 	}
 
-	public void doAddEvent(RequestParams params, File logo, String title, String audit_uid,
-			String address, String typeId, String sTime, String eTime, String deadline,
-			String gid, String limitCount, String description, String sid) {
+	public void doAddEvent(RequestParams params, File logo, String title,
+			String audit_uid, String address, String typeId, String sTime,
+			String eTime, String deadline, String gid, String limitCount,
+			String description, String sid) {
 		try {
 			params.put("cover", logo);
 		} catch (FileNotFoundException e) {
@@ -792,7 +821,8 @@ public class Api extends BaseApi {
 		Client.get("Event", "eventReset", params, handler);
 	}
 
-	public void jsend(RequestParams params, String uid, String content, String title, String extra) {
+	public void jsend(RequestParams params, String uid, String content,
+			String title, String extra) {
 		params.put("uid", uid);
 		params.put("content", content);
 		params.put("title", title);
@@ -834,8 +864,8 @@ public class Api extends BaseApi {
 		Client.get("Train", "area", params, handler);
 	}
 
-	public void courseList(RequestParams params, String provinceId, String city, String catId,
-			int count, int page) {
+	public void courseList(RequestParams params, String provinceId,
+			String city, String catId, int count, int page) {
 		params.put("provinceId", provinceId);
 		params.put("city", city);
 		params.put("catId", catId);
@@ -922,8 +952,9 @@ public class Api extends BaseApi {
 		Client.get("Donate", "catList", params, handler);
 	}
 
-	public void donateList(RequestParams params, String province, String cityId, String sid,
-			String sid1, String catId, String price, int page, int count) {
+	public void donateList(RequestParams params, String province,
+			String cityId, String sid, String sid1, String catId, String price,
+			int page, int count) {
 		params.put("province", province);
 		params.put("cityId", cityId);
 		params.put("sid", sid);

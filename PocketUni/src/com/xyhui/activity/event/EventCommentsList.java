@@ -3,28 +3,28 @@ package com.xyhui.activity.event;
 import java.util.ArrayList;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 
-import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
-import com.mslibs.utils.JSONUtils;
-import com.mslibs.utils.VolleyLog;
 import com.mslibs.widget.CListView;
 import com.mslibs.widget.CListViewParam;
 import com.xyhui.R;
 import com.xyhui.activity.PuApp;
-import com.xyhui.activity.weibo.UserHomePageActivity;
 import com.xyhui.api.Api;
 import com.xyhui.api.ListCallBack;
-import com.xyhui.types.Weibo;
-import com.xyhui.types.WeiboComment;
-import com.xyhui.utils.Params;
 
 public class EventCommentsList extends CListView {
+
+	public interface CommentsClickCallBack {
+		public void onClick(View v, EventComment comment);
+	}
+
 	private String eventID;
+	private CommentsClickCallBack mClickListener;
 
 	public EventCommentsList(PullToRefreshListView lv, Activity activity,
 			String eid) {
@@ -37,6 +37,10 @@ public class EventCommentsList extends CListView {
 	@Override
 	public void initListItemResource() {
 		this.setListItemResource(R.layout.list_item_event_comments);
+	}
+
+	public void refresh() {
+		refreshListViewStart();
 	}
 
 	@Override
@@ -53,6 +57,7 @@ public class EventCommentsList extends CListView {
 				getmoreListViewStart();
 			}
 		});
+
 	}
 
 	@Override
@@ -65,12 +70,19 @@ public class EventCommentsList extends CListView {
 				R.drawable.avatar00, true);
 		avatarLVP.setImgAsync(true);
 		avatarLVP.setItemTag(comment.face);
-		avatarLVP.setOnclickLinstener(new OnClickListener() {
+		LVP.add(avatarLVP);
+		
+		CListViewParam layout = new CListViewParam(R.id.layout,
+				null, true);
+		layout.setOnclickLinstener(new OnClickListener() {
+			
 			@Override
 			public void onClick(View v) {
+				if (mClickListener != null)
+					mClickListener.onClick(v, comment);				
 			}
 		});
-		LVP.add(avatarLVP);
+		LVP.add(layout);
 
 		LVP.add(new CListViewParam(R.id.text_nickname, comment.uname, true));
 		LVP.add(new CListViewParam(R.id.text_content, comment.comment, true));
@@ -102,6 +114,14 @@ public class EventCommentsList extends CListView {
 		super.asyncData();
 		new Api(callback, mActivity).getEventCommentsList(PuApp.get()
 				.getToken(), eventID, mPerpage, page);
+	}
+
+	public CommentsClickCallBack getmClickListener() {
+		return mClickListener;
+	}
+
+	public void setmClickListener(CommentsClickCallBack mClickListener) {
+		this.mClickListener = mClickListener;
 	}
 
 }
