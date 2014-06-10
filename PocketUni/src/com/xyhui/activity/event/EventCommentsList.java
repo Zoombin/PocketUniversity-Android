@@ -40,6 +40,7 @@ public class EventCommentsList extends CListView {
 	}
 
 	public void refresh() {
+		mListItems.clear();
 		refreshListViewStart();
 	}
 

@@ -50,10 +50,12 @@ public class EventPhotoGridView extends CGridView {
 				// intent.setClass(getContext(), WebViewActivity.class);
 				// intent.putExtra(Params.INTENT_EXTRA.WEBVIEW_TITLE, "图片浏览");
 				// intent.putExtra(Params.INTENT_EXTRA.WEBVIEW_URL, item.path);
-				// intent.putExtra(Params.INTENT_EXTRA.WEBVIEW_TYPE, WebViewActivity.TYPE_IMAGE);
+				// intent.putExtra(Params.INTENT_EXTRA.WEBVIEW_TYPE,
+				// WebViewActivity.TYPE_IMAGE);
 				// ((Activity) getContext()).startActivity(intent);
 
-				Intent intent = new Intent(getContext(), ImageZoomActivity.class);
+				Intent intent = new Intent(getContext(),
+						ImageZoomActivity.class);
 				intent.putExtra(Params.INTENT_EXTRA.WEBVIEW_URL, item.path);
 				getContext().startActivity(intent);
 			}
@@ -72,7 +74,8 @@ public class EventPhotoGridView extends CGridView {
 
 		ArrayList<CListViewParam> LVP = new ArrayList<CListViewParam>();
 
-		CListViewParam v = new CListViewParam(R.id.img_photo, R.drawable.img_default, true);
+		CListViewParam v = new CListViewParam(R.id.img_photo,
+				R.drawable.img_default, true);
 		v.setItemTag(item.path);
 		v.setImgAsync(true);
 		LVP.add(v);
@@ -90,7 +93,7 @@ public class EventPhotoGridView extends CGridView {
 			switch (actionType) {
 			case INIT: {
 				getListItems().clear();
-				getListItems().clear();
+				getmDateList().clear();
 
 				if (items != null) {
 					for (int i = 0; i < items.size(); i++) {
@@ -99,13 +102,12 @@ public class EventPhotoGridView extends CGridView {
 				}
 
 				initListViewFinish();
-
-			}
 				break;
+			}
 
 			case REFRESH: {
 				getListItems().clear();
-				getListItems().clear();
+				getmDateList().clear();
 
 				if (items != null) {
 					for (int i = 0; i < items.size(); i++) {
@@ -114,8 +116,8 @@ public class EventPhotoGridView extends CGridView {
 				}
 
 				refreshListViewFinish();
-			}
 				break;
+			}
 
 			case GETMORE: {
 				if (items != null) {
@@ -125,8 +127,8 @@ public class EventPhotoGridView extends CGridView {
 				}
 
 				getmoreListViewFinish();
-			}
 				break;
+			}
 			}
 
 			actionType = IDLE;
@@ -159,7 +161,7 @@ public class EventPhotoGridView extends CGridView {
 			break;
 		}
 
-		new Api(callback, getContext()).getEventPhotoList(PuApp.get().getToken(), eventID,
-				getPerPage(), page);
+		new Api(callback, getContext()).getEventPhotoList(PuApp.get()
+				.getToken(), eventID, getPerPage(), page);
 	}
 }

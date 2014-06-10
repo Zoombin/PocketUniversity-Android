@@ -3,6 +3,7 @@ package com.xyhui.activity.event;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.BroadcastReceiver;
@@ -10,12 +11,20 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.GridView;
 
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
+import com.mslibs.utils.ImageUtils;
 import com.mslibs.utils.NotificationsUtil;
 import com.xyhui.R;
 import com.xyhui.activity.PuApp;
@@ -95,7 +104,7 @@ public class EventDetailActivity extends FLActivity {
 							break;
 						}
 						case 1:
-							if(userid.equals(comment.uid)){
+							if (userid.equals(comment.uid)) {
 								deleteComment(comment.id);
 								break;
 							}
@@ -109,7 +118,7 @@ public class EventDetailActivity extends FLActivity {
 
 	public void deleteComment(String id) {
 		showProgress("正在提交请求", "请稍候...");
-		new Api(new CallBack(){
+		new Api(new CallBack() {
 			@Override
 			public void onSuccess(String response) {
 				super.onSuccess(response);
@@ -126,24 +135,28 @@ public class EventDetailActivity extends FLActivity {
 				}
 				if (status > 0) {
 					NotificationsUtil.ToastBottomMsg(mActivity, "操作成功");
-					Intent intent = new Intent()
-							.setAction(Params.INTENT_ACTION.EVENTLIST);
+					Intent intent = new Intent().setAction(Params.INTENT_ACTION.EVENTLIST);
 					sendBroadcast(intent);
 				} else if (0 == status) {
 					NotificationsUtil.ToastBottomMsg(mActivity, msg);
 				}
 			}
-			
+
 			@Override
 			public void onFailure(String message) {
 				super.onFailure(message);
 				dismissProgress();
 				NotificationsUtil.ToastBottomMsg(mActivity, "操作失败");
-			
+
 			}
-		}, mActivity).getDeleteComment(PuApp.get()
-				.getToken(), id);
+		}, mActivity).getDeleteComment(PuApp.get().getToken(), id);
 	}
+
+	public enum TabType {
+		_NEWS, _PHOTO, _COMMENT
+	}
+
+	private TabType tabType = TabType._NEWS;
 
 	@Override
 	public void bindListener() {
@@ -157,19 +170,25 @@ public class EventDetailActivity extends FLActivity {
 		btn_comments.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// 发表评论
-				Intent intent = new Intent(mActivity,
-						EventCommentsEditActivity.class);
-				intent.putExtra(Params.INTENT_EXTRA.EVENT_COMMENT_EDIT,
-						Params.INTENT_VALUE.WEIBO_NEW);
-				intent.putExtra(Params.INTENT_EXTRA.EVENT_ID, eventid);
-				startActivity(intent);
+				if (tabType == TabType._PHOTO) {
+					BuildImageDialog(mActivity);
+				} else if (tabType == TabType._COMMENT) {
+					// 发表评论
+					Intent intent = new Intent(mActivity,
+							EventCommentsEditActivity.class);
+					intent.putExtra(Params.INTENT_EXTRA.EVENT_COMMENT_EDIT,
+							Params.INTENT_VALUE.WEIBO_NEW);
+					intent.putExtra(Params.INTENT_EXTRA.EVENT_ID, eventid);
+					startActivity(intent);
+				}
+
 			}
 		});
 
 		btn_event_news.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				tabType = TabType._NEWS;
 				btn_comments.setVisibility(View.INVISIBLE);
 				// 查看活动新闻
 				btn_event_news.setSelected(true);
@@ -183,7 +202,8 @@ public class EventDetailActivity extends FLActivity {
 		btn_event_photo.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				btn_comments.setVisibility(View.INVISIBLE);
+				tabType = TabType._PHOTO;
+				btn_comments.setVisibility(View.VISIBLE);
 				// 查看现场花絮
 				btn_event_news.setSelected(false);
 				event_news_listview.setVisibility(View.GONE);
@@ -200,6 +220,7 @@ public class EventDetailActivity extends FLActivity {
 		btn_event_comments.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				tabType = TabType._COMMENT;
 				btn_comments.setVisibility(View.VISIBLE);
 				// 查看现场花絮
 				btn_event_news.setSelected(false);
@@ -242,6 +263,83 @@ public class EventDetailActivity extends FLActivity {
 	protected void onDestroy() {
 		super.onDestroy();
 		unregisterReceiver(mEvtReceiver);
+	}
+
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (resultCode != Activity.RESULT_OK) {
+			return;
+		}
+
+		switch (requestCode) {
+
+		case Params.REQUEST_CODE.TAKE_PHOTO:
+
+			try {
+				String mImagePath = Environment.getExternalStorageDirectory()
+						+ "/tmp_upload.jpg";
+				ImageUtils.resampleImageAndSaveToNewLocation(mImagePath,
+						mImagePath);
+				uploadImg(mImagePath);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+			break;
+		case Params.REQUEST_CODE.GET_PHOTO:
+
+			try {
+				Uri uri = data.getData();
+				String urlScheme = uri.getScheme();
+				String pathInput = uri.getPath();
+
+				if (urlScheme.equals("file")) {
+					pathInput = uri.getPath();
+				} else if (urlScheme.equals("content")) {
+					String[] proj = { MediaStore.Images.Media.DATA };
+					Cursor cursor = getContentResolver().query(uri, proj, null, null, null);
+					int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+					cursor.moveToFirst();
+					pathInput = cursor.getString(column_index);
+					cursor.close();
+				}
+
+				if (!TextUtils.isEmpty(pathInput)) {
+					String mImagePath = Environment
+							.getExternalStorageDirectory() + "/tmp_upload.jpg";
+					ImageUtils.resampleImageAndSaveToNewLocation(pathInput,
+							mImagePath);
+					uploadImg(mImagePath);
+				} else {
+					NotificationsUtil
+							.ToastBottomMsg(getBaseContext(), "无法读入图片");
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			break;
+		}
+	}
+
+	private void uploadImg(String path) {
+		showProgress("正在提交请求", "请稍候...");
+		new Api(new CallBack() {
+			@Override
+			public void onSuccess(String response) {
+				super.onSuccess(response);
+				dismissProgress();
+				NotificationsUtil.ToastBottomMsg(mActivity, "操作成功");
+				if (mEventPhotoGridView != null)
+					mEventPhotoGridView.refreshListViewStart();
+			}
+
+			@Override
+			public void onFailure(String message) {
+				super.onFailure(message);
+				dismissProgress();
+				NotificationsUtil.ToastBottomMsg(mActivity, "操作失败");
+
+			}
+		}, mActivity).EventUploadImg(PuApp.get().getToken(), eventid, path);
 	}
 
 	public BroadcastReceiver mEvtReceiver = new BroadcastReceiver() {

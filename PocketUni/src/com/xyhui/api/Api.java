@@ -138,7 +138,7 @@ public class Api extends BaseApi {
 		params.put("from", DEVICE);
 		Client.get("Statuses", "upload", params, handler);
 	}
-
+	
 	public void delweibo(RequestParams params, String weiboid) {
 		params.put("id", weiboid);
 		Client.get("Statuses", "destroy", params, handler);
@@ -510,6 +510,23 @@ public class Api extends BaseApi {
 		params.put("p", page + "");
 		Client.get("Group", "ditu", params, handler);
 	}
+	
+
+	public void EventUploadImg(RequestParams params, String eventid, String path) {
+		params.put("id", eventid);
+
+		if (!TextUtils.isEmpty(path)) {
+			VolleyLog.d("upload image: %s ", path);
+			File myFile = new File(path);
+			try {
+				params.put("pic", myFile);
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
+		}
+		Client.get("event", "addPhoto", params, handler);
+	}
+
 
 	public void getRecommEventList(RequestParams params, int count) {
 		params.put("count", count + "");
