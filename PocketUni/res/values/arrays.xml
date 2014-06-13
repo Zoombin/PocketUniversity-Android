@@ -43,11 +43,11 @@
         <item>邀请好友</item>
         <item>取消操作</item>
     </string-array>
-   <!--  <string-array name="event_lucky">
+     <string-array name="event_lucky">
         <item>抽签</item>
-        <item>评分</item>
+        <item>查看活动签到码</item>
         <item>取消操作</item>
-    </string-array> -->
+    </string-array> 
     <string-array name="event_lucky_admin">
         <item>抽签</item>
         <item>查看活动签到码</item>

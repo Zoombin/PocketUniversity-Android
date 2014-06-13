@@ -14,6 +14,7 @@ public class EventBanner extends Banner {
 	public String sid;
 	public String cid;
 	public String joinCount;
+	public String joinAudit;
 	public String note;
 	public String noteUser;
 	public String isTop;
@@ -86,5 +87,13 @@ public class EventBanner extends Banner {
 
 	public EventBanner() {
 
+	}
+
+	public String getJoinAudit() {
+		return joinAudit;
+	}
+
+	public void setJoinAudit(String joinAudit) {
+		this.joinAudit = joinAudit;
 	}
 }

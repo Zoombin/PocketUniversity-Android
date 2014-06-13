@@ -132,7 +132,7 @@ public class EventViewActivity extends FLActivity {
 				Builder builder = new AlertDialog.Builder(mActivity);
 				builder.setTitle("选择操作");
 
-				builder.setItems(R.array.event_lucky_admin,
+				builder.setItems(event.getJoinAudit().equals("1") ? R.array.event_lucky_admin:R.array.event_lucky,
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog,
 									int which) {
@@ -154,7 +154,8 @@ public class EventViewActivity extends FLActivity {
 											.show();
 									break;
 								case 2:
-									grade();
+									if(event.getJoinAudit().equals("1"))
+										grade();
 									break;
 								}
 
