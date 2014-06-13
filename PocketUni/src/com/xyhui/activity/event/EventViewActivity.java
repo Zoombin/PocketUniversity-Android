@@ -146,7 +146,10 @@ public class EventViewActivity extends FLActivity {
 												}
 											}).show();
 							break;
+						case 2:
+							break;
 						}
+						
 						dialog.cancel();
 					}
 				}).show();
