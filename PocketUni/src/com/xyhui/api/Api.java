@@ -616,6 +616,11 @@ public class Api extends BaseApi {
 		params.put("id", id);
 		Client.get("Event", "join", params, handler);
 	}
+	public void grade(RequestParams params, String id, int score) {
+		params.put("id", id);
+		params.put("score", score);
+		Client.get("Event", "note", params, handler);
+	}
 
 	public void cancelJoinEvent(RequestParams params, String id) {
 		params.put("id", id);

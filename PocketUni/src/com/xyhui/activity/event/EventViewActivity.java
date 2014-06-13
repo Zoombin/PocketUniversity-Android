@@ -2,8 +2,11 @@ package com.xyhui.activity.event;
 
 import java.util.ArrayList;
 
+import org.json.JSONObject;
+
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,11 +14,14 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.reflect.TypeToken;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
@@ -126,33 +132,90 @@ public class EventViewActivity extends FLActivity {
 				Builder builder = new AlertDialog.Builder(mActivity);
 				builder.setTitle("选择操作");
 
-				builder.setItems(R.array.event_lucky_admin, new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int which) {
-						switch (which) {
-						case 0:
-							// 抽签
-							Intent intent = new Intent(mActivity, EventLuckyActivity.class);
-							intent.putExtra(Params.INTENT_EXTRA.EVENTID, eventid);
-							startActivity(intent);
-							break;
-						case 1:
-							// 查看签到码
-							new AlertDialog.Builder(mActivity)
-									.setTitle(event.adminCode)
-									.setPositiveButton("确定",
-											new DialogInterface.OnClickListener() {
-												public void onClick(DialogInterface dialog,
-														int whichButton) {
-												}
-											}).show();
-							break;
-						case 2:
-							break;
-						}
-						
-						dialog.cancel();
-					}
-				}).show();
+				builder.setItems(R.array.event_lucky_admin,
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog,
+									int which) {
+								switch (which) {
+								case 0:
+									// 抽签
+									Intent intent = new Intent(mActivity,
+											EventLuckyActivity.class);
+									intent.putExtra(
+											Params.INTENT_EXTRA.EVENTID,
+											eventid);
+									startActivity(intent);
+									break;
+								case 1:
+									// 查看签到码
+									new AlertDialog.Builder(mActivity)
+											.setTitle(event.adminCode)
+											.setPositiveButton("确定", null)
+											.show();
+									break;
+								case 2:
+									grade();
+									break;
+								}
+
+								dialog.cancel();
+							}
+						}).show();
+			}
+
+			/**
+			 * 显示评分对话框
+			 */
+			private int gradeSelect = 0;
+			private void grade() {
+				gradeSelect = 0;
+				Builder builder = new android.app.AlertDialog.Builder(mActivity);
+				// 设置对话框的标题
+				builder.setTitle("请打分");
+				// 0: 默认第一个单选按钮被选中
+				builder.setSingleChoiceItems(R.array.event_comment_item, 0,
+						new DialogInterface.OnClickListener() {
+							
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								gradeSelect = which;
+							}
+						});
+
+				// 添加一个确定按钮
+				builder.setPositiveButton("确定评分",
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog,
+									int which) {
+								int score = 5- gradeSelect;
+								System.out.println("score------>"+score);
+								showProgress("正在提交请求", "请稍候...");
+								new Api(new CallBack(){
+									@Override
+									public void onSuccess(String response) {
+										super.onSuccess(response);
+										dismissProgress();
+										try {
+											JSONObject jsonObject = new JSONObject(response);
+											NotificationsUtil.ToastTopMsg(mActivity, jsonObject.optString("msg"));
+										} catch (Exception e) {
+											// TODO: handle exception
+										}
+//										{"status":0,"msg":"\u8bc4\u5206\u5931\u8d25","note":0,"noteUser":""}
+									}
+									
+									@Override
+									public void onFailure(String message) {
+										super.onFailure(message);
+										dismissProgress();
+									}
+								}, mActivity).grade(PuApp.get()
+										.getToken(), eventid,score);
+							}
+						});
+				// 创建一个单选按钮对话框
+				Dialog dialog = builder.create();
+				dialog.show();
 			}
 		});
 
@@ -168,20 +231,30 @@ public class EventViewActivity extends FLActivity {
 			public void onClick(View v) {
 				String mobile = mPrefUtil.getPreference(Params.LOCAL.MOBILE);
 				if (event.need_tel == 1 && TextUtils.isEmpty(mobile)) {
-					new AlertDialog.Builder(mActivity).setTitle("您还没有绑定手机, 现在去绑定吗?")
-							.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-								public void onClick(DialogInterface dialog, int whichButton) {
-									Intent intent = new Intent(mActivity,
-											PhoneBindingActivity.class);
-									startActivity(intent);
-								}
-							}).setNegativeButton("取消", new DialogInterface.OnClickListener() {
-								public void onClick(DialogInterface dialog, int whichButton) {
-								}
-							}).show();
+					new AlertDialog.Builder(mActivity)
+							.setTitle("您还没有绑定手机, 现在去绑定吗?")
+							.setPositiveButton("确定",
+									new DialogInterface.OnClickListener() {
+										public void onClick(
+												DialogInterface dialog,
+												int whichButton) {
+											Intent intent = new Intent(
+													mActivity,
+													PhoneBindingActivity.class);
+											startActivity(intent);
+										}
+									})
+							.setNegativeButton("取消",
+									new DialogInterface.OnClickListener() {
+										public void onClick(
+												DialogInterface dialog,
+												int whichButton) {
+										}
+									}).show();
 				} else {
 					showProgress("正在提交请求", "请稍候...");
-					new Api(joinCallback, mActivity).joinEvent(PuApp.get().getToken(), eventid);
+					new Api(joinCallback, mActivity).joinEvent(PuApp.get()
+							.getToken(), eventid);
 				}
 			}
 		});
@@ -190,7 +263,8 @@ public class EventViewActivity extends FLActivity {
 			@Override
 			public void onClick(View v) {
 				showProgress("正在提交请求", "请稍候...");
-				new Api(cancelJoinCB, mActivity).cancelJoinEvent(PuApp.get().getToken(), eventid);
+				new Api(cancelJoinCB, mActivity).cancelJoinEvent(PuApp.get()
+						.getToken(), eventid);
 			}
 		});
 
@@ -219,7 +293,8 @@ public class EventViewActivity extends FLActivity {
 			@Override
 			public void onClick(View v) {
 				// 打开人气排行
-				Intent intent = new Intent(mActivity, EventUserListActivity.class);
+				Intent intent = new Intent(mActivity,
+						EventUserListActivity.class);
 				intent.putExtra(Params.INTENT_EXTRA.EVENTID, eventid);
 				startActivity(intent);
 			}
@@ -229,11 +304,14 @@ public class EventViewActivity extends FLActivity {
 			@Override
 			public void onClick(View v) {
 				if (event.uid.equals(mPrefUtil.getPreference(Params.LOCAL.UID))) {
-					Intent intent = new Intent(mActivity, QRCodeScanActivity.class);
-					intent.putExtra(Params.INTENT_EXTRA.ATTEND_CODE, event.adminCode);
+					Intent intent = new Intent(mActivity,
+							QRCodeScanActivity.class);
+					intent.putExtra(Params.INTENT_EXTRA.ATTEND_CODE,
+							event.adminCode);
 					startActivity(intent);
 				} else if (event.showAttend == 1) {
-					Intent intent = new Intent(mActivity, QRCardViewActivity.class);
+					Intent intent = new Intent(mActivity,
+							QRCardViewActivity.class);
 					startActivity(intent);
 				}
 			}
@@ -242,8 +320,8 @@ public class EventViewActivity extends FLActivity {
 		btn_share.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				String content = "分享活动:【" + event.title + "】http://pocketuni.net/eventf/"
-						+ eventid;
+				String content = "分享活动:【" + event.title
+						+ "】http://pocketuni.net/eventf/" + eventid;
 				ShareSDKUtil.showShare(mActivity, false, content, null, null);
 			}
 		});
@@ -258,11 +336,11 @@ public class EventViewActivity extends FLActivity {
 				int hasfav = (Integer) btn_favor.getTag();
 				btn_favor.setEnabled(false);
 				if (hasfav == 1) {
-					new Api(favcallback, mActivity).eventFav(PuApp.get().getToken(), eventid,
-							"cancel");
+					new Api(favcallback, mActivity).eventFav(PuApp.get()
+							.getToken(), eventid, "cancel");
 				} else {
-					new Api(favcallback, mActivity).eventFav(PuApp.get().getToken(), eventid,
-							"add");
+					new Api(favcallback, mActivity).eventFav(PuApp.get()
+							.getToken(), eventid, "add");
 				}
 			}
 		});
@@ -273,8 +351,8 @@ public class EventViewActivity extends FLActivity {
 		showProgress();
 		showProgress();
 		new Api(callback, mActivity).getEvent(PuApp.get().getToken(), eventid);
-		new Api(useristcallback, mActivity).getPlayerList(PuApp.get().getToken(), eventid, null,
-				3, 1);
+		new Api(useristcallback, mActivity).getPlayerList(PuApp.get()
+				.getToken(), eventid, null, 3, 1);
 
 		showMiaoPiaoDiglog();
 	}
@@ -285,19 +363,29 @@ public class EventViewActivity extends FLActivity {
 	};
 
 	private void showMiaoPiaoDiglog() {
-		if (MP_ID_1.equals(eventid) || MP_ID_2.equals(eventid) || MP_ID_3.equals(eventid)) {
-			new AlertDialog.Builder(mActivity).setTitle("下载秒拍？")
-					.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog, int whichButton) {
-							DownloadImpl download = new DownloadImpl(mActivity,
-									Tab3AppActivity.MIAOPAI_DOWNLOAD_URL, "秒拍",
-									Tab3AppActivity.MIAOPAI_PKG_NAME + ".apk");
-							download.startDownload();
-						}
-					}).setNegativeButton("取消", new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog, int whichButton) {
-						}
-					}).show();
+		if (MP_ID_1.equals(eventid) || MP_ID_2.equals(eventid)
+				|| MP_ID_3.equals(eventid)) {
+			new AlertDialog.Builder(mActivity)
+					.setTitle("下载秒拍？")
+					.setPositiveButton("确定",
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,
+										int whichButton) {
+									DownloadImpl download = new DownloadImpl(
+											mActivity,
+											Tab3AppActivity.MIAOPAI_DOWNLOAD_URL,
+											"秒拍",
+											Tab3AppActivity.MIAOPAI_PKG_NAME
+													+ ".apk");
+									download.startDownload();
+								}
+							})
+					.setNegativeButton("取消",
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,
+										int whichButton) {
+								}
+							}).show();
 		}
 	}
 
@@ -338,15 +426,18 @@ public class EventViewActivity extends FLActivity {
 				}
 
 				// uid表示发起者id 和 本地uid作比较
-				if ("1".equals(event.isStart) && event.hasJoin == 1
-						&& !event.uid.equals(mPrefUtil.getPreference(Params.LOCAL.UID))) {
+				if ("1".equals(event.isStart)
+						&& event.hasJoin == 1
+						&& !event.uid.equals(mPrefUtil
+								.getPreference(Params.LOCAL.UID))) {
 					btn_cancel.setVisibility(View.VISIBLE);
 				} else {
 					btn_cancel.setVisibility(View.GONE);
 				}
 
 				if (event.showAttend == 1
-						|| event.uid.equals(mPrefUtil.getPreference(Params.LOCAL.UID))) {
+						|| event.uid.equals(mPrefUtil
+								.getPreference(Params.LOCAL.UID))) {
 					btn_checkin.setVisibility(View.VISIBLE);
 				} else {
 					btn_checkin.setVisibility(View.GONE);
@@ -396,15 +487,16 @@ public class EventViewActivity extends FLActivity {
 				for (int i = 0; i < count; i++) {
 					final EventUser item = (EventUser) items.get(i);
 
-					View userItemView = mInflater.inflate(R.layout.list_item_event_user, null);
+					View userItemView = mInflater.inflate(
+							R.layout.list_item_event_user, null);
 
 					if (userItemView != null) {
 						ImageView img_avatar = (ImageView) userItemView
 								.findViewById(R.id.img_avatar);
 						// 需要异步图像，默认图像：img_default
 
-						UrlImageViewHelper.setUrlDrawable(img_avatar, item.path,
-								R.drawable.img_default);
+						UrlImageViewHelper.setUrlDrawable(img_avatar,
+								item.path, R.drawable.img_default);
 
 						TextView text_nickname = (TextView) userItemView
 								.findViewById(R.id.text_nickname);
@@ -414,10 +506,12 @@ public class EventViewActivity extends FLActivity {
 								.findViewById(R.id.text_params);
 						text_params.setText(item.getInfo());
 
-						TextView text_vote = (TextView) userItemView.findViewById(R.id.text_vote);
+						TextView text_vote = (TextView) userItemView
+								.findViewById(R.id.text_vote);
 						text_vote.setText(item.ticket + " 票");
 
-						final Button btn_vote = (Button) userItemView.findViewById(R.id.btn_vote);
+						final Button btn_vote = (Button) userItemView
+								.findViewById(R.id.btn_vote);
 
 						if (item.canVote) {
 							btn_vote.setVisibility(View.VISIBLE);
@@ -431,8 +525,11 @@ public class EventViewActivity extends FLActivity {
 									final Button btn_vote = (Button) v;
 
 									new AlertDialog.Builder(mActivity)
-											.setTitle("您是否确定把今天的票投给" + realname + "?")
-											.setPositiveButton("确定",
+											.setTitle(
+													"您是否确定把今天的票投给" + realname
+															+ "?")
+											.setPositiveButton(
+													"确定",
 													new DialogInterface.OnClickListener() {
 														public void onClick(
 																DialogInterface dialog,
@@ -440,14 +537,18 @@ public class EventViewActivity extends FLActivity {
 
 															btn_vote.setText("正在投票");
 															btn_vote.setEnabled(false);
-															Api api = new Api(votecallback,
+															Api api = new Api(
+																	votecallback,
 																	mActivity);
 															api.setExtra(btn_vote);
-															api.vote(PuApp.get().getToken(), id,
-																	eventid);
+															api.vote(
+																	PuApp.get()
+																			.getToken(),
+																	id, eventid);
 														}
 													})
-											.setNegativeButton("取消",
+											.setNegativeButton(
+													"取消",
 													new DialogInterface.OnClickListener() {
 														public void onClick(
 																DialogInterface dialog,
@@ -464,11 +565,17 @@ public class EventViewActivity extends FLActivity {
 							@Override
 							public void onClick(View v) {
 								// 选手详情
-								Intent intent = new Intent(mActivity, WebViewActivity.class);
-								intent.putExtra(Params.INTENT_EXTRA.WEBVIEW_TITLE, item.realname);
-								intent.putExtra(Params.INTENT_EXTRA.WEBVIEW_URL, PLAY_PAGE_PREFIX
-										+ "id=" + event.id + "&pid=" + item.id);
-								intent.putExtra(Params.INTENT_EXTRA.WEBVIEW_MECHANISM,
+								Intent intent = new Intent(mActivity,
+										WebViewActivity.class);
+								intent.putExtra(
+										Params.INTENT_EXTRA.WEBVIEW_TITLE,
+										item.realname);
+								intent.putExtra(
+										Params.INTENT_EXTRA.WEBVIEW_URL,
+										PLAY_PAGE_PREFIX + "id=" + event.id
+												+ "&pid=" + item.id);
+								intent.putExtra(
+										Params.INTENT_EXTRA.WEBVIEW_MECHANISM,
 										WebViewActivity.POST);
 								startActivity(intent);
 							}
@@ -487,8 +594,8 @@ public class EventViewActivity extends FLActivity {
 			Button btn = (Button) getExtra();
 			if (response.contains("true")) {
 				btn.setText("己投票");
-				new Api(useristcallback, mActivity).getPlayerList(PuApp.get().getToken(), eventid,
-						null, RECOMMEND_VOTE_COUNT, 1);
+				new Api(useristcallback, mActivity).getPlayerList(PuApp.get()
+						.getToken(), eventid, null, RECOMMEND_VOTE_COUNT, 1);
 			} else {
 				btn.setText("票已投完");
 			}
@@ -527,7 +634,8 @@ public class EventViewActivity extends FLActivity {
 			if ("true".equalsIgnoreCase(response)) {
 				NotificationsUtil.ToastBottomMsg(getBaseContext(), "加入成功");
 				showProgress();
-				new Api(callback, mActivity).getEvent(PuApp.get().getToken(), eventid);
+				new Api(callback, mActivity).getEvent(PuApp.get().getToken(),
+						eventid);
 			} else {
 				NotificationsUtil.ToastBottomMsg(getBaseContext(), "加入失败");
 			}
@@ -547,7 +655,8 @@ public class EventViewActivity extends FLActivity {
 			}
 
 			showProgress();
-			new Api(callback, mActivity).getEvent(PuApp.get().getToken(), eventid);
+			new Api(callback, mActivity).getEvent(PuApp.get().getToken(),
+					eventid);
 		}
 	};
 }
