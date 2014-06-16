@@ -99,6 +99,18 @@
                 android:layout_toRightOf="@+id/btn_follow"
                 android:background="@drawable/btn_selector_message"
                 android:visibility="gone" />
+
+            <Button
+                android:id="@+id/btn_photo"
+                android:layout_width="98dip"
+                android:layout_height="42dip"
+                android:textColor="@color/white"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginBottom="4dip"
+                android:layout_marginLeft="4dip"
+                android:background="@drawable/btn_user_photo"
+                android:text="相册" />
         </RelativeLayout>
     </LinearLayout>
 

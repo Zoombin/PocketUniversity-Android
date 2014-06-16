@@ -15,6 +15,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.mslibs.utils.JSONUtils;
+import com.mslibs.utils.NotificationsUtil;
 import com.mslibs.widget.CActivity;
 import com.mslibs.widget.CListView;
 import com.mslibs.widget.CListViewParam;
@@ -22,6 +23,7 @@ import com.xyhui.R;
 import com.xyhui.activity.ImageZoomActivity;
 import com.xyhui.activity.PuApp;
 import com.xyhui.activity.Tab4FriendActivity;
+import com.xyhui.activity.photo.AlbumListActivity;
 import com.xyhui.api.Api;
 import com.xyhui.api.CallBack;
 import com.xyhui.api.ListCallBack;
@@ -38,8 +40,8 @@ public class UserHomePageList extends CListView {
 
 	private User mUser;
 
-	public UserHomePageList(PullToRefreshListView lv, Activity activity, String user_id,
-			String user_name) {
+	public UserHomePageList(PullToRefreshListView lv, Activity activity,
+			String user_id, String user_name) {
 		super(lv, activity);
 		mUserID = user_id;
 		mUserName = user_name;
@@ -57,8 +59,8 @@ public class UserHomePageList extends CListView {
 	public void ensureUi() {
 		mPerpage = 10;
 		super.setHeaderResource(R.layout.list_item_user_view_header);
-		super.setGetMoreResource(R.layout.list_item_getmore, R.id.list_item_getmore_title,
-				"查看更多微博");
+		super.setGetMoreResource(R.layout.list_item_getmore,
+				R.id.list_item_getmore_title, "查看更多微博");
 		super.ensureUi();
 
 		super.setGetMoreClickListener(new OnClickListener() {
@@ -88,20 +90,25 @@ public class UserHomePageList extends CListView {
 					WeiboTypeData img = weibo.type_data;
 					if (img != null) {
 						img.fix();
-						intent.putExtra(Params.INTENT_EXTRA.WEIBO_DATA, weibo.type_data);
+						intent.putExtra(Params.INTENT_EXTRA.WEIBO_DATA,
+								weibo.type_data);
 					}
 
 					if (weibo.transpond_data instanceof JsonObject) {
-						Weibo transpond_data = JSONUtils.fromJson(weibo.transpond_data,
-								Weibo.class);
-						// VolleyLog.d("WEIBO_FORWARD:%s", null == transpond_data ? "null"
+						Weibo transpond_data = JSONUtils.fromJson(
+								weibo.transpond_data, Weibo.class);
+						// VolleyLog.d("WEIBO_FORWARD:%s", null ==
+						// transpond_data ? "null"
 						// : transpond_data.content);
-						intent.putExtra(Params.INTENT_EXTRA.WEIBO_FORWARD, transpond_data);
+						intent.putExtra(Params.INTENT_EXTRA.WEIBO_FORWARD,
+								transpond_data);
 
 						WeiboTypeData trans_img = transpond_data.type_data;
 						if (trans_img != null) {
 							trans_img.fix();
-							intent.putExtra(Params.INTENT_EXTRA.WEIBO_FORWARD_DATA, trans_img);
+							intent.putExtra(
+									Params.INTENT_EXTRA.WEIBO_FORWARD_DATA,
+									trans_img);
 						}
 					}
 					mActivity.startActivity(intent);
@@ -118,8 +125,8 @@ public class UserHomePageList extends CListView {
 			// 个人信息数据
 
 			// 头像
-			CListViewParam avatarLVP = new CListViewParam(R.id.img_avatar, R.drawable.avatar00,
-					true);
+			CListViewParam avatarLVP = new CListViewParam(R.id.img_avatar,
+					R.drawable.avatar00, true);
 			avatarLVP.setImgAsync(true);
 			avatarLVP.setItemTag(mUser.face);
 			avatarLVP.setImgRoundCorner(6);
@@ -137,13 +144,15 @@ public class UserHomePageList extends CListView {
 			LVP.add(new CListViewParam(R.id.text_info, info, true));
 
 			String uid = new PrefUtil().getPreference(Params.LOCAL.UID);
-			// VolleyLog.d("got uid:%s  user.uid:%s  isfollowed:%s", uid, mUser.uid,
+			// VolleyLog.d("got uid:%s  user.uid:%s  isfollowed:%s", uid,
+			// mUser.uid,
 			// mUser.is_followed);
 
 			if (!TextUtils.isEmpty(uid) && !uid.equalsIgnoreCase(mUser.uid)) {
 				// 关注按钮
 
-				boolean isfollow = !"unfollow".equalsIgnoreCase(mUser.is_followed);
+				boolean isfollow = !"unfollow"
+						.equalsIgnoreCase(mUser.is_followed);
 				CListViewParam btn_follow;
 				if (isfollow) {
 					btn_follow = new CListViewParam(R.id.btn_follow,
@@ -179,8 +188,8 @@ public class UserHomePageList extends CListView {
 
 			if (!TextUtils.isEmpty(uid) && !uid.equalsIgnoreCase(mUser.uid)) {
 				// 私信按钮
-				CListViewParam btn_message = new CListViewParam(R.id.btn_message,
-						R.drawable.btn_selector_message, true);
+				CListViewParam btn_message = new CListViewParam(
+						R.id.btn_message, R.drawable.btn_selector_message, true);
 
 				btn_message.setOnclickLinstener(new OnClickListener() {
 					@Override
@@ -188,16 +197,35 @@ public class UserHomePageList extends CListView {
 						// 打开私信回复
 						Intent intent = new Intent();
 						intent.setClass(mActivity, ChatDetailListActivity.class);
-						intent.putExtra(Params.INTENT_EXTRA.MESSAGE_UID, mUser.uid);
-						intent.putExtra(Params.INTENT_EXTRA.USERNAME, mUser.uname);
+						intent.putExtra(Params.INTENT_EXTRA.MESSAGE_UID,
+								mUser.uid);
+						intent.putExtra(Params.INTENT_EXTRA.USERNAME,
+								mUser.uname);
 						mActivity.startActivity(intent);
 					}
 				});
 				LVP.add(btn_message);
 			}
 
+			// 相册按钮
+			CListViewParam btn_photo = new CListViewParam(R.id.btn_photo, null,
+					true);
+
+			btn_photo.setOnclickLinstener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					Intent intent = new Intent();
+					intent.setClass(mActivity, AlbumListActivity.class);
+					intent.putExtra(Params.INTENT_EXTRA.USER_ID,
+							mUser.uid);
+					mActivity.startActivity(intent);
+				}
+			});
+			LVP.add(btn_photo);
+
 			// 微博按钮
-			CListViewParam btn_params_weibo = new CListViewParam(R.id.btn_params_weibo, null, true);
+			CListViewParam btn_params_weibo = new CListViewParam(
+					R.id.btn_params_weibo, null, true);
 			btn_params_weibo.setOnclickLinstener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
@@ -206,17 +234,19 @@ public class UserHomePageList extends CListView {
 			});
 			LVP.add(btn_params_weibo);
 			// 微博数量
-			LVP.add(new CListViewParam(R.id.text_params_weibo, "" + mUser.weibo_count, true));
+			LVP.add(new CListViewParam(R.id.text_params_weibo, ""
+					+ mUser.weibo_count, true));
 			// 粉丝按钮
-			CListViewParam btn_params_follows = new CListViewParam(R.id.btn_params_follows, null,
-					true);
+			CListViewParam btn_params_follows = new CListViewParam(
+					R.id.btn_params_follows, null, true);
 			btn_params_follows.setOnclickLinstener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					// 打开粉丝列表
 					Intent intent = new Intent();
 					intent.setClass(mActivity, Tab4FriendActivity.class);
-					intent.putExtra(Params.INTENT_EXTRA.FRIENDLIST_USERID, mUser.uid);
+					intent.putExtra(Params.INTENT_EXTRA.FRIENDLIST_USERID,
+							mUser.uid);
 					intent.putExtra(Params.INTENT_EXTRA.FRIENDLIST_TYPE,
 							Params.INTENT_VALUE.FRIENDLIST_FOLLOWS);
 					mActivity.startActivity(intent);
@@ -224,17 +254,19 @@ public class UserHomePageList extends CListView {
 			});
 			LVP.add(btn_params_follows);
 			// 粉丝数量
-			LVP.add(new CListViewParam(R.id.text_params_follows, "" + mUser.followers_count, true));
+			LVP.add(new CListViewParam(R.id.text_params_follows, ""
+					+ mUser.followers_count, true));
 			// 关注按钮
-			CListViewParam btn_params_followed = new CListViewParam(R.id.btn_params_followed,
-					null, true);
+			CListViewParam btn_params_followed = new CListViewParam(
+					R.id.btn_params_followed, null, true);
 			btn_params_followed.setOnclickLinstener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					// 打开关注列表
 					Intent intent = new Intent();
 					intent.setClass(mActivity, Tab4FriendActivity.class);
-					intent.putExtra(Params.INTENT_EXTRA.FRIENDLIST_USERID, mUser.uid);
+					intent.putExtra(Params.INTENT_EXTRA.FRIENDLIST_USERID,
+							mUser.uid);
 					intent.putExtra(Params.INTENT_EXTRA.FRIENDLIST_TYPE,
 							Params.INTENT_VALUE.FRIENDLIST_FOLLOWED);
 					mActivity.startActivity(intent);
@@ -242,7 +274,8 @@ public class UserHomePageList extends CListView {
 			});
 			LVP.add(btn_params_followed);
 			// 关注数量
-			LVP.add(new CListViewParam(R.id.text_params_followed, "" + mUser.followed_count, true));
+			LVP.add(new CListViewParam(R.id.text_params_followed, ""
+					+ mUser.followed_count, true));
 
 		} else {
 			if (obj == null) {
@@ -260,11 +293,13 @@ public class UserHomePageList extends CListView {
 				// 个人微博数据适配
 				Weibo weibo = (Weibo) obj;
 
-				LVP.add(new CListViewParam(R.id.text_nickname, weibo.uname, true));
+				LVP.add(new CListViewParam(R.id.text_nickname, weibo.uname,
+						true));
 
 				// VolleyLog.d("content:%s", weibo.content);
 
-				LVP.add(new CListViewParam(R.id.text_content, weibo.content, true));
+				LVP.add(new CListViewParam(R.id.text_content, weibo.content,
+						true));
 
 				final WeiboTypeData img = weibo.type_data;
 				if (img == null) {
@@ -272,10 +307,11 @@ public class UserHomePageList extends CListView {
 				} else {
 					img.fix();
 
-					LVP.add(new CListViewParam(R.id.img_weibo, R.drawable.img_default, true));
+					LVP.add(new CListViewParam(R.id.img_weibo,
+							R.drawable.img_default, true));
 
-					CListViewParam imgweiboLVP = new CListViewParam(R.id.img_weibo,
-							R.drawable.img_default, true);
+					CListViewParam imgweiboLVP = new CListViewParam(
+							R.id.img_weibo, R.drawable.img_default, true);
 					imgweiboLVP.setImgAsync(true);
 					imgweiboLVP.setItemTag(img.thumburl);
 					// VolleyLog.d("img.thumburl:%s", img.thumburl);
@@ -284,16 +320,20 @@ public class UserHomePageList extends CListView {
 						public void onClick(View v) {
 							// 放大图片浏览
 							// Intent intent = new Intent();
-							// intent.setClass(mActivity, WebViewActivity.class);
-							// intent.putExtra(Params.INTENT_EXTRA.WEBVIEW_TITLE, "图片浏览");
+							// intent.setClass(mActivity,
+							// WebViewActivity.class);
+							// intent.putExtra(Params.INTENT_EXTRA.WEBVIEW_TITLE,
+							// "图片浏览");
 							// intent.putExtra(Params.INTENT_EXTRA.WEBVIEW_URL,
 							// img.thumbmiddleurl);
 							// intent.putExtra(Params.INTENT_EXTRA.WEBVIEW_TYPE,
 							// WebViewActivity.TYPE_IMAGE);
 							// mActivity.startActivity(intent);
 
-							Intent intent = new Intent(mActivity, ImageZoomActivity.class);
-							intent.putExtra(Params.INTENT_EXTRA.WEBVIEW_URL, img.thumbmiddleurl);
+							Intent intent = new Intent(mActivity,
+									ImageZoomActivity.class);
+							intent.putExtra(Params.INTENT_EXTRA.WEBVIEW_URL,
+									img.thumbmiddleurl);
 							mActivity.startActivity(intent);
 						}
 					});
@@ -301,19 +341,23 @@ public class UserHomePageList extends CListView {
 				}
 
 				if (weibo.transpond_data instanceof JsonObject) {
-					Weibo transpond_data = JSONUtils.fromJson(weibo.transpond_data, Weibo.class);
-					// VolleyLog.d("jsonobject,transpond_data=%s", null == transpond_data ? "null"
+					Weibo transpond_data = JSONUtils.fromJson(
+							weibo.transpond_data, Weibo.class);
+					// VolleyLog.d("jsonobject,transpond_data=%s", null ==
+					// transpond_data ? "null"
 					// : transpond_data.content);
-					LVP.add(new CListViewParam(R.id.text_forward, transpond_data, true));
+					LVP.add(new CListViewParam(R.id.text_forward,
+							transpond_data, true));
 				} else {
 					LVP.add(new CListViewParam(R.id.text_forward, null, false));
 				}
 
-				LVP.add(new CListViewParam(R.id.text_datefrom, weibo.ctime, true));
+				LVP.add(new CListViewParam(R.id.text_datefrom, weibo.ctime,
+						true));
 				String zan = weibo.is_hearted == 1 ? "已赞" : "赞";
 				LVP.add(new CListViewParam(R.id.text_params, String.format(
-						"转发(%s) |评论(%s) | %s(%s) ", weibo.transpond, weibo.comment, zan,
-						weibo.heart), true));
+						"转发(%s) |评论(%s) | %s(%s) ", weibo.transpond,
+						weibo.comment, zan, weibo.heart), true));
 
 			}
 		}
@@ -353,17 +397,21 @@ public class UserHomePageList extends CListView {
 			mUser = JSONUtils.fromJson(response, User.class);
 
 			if (null == mUser) {
-				new AlertDialog.Builder(mActivity).setCancelable(false).setTitle("用户不存在")
-						.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int whichButton) {
-								((Activity) mActivity).finish();
-							}
-						}).show();
+				new AlertDialog.Builder(mActivity)
+						.setCancelable(false)
+						.setTitle("用户不存在")
+						.setPositiveButton("确定",
+								new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface dialog,
+											int whichButton) {
+										((Activity) mActivity).finish();
+									}
+								}).show();
 			} else if (mUser.status instanceof JsonObject) {
 				((CActivity) mActivity).showProgress();
 				mUserID = mUser.uid;
-				new Api(callback, mActivity).user_timeline(PuApp.get().getToken(), mUserID,
-						mPerpage, page);
+				new Api(callback, mActivity).user_timeline(PuApp.get()
+						.getToken(), mUserID, mPerpage, page);
 			} else if (GETMORE == actionType) {
 				getmoreListViewFinish();
 				actionType = IDLE;
@@ -401,9 +449,11 @@ public class UserHomePageList extends CListView {
 		super.asyncData();
 
 		if (mUserID != null) {
-			new Api(usercallback, mActivity).showuser(PuApp.get().getToken(), mUserID);
+			new Api(usercallback, mActivity).showuser(PuApp.get().getToken(),
+					mUserID);
 		} else if (mUserName != null) {
-			new Api(usercallback, mActivity).showuserbyname(PuApp.get().getToken(), mUserName);
+			new Api(usercallback, mActivity).showuserbyname(PuApp.get()
+					.getToken(), mUserName);
 		}
 	}
 

@@ -1,4 +1,4 @@
-package com.xyhui.activity.weibo;
+package com.xyhui.activity.photo;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -15,19 +15,14 @@ import com.xyhui.R;
 import com.xyhui.utils.Params;
 import com.xyhui.widget.FLActivity;
 
-/**
- * 个人主页
- * @author Robin
- *
- */
-public class UserHomePageActivity extends FLActivity {
+public class AlbumListActivity extends FLActivity {
+
 	private Button btn_back;
 
-	private PullToRefreshListView user_view_listview;
-	private UserHomePageList mUserViewListView;
+	private PullToRefreshListView photo_listview;
+	private AlbumList mAlbumListView;
 
 	private String user_id;
-	private String user_name;
 
 	@Override
 	public void init() {
@@ -36,13 +31,7 @@ public class UserHomePageActivity extends FLActivity {
 			VolleyLog.d("got userid:%s", user_id);
 		}
 
-		if (getIntent().hasExtra(Params.INTENT_EXTRA.USERNAME)) {
-			user_name = getIntent().getStringExtra(Params.INTENT_EXTRA.USERNAME);
-			user_name = user_name.replace("@", "");
-			VolleyLog.d("got user_name:%s", user_name);
-		}
-
-		if (TextUtils.isEmpty(user_id) && TextUtils.isEmpty(user_name)) {
+		if (TextUtils.isEmpty(user_id)) {
 			VolleyLog.d("no userid and user_name");
 			finish();
 			return;
@@ -51,10 +40,10 @@ public class UserHomePageActivity extends FLActivity {
 
 	@Override
 	public void linkUiVar() {
-		setContentView(R.layout.activity_user_view);
+		setContentView(R.layout.activity_photo_albumlist);
 
 		btn_back = (Button) findViewById(R.id.btn_back);
-		user_view_listview = (PullToRefreshListView) findViewById(R.id.user_view_listview);
+		photo_listview = (PullToRefreshListView) findViewById(R.id.photo_listview);
 	}
 
 	@Override
@@ -73,7 +62,7 @@ public class UserHomePageActivity extends FLActivity {
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(Params.INTENT_ACTION.WEIBOLIST);
 		registerReceiver(mEvtReceiver, filter);
-		mUserViewListView = new UserHomePageList(user_view_listview, mActivity, user_id, user_name);
+		mAlbumListView = new AlbumList(photo_listview, mActivity, user_id);
 	}
 
 	@Override
@@ -86,8 +75,8 @@ public class UserHomePageActivity extends FLActivity {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			if (intent.getAction().equals(Params.INTENT_ACTION.WEIBOLIST)) {
-				if (mUserViewListView != null) {
-					mUserViewListView.refreshListViewStart();
+				if (mAlbumListView != null) {
+					mAlbumListView.refreshListViewStart();
 				}
 			}
 		}

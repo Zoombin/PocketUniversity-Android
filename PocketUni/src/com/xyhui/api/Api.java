@@ -987,4 +987,12 @@ public class Api extends BaseApi {
 		params.put("count", count + "");
 		Client.get("Donate", "donateList", params, handler);
 	}
+	
+	/******************相册****************/
+	public void getAlbumList(RequestParams params,String uid,int page,int count) {
+		params.put("uid", uid );
+		params.put("p", page + "");
+		params.put("count", count + "");
+		Client.get("Album", "albumList", params, handler);
+	}
 }
