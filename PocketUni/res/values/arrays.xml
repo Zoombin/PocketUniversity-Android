@@ -22,6 +22,11 @@
         <item>自己可见</item>
         <item>凭密码访问</item>
     </string-array>
+    <string-array name="photo_menu">
+        <item>修改</item>
+        <item>删除</item>
+        <item>上传照片</item>
+    </string-array>
 
     <!-- Used in GroupMemberListView -->
     <string-array name="member_manage_demote">

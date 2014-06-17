@@ -73,6 +73,7 @@ public class AlbumList extends CListView {
 				intent.putExtra(Params.INTENT_EXTRA.USER_ID, album.userId);
 				intent.putExtra(Params.INTENT_EXTRA.PHOTO_PRIVACY, album.privacy);
 				intent.putExtra(Params.INTENT_EXTRA.ALBUM_ID, album.id);
+				intent.putExtra(Params.INTENT_EXTRA.ALBUM_NAME, album.name);
 				mActivity.startActivity(intent);
 			}
 		});

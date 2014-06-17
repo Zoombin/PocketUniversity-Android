@@ -20,6 +20,7 @@ public class Params {
 		public static final String USER_ID = "intent.user.id";
 		public static final String PHOTO_PRIVACY = "intent.photo.privacy";
 		public static final String ALBUM_ID = "intent.album.id";
+		public static final String ALBUM_NAME = "intent.album.name";
 		public static final String GROUP_ID = "intent.group.id";
 		public static final String BLOG_ID = "intent.blog.id";
 		public static final String EVENT_COMMENT_TOID = "intent.event.comment.toid";

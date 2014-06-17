@@ -1047,14 +1047,14 @@ public class Api extends BaseApi {
 	 * @param passwd
 	 */
 	public void editAlbum(RequestParams params, String albumid, String name,
-			String privacy, String userid, String passwd) {
-		if (privacy.equals("4")) {
+			int privacy, String userid, String passwd) {
+		if (privacy == 4) {
 			params.put("privacy_data", MD5.MD5Encode(passwd + "_" + userid)
 					.toLowerCase());
 		}
 		params.put("id", albumid);
 		params.put("name", name);
-		params.put("privacy", privacy);
+		params.put("privacy", privacy + "");
 		Client.get("Album", "editAlbum", params, handler);
 	}
 
