@@ -2,6 +2,7 @@ package com.xyhui.activity.photo;
 
 import org.json.JSONObject;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.BroadcastReceiver;
@@ -9,6 +10,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.database.Cursor;
+import android.net.Uri;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -21,6 +26,7 @@ import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 
+import com.mslibs.utils.ImageUtils;
 import com.mslibs.utils.NotificationsUtil;
 import com.mslibs.utils.VolleyLog;
 import com.xyhui.R;
@@ -79,6 +85,9 @@ public class PhotoListActivity extends FLActivity {
 		btn_back = (Button) findViewById(R.id.btn_back);
 		btn_menu = (Button) findViewById(R.id.btn_menu);
 		photo_listview = (GridView) findViewById(R.id.event_photo_gridview);
+		
+		String user_id = new PrefUtil().getPreference(Params.LOCAL.UID);
+		btn_menu.setVisibility(user_id.equals(this.user_id) ? View.VISIBLE :View.GONE);
 	}
 
 	@Override
@@ -119,6 +128,7 @@ public class PhotoListActivity extends FLActivity {
 						}
 						case 2: {
 							// 上传
+							BuildImageDialog(mActivity);
 							break;
 						}
 
@@ -287,6 +297,93 @@ public class PhotoListActivity extends FLActivity {
 		}
 
 	}
+	
+	/****上传照片***/
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (resultCode != Activity.RESULT_OK) {
+			return;
+		}
+
+		switch (requestCode) {
+
+		case Params.REQUEST_CODE.TAKE_PHOTO:
+
+			try {
+				String mImagePath = Environment.getExternalStorageDirectory()
+						+ "/tmp_upload.jpg";
+				ImageUtils.resampleImageAndSaveToNewLocation(mImagePath,
+						mImagePath);
+				uploadImg(mImagePath);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+			break;
+		case Params.REQUEST_CODE.GET_PHOTO:
+
+			try {
+				Uri uri = data.getData();
+				String urlScheme = uri.getScheme();
+				String pathInput = uri.getPath();
+
+				if (urlScheme.equals("file")) {
+					pathInput = uri.getPath();
+				} else if (urlScheme.equals("content")) {
+					String[] proj = { MediaStore.Images.Media.DATA };
+					Cursor cursor = getContentResolver().query(uri, proj, null, null, null);
+					int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+					cursor.moveToFirst();
+					pathInput = cursor.getString(column_index);
+					cursor.close();
+				}
+
+				if (!TextUtils.isEmpty(pathInput)) {
+					String mImagePath = Environment
+							.getExternalStorageDirectory() + "/tmp_upload.jpg";
+					ImageUtils.resampleImageAndSaveToNewLocation(pathInput,
+							mImagePath);
+					uploadImg(mImagePath);
+				} else {
+					NotificationsUtil
+							.ToastBottomMsg(getBaseContext(), "无法读入图片");
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			break;
+		}
+	}
+
+	private void uploadImg(String path) {
+		showProgress("正在提交请求", "请稍候...");
+		new Api(new CallBack() {
+			@Override
+			public void onSuccess(String response) {
+				super.onSuccess(response);
+				dismissProgress();
+				NotificationsUtil.ToastBottomMsg(mActivity, "操作成功");
+				
+				// 通知更新
+				{
+					Intent intent = new Intent(Params.INTENT_ACTION.PHOTOLIST);
+					sendBroadcast(intent);
+				}
+				{
+					Intent intent = new Intent(Params.INTENT_ACTION.ALBUMLIST);
+					sendBroadcast(intent);
+				}
+			}
+
+			@Override
+			public void onFailure(String message) {
+				super.onFailure(message);
+				dismissProgress();
+				NotificationsUtil.ToastBottomMsg(mActivity, "操作失败");
+			}
+		}, mActivity).addPhoto(PuApp.get().getToken(), path, album_id);
+	}
+	/*******/
 
 	private PhotoGridView mPhotoGridView;
 
@@ -301,6 +398,7 @@ public class PhotoListActivity extends FLActivity {
 		public void onReceive(Context context, Intent intent) {
 			if (intent.getAction().equals(Params.INTENT_ACTION.PHOTOLIST)) {
 				if (mPhotoGridView != null) {
+					mPhotoGridView.actionType = PhotoGridView.IDLE;
 					mPhotoGridView.refreshListViewStart();
 				}
 			}

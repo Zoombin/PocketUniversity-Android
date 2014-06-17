@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -28,6 +29,7 @@ import com.xyhui.activity.PuApp;
 import com.xyhui.api.Api;
 import com.xyhui.api.CallBack;
 import com.xyhui.utils.Params;
+import com.xyhui.utils.PrefUtil;
 import com.xyhui.widget.FLActivity;
 
 public class AlbumListActivity extends FLActivity {
@@ -59,6 +61,9 @@ public class AlbumListActivity extends FLActivity {
 		btn_back = (Button) findViewById(R.id.btn_back);
 		btn_add = (Button) findViewById(R.id.btn_add);
 		photo_listview = (PullToRefreshListView) findViewById(R.id.photo_listview);
+		
+		String user_id = new PrefUtil().getPreference(Params.LOCAL.UID);
+		btn_add.setVisibility(user_id.equals(this.user_id) ? View.VISIBLE :View.GONE);
 	}
 
 	@Override

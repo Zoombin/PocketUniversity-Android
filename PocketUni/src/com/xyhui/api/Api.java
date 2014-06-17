@@ -1014,7 +1014,6 @@ public class Api extends BaseApi {
 		params.put("id", albumid);
 		Client.get("Album", "album", params, handler);
 	}
-	
 
 	/**
 	 * 添加相册
@@ -1032,7 +1031,7 @@ public class Api extends BaseApi {
 					.toLowerCase());
 		}
 		params.put("name", name);
-		params.put("privacy", privacy+"");
+		params.put("privacy", privacy + "");
 		Client.get("Album", "addAlbum", params, handler);
 	}
 
@@ -1067,6 +1066,27 @@ public class Api extends BaseApi {
 	public void delAlbum(RequestParams params, String albumid) {
 		params.put("id", albumid);
 		Client.get("Album", "delAlbum", params, handler);
+	}
+
+	/**
+	 * 添加照片
+	 * 
+	 * @param params
+	 * @param pic
+	 * @param album_id
+	 */
+	public void addPhoto(RequestParams params, String path, String album_id) {
+		if (!TextUtils.isEmpty(path)) {
+			VolleyLog.d("upload image: %s ", path);
+			File myFile = new File(path);
+			try {
+				params.put("pic", myFile);
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
+		}
+		params.put("album_id", album_id);
+		Client.get("Album", "addPhoto", params, handler);
 	}
 
 	public void delPhoto(RequestParams params, String picid) {
