@@ -18,11 +18,12 @@ import com.mslibs.utils.NotificationsUtil;
 import com.mslibs.utils.VolleyLog;
 import com.xyhui.R;
 import com.xyhui.utils.Params;
+import com.xyhui.utils.PrefUtil;
 import com.xyhui.widget.FLActivity;
 
 public class PhotoListActivity extends FLActivity {
 
-	private Button btn_back;
+	private Button btn_back, btn_menu;
 
 	private GridView photo_listview;
 
@@ -43,8 +44,7 @@ public class PhotoListActivity extends FLActivity {
 			VolleyLog.d("got privacy:%s", privacy);
 		}
 		if (getIntent().hasExtra(Params.INTENT_EXTRA.ALBUM_ID)) {
-			album_id = getIntent().getStringExtra(
-					Params.INTENT_EXTRA.ALBUM_ID);
+			album_id = getIntent().getStringExtra(Params.INTENT_EXTRA.ALBUM_ID);
 			VolleyLog.d("got albumid:%s", album_id);
 		}
 
@@ -61,6 +61,7 @@ public class PhotoListActivity extends FLActivity {
 		setContentView(R.layout.activity_photo_album);
 
 		btn_back = (Button) findViewById(R.id.btn_back);
+		btn_menu = (Button) findViewById(R.id.btn_menu);
 		photo_listview = (GridView) findViewById(R.id.event_photo_gridview);
 	}
 
@@ -73,6 +74,13 @@ public class PhotoListActivity extends FLActivity {
 				finish();
 			}
 		});
+		btn_menu.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+
+			}
+		});
 	}
 
 	@Override
@@ -80,28 +88,41 @@ public class PhotoListActivity extends FLActivity {
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(Params.INTENT_ACTION.PHOTOLIST);
 		registerReceiver(mEvtReceiver, filter);
-		if (privacy.equals("4")) {
+
+		String localUserid = new PrefUtil().getPreference(Params.LOCAL.UID);
+		if (privacy.equals("4") && !localUserid.equals(user_id)) {
 			// 需要密码
 			final EditText et = new EditText(mActivity);
-			new AlertDialog.Builder(mActivity).setView(et).setNegativeButton("确定", new DialogInterface.OnClickListener() {
-				
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					if(et.getText().toString().trim().equals("")){
-						NotificationsUtil.ToastTopMsg(mActivity, "请输入密码！");
-						return;
-					}
-					mPhotoGridView = new PhotoGridView(photo_listview, mActivity,album_id ,user_id, et.getText().toString().trim());	
-					dialog.dismiss();
-				}
-			}).setPositiveButton("取消", null).setTitle("请输入访问密码！").show();
+			new AlertDialog.Builder(mActivity)
+					.setView(et)
+					.setNegativeButton("确定",
+							new DialogInterface.OnClickListener() {
+
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {
+									if (et.getText().toString().trim()
+											.equals("")) {
+										NotificationsUtil.ToastTopMsg(
+												mActivity, "请输入密码！");
+										return;
+									}
+									mPhotoGridView = new PhotoGridView(
+											photo_listview, mActivity,
+											album_id, user_id, et.getText()
+													.toString().trim());
+									dialog.dismiss();
+								}
+							}).setPositiveButton("取消", null)
+					.setTitle("请输入访问密码！").show();
 		} else {
 			// 不需要密码 从服务器返回数据
-			mPhotoGridView = new PhotoGridView(photo_listview, mActivity,album_id, user_id, null);
+			mPhotoGridView = new PhotoGridView(photo_listview, mActivity,
+					album_id, user_id, null);
 		}
-		
+
 	}
-	
+
 	private PhotoGridView mPhotoGridView;
 
 	@Override

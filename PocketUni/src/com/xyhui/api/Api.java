@@ -997,24 +997,90 @@ public class Api extends BaseApi {
 		Client.get("Album", "albumList", params, handler);
 	}
 
+	/**
+	 * 获取相册详情
+	 * 
+	 * @param params
+	 * @param albumid
+	 * @param userid
+	 * @param passwd
+	 */
 	public void getAlbum(RequestParams params, String albumid, String userid,
 			String passwd) {
 		if (passwd != null) {
-			params.put("pass", MD5.MD5Encode(passwd + "_" + userid).toLowerCase());
+			params.put("pass", MD5.MD5Encode(passwd + "_" + userid)
+					.toLowerCase());
 		}
 		params.put("id", albumid);
 		Client.get("Album", "album", params, handler);
 	}
 	
-	public void delPhoto(RequestParams params,String picid){
+
+	/**
+	 * 添加相册
+	 * 
+	 * @param params
+	 * @param name
+	 * @param privacy
+	 * @param userid
+	 * @param passwd
+	 */
+	public void addAlbum(RequestParams params, String name, int privacy,
+			String userid, String passwd) {
+		if (privacy == 4) {
+			params.put("privacy_data", MD5.MD5Encode(passwd + "_" + userid)
+					.toLowerCase());
+		}
+		params.put("name", name);
+		params.put("privacy", privacy+"");
+		Client.get("Album", "addAlbum", params, handler);
+	}
+
+	/**
+	 * 修改相册
+	 * 
+	 * @param params
+	 * @param albumid
+	 * @param name
+	 * @param privacy
+	 * @param userid
+	 * @param passwd
+	 */
+	public void editAlbum(RequestParams params, String albumid, String name,
+			String privacy, String userid, String passwd) {
+		if (privacy.equals("4")) {
+			params.put("privacy_data", MD5.MD5Encode(passwd + "_" + userid)
+					.toLowerCase());
+		}
+		params.put("id", albumid);
+		params.put("name", name);
+		params.put("privacy", privacy);
+		Client.get("Album", "editAlbum", params, handler);
+	}
+
+	/**
+	 * 删除相册
+	 * 
+	 * @param params
+	 * @param albumid
+	 */
+	public void delAlbum(RequestParams params, String albumid) {
+		params.put("id", albumid);
+		Client.get("Album", "delAlbum", params, handler);
+	}
+
+	public void delPhoto(RequestParams params, String picid) {
 		params.put("id", picid);
 		Client.get("Album", "delPhoto", params, handler);
 	}
-	public void setCover(RequestParams params,String picid){
+
+	public void setCover(RequestParams params, String picid) {
 		params.put("id", picid);
 		Client.get("Album", "setCover", params, handler);
 	}
-	public void updatePhoto(RequestParams params,String picid,String picname,String albumId){
+
+	public void updatePhoto(RequestParams params, String picid, String picname,
+			String albumId) {
 		params.put("id", picid);
 		params.put("name", picname);
 		params.put("albumId", albumId);
