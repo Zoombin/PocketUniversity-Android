@@ -48,6 +48,13 @@
         <item>查看活动签到码</item>
         <item>取消操作</item>
     </string-array> 
+     <string-array name="photo_click_admin">
+        <item>查看</item>
+        <item>设为封面</item>
+        <item>修改</item>
+        <item>删除</item>
+        <item>取消</item>
+    </string-array> 
     <string-array name="event_lucky_admin">
         <item>抽签</item>
         <item>查看活动签到码</item>

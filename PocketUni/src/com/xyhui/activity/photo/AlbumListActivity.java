@@ -12,6 +12,7 @@ import android.widget.Button;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.mslibs.utils.VolleyLog;
 import com.xyhui.R;
+import com.xyhui.activity.weibo.UserHomePageList;
 import com.xyhui.utils.Params;
 import com.xyhui.widget.FLActivity;
 
@@ -20,7 +21,6 @@ public class AlbumListActivity extends FLActivity {
 	private Button btn_back;
 
 	private PullToRefreshListView photo_listview;
-	private AlbumList mAlbumListView;
 
 	private String user_id;
 
@@ -60,10 +60,12 @@ public class AlbumListActivity extends FLActivity {
 	@Override
 	public void ensureUi() {
 		IntentFilter filter = new IntentFilter();
-		filter.addAction(Params.INTENT_ACTION.WEIBOLIST);
+		filter.addAction(Params.INTENT_ACTION.ALBUMLIST);
 		registerReceiver(mEvtReceiver, filter);
-		mAlbumListView = new AlbumList(photo_listview, mActivity, user_id);
+		mAlbumList = new AlbumList(photo_listview, mActivity, user_id);
 	}
+	
+	private AlbumList mAlbumList;
 
 	@Override
 	protected void onDestroy() {
@@ -74,9 +76,9 @@ public class AlbumListActivity extends FLActivity {
 	public BroadcastReceiver mEvtReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			if (intent.getAction().equals(Params.INTENT_ACTION.WEIBOLIST)) {
-				if (mAlbumListView != null) {
-					mAlbumListView.refreshListViewStart();
+			if (intent.getAction().equals(Params.INTENT_ACTION.ALBUMLIST)) {
+				if (mAlbumList != null) {
+					mAlbumList.refreshListViewStart();
 				}
 			}
 		}

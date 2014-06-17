@@ -3,6 +3,7 @@ package com.xyhui.activity.photo;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.view.View;
 import android.view.View.OnClickListener;
 
@@ -12,9 +13,12 @@ import com.mslibs.widget.CListView;
 import com.mslibs.widget.CListViewParam;
 import com.xyhui.R;
 import com.xyhui.activity.PuApp;
+import com.xyhui.activity.weibo.UserHomePageActivity;
 import com.xyhui.api.Api;
 import com.xyhui.api.ListCallBack;
 import com.xyhui.types.Album;
+import com.xyhui.utils.Params;
+import com.xyhui.utils.PrefUtil;
 
 public class AlbumList extends CListView {
 
@@ -47,14 +51,6 @@ public class AlbumList extends CListView {
 				getmoreListViewStart();
 			}
 		});
-
-		super.setItemOnclickLinstener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-
-			}
-		});
 	}
 
 	@Override
@@ -66,6 +62,21 @@ public class AlbumList extends CListView {
 		avatarLVP.setImgAsync(true);
 		avatarLVP.setItemTag(album.cover);
 		LVP.add(avatarLVP);
+		CListViewParam layout = new CListViewParam(R.id.layout, null, true);
+		layout.setOnclickLinstener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				//当前用户
+				// 个人首页
+				Intent intent = new Intent(mActivity, PhotoListActivity.class);
+				intent.putExtra(Params.INTENT_EXTRA.USER_ID, album.userId);
+				intent.putExtra(Params.INTENT_EXTRA.PHOTO_PRIVACY, album.privacy);
+				intent.putExtra(Params.INTENT_EXTRA.ALBUM_ID, album.id);
+				mActivity.startActivity(intent);
+			}
+		});
+		LVP.add(layout);
 		
 		LVP.add(new CListViewParam(R.id.text_albumname, "相册名称:"+album.name, true));
 		LVP.add(new CListViewParam(R.id.text_photonum, "图片:"+album.photoCount, true));

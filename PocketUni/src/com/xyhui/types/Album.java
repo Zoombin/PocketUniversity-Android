@@ -9,6 +9,11 @@ public class Album implements Parcelable {
 	public String name;
 	public String mTime;
 	public String photoCount;
+	// privacy(访问权限:
+	// 1、所有人可见
+	// 2、 仅好友可见
+	// 3、 仅自己可见
+	// 4、凭密码访问)
 	public String privacy;
 	public String cover;
 

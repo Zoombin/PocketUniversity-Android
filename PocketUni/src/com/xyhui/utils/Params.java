@@ -18,6 +18,8 @@ public class Params {
 		public static final String CITY = "intent.city";
 		public static final String USER = "intent.user";
 		public static final String USER_ID = "intent.user.id";
+		public static final String PHOTO_PRIVACY = "intent.photo.privacy";
+		public static final String ALBUM_ID = "intent.album.id";
 		public static final String GROUP_ID = "intent.group.id";
 		public static final String BLOG_ID = "intent.blog.id";
 		public static final String EVENT_COMMENT_TOID = "intent.event.comment.toid";
@@ -81,6 +83,8 @@ public class Params {
 		public static final String BLOGLIST = "action.refresh.bloglist";
 		public static final String EVENTLIST = "action.refresh.eventlist";
 		public static final String WEIBOLIST = "action.refresh.weibolist";
+		public static final String ALBUMLIST = "action.refresh.albumlist";
+		public static final String PHOTOLIST = "action.refresh.photolist";
 		public static final String BLOGVIEW = "action.refresh.blogview";
 		public static final String WEIBOVIEW = "action.refresh.weiboview";
 	}

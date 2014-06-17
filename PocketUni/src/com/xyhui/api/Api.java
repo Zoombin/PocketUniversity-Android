@@ -7,6 +7,7 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.loopj.android.http.RequestParams;
+import com.mslibs.utils.MD5;
 import com.mslibs.utils.VolleyLog;
 
 public class Api extends BaseApi {
@@ -138,7 +139,7 @@ public class Api extends BaseApi {
 		params.put("from", DEVICE);
 		Client.get("Statuses", "upload", params, handler);
 	}
-	
+
 	public void delweibo(RequestParams params, String weiboid) {
 		params.put("id", weiboid);
 		Client.get("Statuses", "destroy", params, handler);
@@ -510,7 +511,6 @@ public class Api extends BaseApi {
 		params.put("p", page + "");
 		Client.get("Group", "ditu", params, handler);
 	}
-	
 
 	public void EventUploadImg(RequestParams params, String eventid, String path) {
 		params.put("id", eventid);
@@ -526,7 +526,6 @@ public class Api extends BaseApi {
 		}
 		Client.get("event", "addPhoto", params, handler);
 	}
-
 
 	public void getRecommEventList(RequestParams params, int count) {
 		params.put("count", count + "");
@@ -616,6 +615,7 @@ public class Api extends BaseApi {
 		params.put("id", id);
 		Client.get("Event", "join", params, handler);
 	}
+
 	public void grade(RequestParams params, String id, int score) {
 		params.put("id", id);
 		params.put("score", score);
@@ -987,12 +987,37 @@ public class Api extends BaseApi {
 		params.put("count", count + "");
 		Client.get("Donate", "donateList", params, handler);
 	}
-	
-	/******************相册****************/
-	public void getAlbumList(RequestParams params,String uid,int page,int count) {
-		params.put("uid", uid );
+
+	/****************** 相册 ****************/
+	public void getAlbumList(RequestParams params, String uid, int page,
+			int count) {
+		params.put("uid", uid);
 		params.put("p", page + "");
 		params.put("count", count + "");
 		Client.get("Album", "albumList", params, handler);
+	}
+
+	public void getAlbum(RequestParams params, String albumid, String userid,
+			String passwd) {
+		if (passwd != null) {
+			params.put("pass", MD5.MD5Encode(passwd + "_" + userid).toLowerCase());
+		}
+		params.put("id", albumid);
+		Client.get("Album", "album", params, handler);
+	}
+	
+	public void delPhoto(RequestParams params,String picid){
+		params.put("id", picid);
+		Client.get("Album", "delPhoto", params, handler);
+	}
+	public void setCover(RequestParams params,String picid){
+		params.put("id", picid);
+		Client.get("Album", "setCover", params, handler);
+	}
+	public void updatePhoto(RequestParams params,String picid,String picname,String albumId){
+		params.put("id", picid);
+		params.put("name", picname);
+		params.put("albumId", albumId);
+		Client.get("Album", "updatePhoto", params, handler);
 	}
 }
