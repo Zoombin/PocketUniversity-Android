@@ -23,6 +23,7 @@ import com.xyhui.R;
 import com.xyhui.activity.ImageZoomActivity;
 import com.xyhui.activity.PuApp;
 import com.xyhui.activity.Tab4FriendActivity;
+import com.xyhui.activity.group.GroupListActivity;
 import com.xyhui.activity.photo.AlbumListActivity;
 import com.xyhui.api.Api;
 import com.xyhui.api.CallBack;
@@ -207,62 +208,29 @@ public class UserHomePageList extends CListView {
 				LVP.add(btn_message);
 			}
 
-			// 相册按钮
-			CListViewParam btn_photo = new CListViewParam(R.id.btn_photo, null,
-					true);
-
-			btn_photo.setOnclickLinstener(new OnClickListener() {
+//			LVP.add(btn_photo);
+			// 部落按钮
+			CListViewParam btn_params_buluo = new CListViewParam(
+					R.id.btn_params_buluo, null, true);
+			btn_params_buluo.setOnclickLinstener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					Intent intent = new Intent();
-					intent.setClass(mActivity, AlbumListActivity.class);
-					intent.putExtra(Params.INTENT_EXTRA.USER_ID,
-							mUser.uid);
+					// 打开部落
+					Intent intent = new Intent(mActivity, GroupListActivity.class);
 					mActivity.startActivity(intent);
 				}
 			});
-			LVP.add(btn_photo);
-
-			// 微博按钮
-			CListViewParam btn_params_weibo = new CListViewParam(
-					R.id.btn_params_weibo, null, true);
-			btn_params_weibo.setOnclickLinstener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-
-				}
-			});
-			LVP.add(btn_params_weibo);
-			// 微博数量
-			LVP.add(new CListViewParam(R.id.text_params_weibo, ""
-					+ mUser.weibo_count, true));
-			// 粉丝按钮
-			CListViewParam btn_params_follows = new CListViewParam(
-					R.id.btn_params_follows, null, true);
-			btn_params_follows.setOnclickLinstener(new OnClickListener() {
+			LVP.add(btn_params_buluo);
+//			// 微博数量
+//			LVP.add(new CListViewParam(R.id.text_params_weibo, ""
+//					+ mUser.weibo_count, true));
+			// 扑友按钮
+			CListViewParam btn_params_puyou = new CListViewParam(
+					R.id.btn_params_puyou, null, true);
+			btn_params_puyou.setOnclickLinstener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					// 打开粉丝列表
-					Intent intent = new Intent();
-					intent.setClass(mActivity, Tab4FriendActivity.class);
-					intent.putExtra(Params.INTENT_EXTRA.FRIENDLIST_USERID,
-							mUser.uid);
-					intent.putExtra(Params.INTENT_EXTRA.FRIENDLIST_TYPE,
-							Params.INTENT_VALUE.FRIENDLIST_FOLLOWS);
-					mActivity.startActivity(intent);
-				}
-			});
-			LVP.add(btn_params_follows);
-			// 粉丝数量
-			LVP.add(new CListViewParam(R.id.text_params_follows, ""
-					+ mUser.followers_count, true));
-			// 关注按钮
-			CListViewParam btn_params_followed = new CListViewParam(
-					R.id.btn_params_followed, null, true);
-			btn_params_followed.setOnclickLinstener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					// 打开关注列表
 					Intent intent = new Intent();
 					intent.setClass(mActivity, Tab4FriendActivity.class);
 					intent.putExtra(Params.INTENT_EXTRA.FRIENDLIST_USERID,
@@ -272,10 +240,28 @@ public class UserHomePageList extends CListView {
 					mActivity.startActivity(intent);
 				}
 			});
-			LVP.add(btn_params_followed);
-			// 关注数量
-			LVP.add(new CListViewParam(R.id.text_params_followed, ""
-					+ mUser.followed_count, true));
+			LVP.add(btn_params_puyou);
+//			// 粉丝数量
+//			LVP.add(new CListViewParam(R.id.text_params_follows, ""
+//					+ mUser.followers_count, true));
+			// 相册按钮
+			CListViewParam btn_params_album = new CListViewParam(
+					R.id.btn_params_album, null, true);
+			btn_params_album.setOnclickLinstener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					Intent intent = new Intent();
+					intent.setClass(mActivity, AlbumListActivity.class);
+					intent.putExtra(Params.INTENT_EXTRA.USER_ID,
+							mUser.uid);
+					mActivity.startActivity(intent);
+					
+				}
+			});
+			LVP.add(btn_params_album);
+//			// 关注数量
+//			LVP.add(new CListViewParam(R.id.text_params_followed, ""
+//					+ mUser.followed_count, true));
 
 		} else {
 			if (obj == null) {

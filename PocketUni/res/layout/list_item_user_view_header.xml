@@ -100,7 +100,7 @@
                 android:background="@drawable/btn_selector_message"
                 android:visibility="gone" />
 
-            <Button
+           <!--  <Button
                 android:id="@+id/btn_photo"
                 android:layout_width="98dip"
                 android:layout_height="42dip"
@@ -110,7 +110,7 @@
                 android:layout_marginBottom="4dip"
                 android:layout_marginLeft="4dip"
                 android:background="@drawable/btn_user_photo"
-                android:text="相册" />
+                android:text="相册" /> -->
         </RelativeLayout>
     </LinearLayout>
 
@@ -127,7 +127,7 @@
             android:padding="4dip" >
 
             <LinearLayout
-                android:id="@+id/btn_params_weibo"
+                android:id="@+id/btn_params_buluo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -136,7 +136,7 @@
                 android:orientation="vertical" >
 
                 <TextView
-                    android:id="@+id/text_params_weibo"
+                    android:id="@+id/text_params_buluo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:shadowColor="#fff"
@@ -145,7 +145,7 @@
                     android:shadowRadius="0.01"
                     android:text="2012"
                     android:textColor="#666"
-                    android:textSize="16sp"
+                    android:textSize="16sp" android:visibility="gone"
                     android:textStyle="bold" />
 
                 <TextView
@@ -155,13 +155,13 @@
                     android:shadowDx="0"
                     android:shadowDy="1"
                     android:shadowRadius="0.01"
-                    android:text="微博"
+                    android:text="部落"
                     android:textColor="#999"
                     android:textSize="12sp" />
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/btn_params_followed"
+                android:id="@+id/btn_params_puyou"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -170,16 +170,16 @@
                 android:orientation="vertical" >
 
                 <TextView
-                    android:id="@+id/text_params_followed"
+                    android:id="@+id/text_params_puyou"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:shadowColor="#fff"
-                    android:shadowDx="0"
+                    android:shadowDx="0" 
                     android:shadowDy="1"
-                    android:shadowRadius="0.01"
+                    android:shadowRadius="0.01" android:visibility="gone"
                     android:text="169"
                     android:textColor="#666"
-                    android:textSize="16sp"
+                    android:textSize="16sp" 
                     android:textStyle="bold" />
 
                 <TextView
@@ -189,13 +189,13 @@
                     android:shadowDx="0"
                     android:shadowDy="1"
                     android:shadowRadius="0.01"
-                    android:text="关注"
+                    android:text="扑友"
                     android:textColor="#999"
                     android:textSize="12sp" />
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/btn_params_follows"
+                android:id="@+id/btn_params_album"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -204,12 +204,12 @@
                 android:orientation="vertical" >
 
                 <TextView
-                    android:id="@+id/text_params_follows"
+                    android:id="@+id/text_params_album"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:shadowColor="#fff"
                     android:shadowDx="0"
-                    android:shadowDy="1"
+                    android:shadowDy="1" android:visibility="gone"
                     android:shadowRadius="0.01"
                     android:text="357"
                     android:textColor="#666"
@@ -223,7 +223,7 @@
                     android:shadowDx="0"
                     android:shadowDy="1"
                     android:shadowRadius="0.01"
-                    android:text="粉丝"
+                    android:text="相册"
                     android:textColor="#999"
                     android:textSize="12sp" />
             </LinearLayout>
