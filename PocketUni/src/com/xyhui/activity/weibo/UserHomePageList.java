@@ -2,6 +2,8 @@ package com.xyhui.activity.weibo;
 
 import java.util.ArrayList;
 
+import org.json.JSONObject;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -10,6 +12,8 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
 
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
@@ -145,6 +149,25 @@ public class UserHomePageList extends CListView {
 			LVP.add(new CListViewParam(R.id.text_info, info, true));
 
 			String uid = new PrefUtil().getPreference(Params.LOCAL.UID);
+			boolean isSelf = uid.equals(mUserID);
+			String sign = mUser.sign;
+			if (sign == null || sign.equals(""))
+				if (isSelf)
+					sign = "[请点此输入签名]";
+
+			// 个性签名
+			CListViewParam gexingqianming = new CListViewParam(
+					R.id.text_gexinqianming, sign, true);
+			if (isSelf)
+				gexingqianming.setOnclickLinstener(new OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						// 更新个性签名
+						updateGexingQianMing();
+					}
+				});
+			LVP.add(gexingqianming);
 			// VolleyLog.d("got uid:%s  user.uid:%s  isfollowed:%s", uid,
 			// mUser.uid,
 			// mUser.is_followed);
@@ -208,7 +231,7 @@ public class UserHomePageList extends CListView {
 				LVP.add(btn_message);
 			}
 
-//			LVP.add(btn_photo);
+			// LVP.add(btn_photo);
 			// 部落按钮
 			CListViewParam btn_params_buluo = new CListViewParam(
 					R.id.btn_params_buluo, null, true);
@@ -216,14 +239,15 @@ public class UserHomePageList extends CListView {
 				@Override
 				public void onClick(View v) {
 					// 打开部落
-					Intent intent = new Intent(mActivity, GroupListActivity.class);
+					Intent intent = new Intent(mActivity,
+							GroupListActivity.class);
 					mActivity.startActivity(intent);
 				}
 			});
 			LVP.add(btn_params_buluo);
-//			// 微博数量
-//			LVP.add(new CListViewParam(R.id.text_params_weibo, ""
-//					+ mUser.weibo_count, true));
+			// // 微博数量
+			// LVP.add(new CListViewParam(R.id.text_params_weibo, ""
+			// + mUser.weibo_count, true));
 			// 扑友按钮
 			CListViewParam btn_params_puyou = new CListViewParam(
 					R.id.btn_params_puyou, null, true);
@@ -241,9 +265,9 @@ public class UserHomePageList extends CListView {
 				}
 			});
 			LVP.add(btn_params_puyou);
-//			// 粉丝数量
-//			LVP.add(new CListViewParam(R.id.text_params_follows, ""
-//					+ mUser.followers_count, true));
+			// // 粉丝数量
+			// LVP.add(new CListViewParam(R.id.text_params_follows, ""
+			// + mUser.followers_count, true));
 			// 相册按钮
 			CListViewParam btn_params_album = new CListViewParam(
 					R.id.btn_params_album, null, true);
@@ -252,16 +276,15 @@ public class UserHomePageList extends CListView {
 				public void onClick(View v) {
 					Intent intent = new Intent();
 					intent.setClass(mActivity, AlbumListActivity.class);
-					intent.putExtra(Params.INTENT_EXTRA.USER_ID,
-							mUser.uid);
+					intent.putExtra(Params.INTENT_EXTRA.USER_ID, mUser.uid);
 					mActivity.startActivity(intent);
-					
+
 				}
 			});
 			LVP.add(btn_params_album);
-//			// 关注数量
-//			LVP.add(new CListViewParam(R.id.text_params_followed, ""
-//					+ mUser.followed_count, true));
+			// // 关注数量
+			// LVP.add(new CListViewParam(R.id.text_params_followed, ""
+			// + mUser.followed_count, true));
 
 		} else {
 			if (obj == null) {
@@ -349,6 +372,48 @@ public class UserHomePageList extends CListView {
 		}
 		return LVP;
 	}
+
+	private void updateGexingQianMing() {
+		final EditText et = new EditText(mActivity);
+		new AlertDialog.Builder(mActivity).setTitle("请输入个性签名").setView(et)
+				.setNegativeButton("确定", new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						String sign = et.getText().toString().trim();
+						if (sign.length() > 50) {
+							NotificationsUtil.ToastTopMsg(mActivity, "个性签名过长！");
+							return;
+						}
+						((CActivity) mActivity).showProgress();
+						new Api(gxqmCallBack, mActivity).setUserSign(PuApp
+								.get().getToken(), sign);
+					}
+				}).setPositiveButton("取消", null).show();
+	}
+
+	CallBack gxqmCallBack = new CallBack() {
+		public void onSuccess(String response) {
+			((CActivity) mActivity).dismissProgress();
+			try {
+				JSONObject jsonObject = new JSONObject(response);
+				String status = jsonObject.optString("status");
+				if(status.equals("0"))
+					NotificationsUtil.ToastTopMsg(mActivity, jsonObject.optString("msg"));
+				else{
+					NotificationsUtil.ToastTopMsg(mActivity, "修改成功！");
+					refreshListViewStart();
+				}
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+		};
+
+		public void onFailure(String message) {
+			((CActivity) mActivity).dismissProgress();
+			NotificationsUtil.ToastTopMsg(mActivity, message);
+		};
+	};
 
 	ListCallBack<ArrayList<Weibo>> callback = new ListCallBack<ArrayList<Weibo>>(
 			UserHomePageList.this) {

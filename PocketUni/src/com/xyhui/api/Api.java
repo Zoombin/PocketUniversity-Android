@@ -934,6 +934,11 @@ public class Api extends BaseApi {
 		params.put("time", time + "");
 		Client.get("User", "userHomeInfo", params, handler);
 	}
+	
+	public void setUserSign(RequestParams params, String sign) {
+		params.put("sign", sign);
+		Client.get("User", "setUserSign", params, handler);
+	}
 
 	public void showByUid(RequestParams params, String uid, int page, int count) {
 		params.put("uid", uid);

@@ -78,6 +78,23 @@
                 android:textColor="#fff"
                 android:textSize="12sp"
                 android:textStyle="bold" />
+            
+             <TextView
+                android:id="@+id/text_gexinqianming"
+                android:layout_width="match_parent"
+                android:layout_height="20dip"
+                android:layout_below="@+id/text_info"
+                android:layout_marginLeft="8dip"
+                android:layout_toRightOf="@+id/img_avatar"
+                android:gravity="center_vertical"
+                android:shadowColor="#000"
+                android:shadowDx="0"
+                android:shadowDy="2"
+                android:shadowRadius="0.01"
+                android:text=""
+                android:textColor="#fff"
+                android:textSize="12sp"
+                android:textStyle="bold" />
 
             <Button
                 android:id="@+id/btn_follow"

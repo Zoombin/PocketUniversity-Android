@@ -24,6 +24,7 @@ public class User implements Parcelable {
 	public int school_event_credit;
 	public String money;
 	public String grad;
+	public String sign;
 
 	// 抓取用户的第一条微博,不为空就抓取整个微博列表,显示在用户的个人主页
 	public JsonElement status;
