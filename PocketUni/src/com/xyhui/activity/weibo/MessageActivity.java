@@ -10,52 +10,27 @@ import com.xyhui.utils.Params;
 import com.xyhui.widget.FLActivity;
 
 public class MessageActivity extends FLActivity {
-	/**
-	 * 私信
-	 */
-	public static final int MSG_MESSAGE = 1;
 
-	/**
-	 * 转发
-	 */
-	public static final int MSG_TRANSPOND = 2;
+	private final static int MSG_MESSAGE_ME = 0;
+	private final static int MSG_MESSAGE_SYSTEM = 1;
 
-	/**
-	 * 评论
-	 */
-	public static final int MSG_COMMENTS = 3;
-
-	/**
-	 * 赞
-	 */
-	public static final int MSG_ZAN = 4;
+	private int msg_type = MSG_MESSAGE_ME;
 
 	private Button btn_back;
 
 	private Button btn_message;
-	private Button btn_transpond;
-	private Button btn_comments;
-	private Button btn_zan;
+	private Button btn_systemmessage;
 	private Button current_btn;
 
-	private PullToRefreshListView message_listview;
-	private PullToRefreshListView transpond_listview;
-	private PullToRefreshListView comments_listview;
-	private PullToRefreshListView zan_listview;
+	private PullToRefreshListView listview_message_me;
+	private PullToRefreshListView listview_message_system;
 	private PullToRefreshListView current_listview;
 
 	private ChatList mMessageListView;
-	private WeiboList mWeiboListView;
-	private CommentList mCommentsListView;
-	private WeiboList mZanListView;
-
-	private int msg_type = MSG_MESSAGE;
+	private SystemMsgList mSystemMsgList;
 
 	@Override
 	public void init() {
-		if (getIntent().hasExtra(Params.INTENT_EXTRA.MSG_TYPE)) {
-			msg_type = getIntent().getIntExtra(Params.INTENT_EXTRA.MSG_TYPE, MSG_MESSAGE);
-		}
 	}
 
 	@Override
@@ -65,14 +40,10 @@ public class MessageActivity extends FLActivity {
 		btn_back = (Button) findViewById(R.id.btn_back);
 
 		btn_message = (Button) findViewById(R.id.btn_message);
-		btn_transpond = (Button) findViewById(R.id.btn_atme);
-		btn_comments = (Button) findViewById(R.id.btn_comments);
-		btn_zan = (Button) findViewById(R.id.btn_zan);
+		btn_systemmessage = (Button) findViewById(R.id.btn_systemmessage);
 
-		message_listview = (PullToRefreshListView) findViewById(R.id.message_listview);
-		transpond_listview = (PullToRefreshListView) findViewById(R.id.atme_listview);
-		comments_listview = (PullToRefreshListView) findViewById(R.id.comments_listview);
-		zan_listview = (PullToRefreshListView) findViewById(R.id.zan_listview);
+		listview_message_me = (PullToRefreshListView) findViewById(R.id.listview_message_me);
+		listview_message_system = (PullToRefreshListView) findViewById(R.id.listview_message_system);
 	}
 
 	@Override
@@ -89,49 +60,28 @@ public class MessageActivity extends FLActivity {
 			@Override
 			public void onClick(View v) {
 				if (current_btn != btn_message) {
-					msg_type = MSG_MESSAGE;
+					msg_type = MSG_MESSAGE_ME;
 					selectMsgByType();
 				}
 			}
 		});
 
-		btn_transpond.setOnClickListener(new OnClickListener() {
+		btn_systemmessage.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if (current_btn != btn_transpond) {
-					msg_type = MSG_TRANSPOND;
+				if (current_btn != btn_systemmessage) {
+					msg_type = MSG_MESSAGE_SYSTEM;
 					selectMsgByType();
 				}
 			}
 		});
 
-		btn_comments.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				if (current_btn != btn_comments) {
-					msg_type = MSG_COMMENTS;
-					selectMsgByType();
-				}
-			}
-		});
-
-		btn_zan.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				if (current_btn != btn_zan) {
-					msg_type = MSG_ZAN;
-					selectMsgByType();
-				}
-			}
-		});
 	}
 
 	@Override
 	public void ensureUi() {
-		message_listview.setVisibility(View.GONE);
-		transpond_listview.setVisibility(View.GONE);
-		comments_listview.setVisibility(View.GONE);
-		zan_listview.setVisibility(View.GONE);
+		listview_message_me.setVisibility(View.GONE);
+		listview_message_system.setVisibility(View.GONE);
 		selectMsgByType();
 	}
 
@@ -146,41 +96,24 @@ public class MessageActivity extends FLActivity {
 		}
 
 		switch (msg_type) {
-		case MSG_MESSAGE:
+		case MSG_MESSAGE_ME:
 			if (mMessageListView == null) {
-				mMessageListView = new ChatList(message_listview, mActivity);
+				mMessageListView = new ChatList(listview_message_me, mActivity);
 			} else {
 				mMessageListView.refreshListViewStart();
 			}
 			current_btn = btn_message;
-			current_listview = message_listview;
+			current_listview = listview_message_me;
 			break;
-		case MSG_TRANSPOND:
-			if (mWeiboListView == null) {
-				mWeiboListView = new WeiboList(transpond_listview, mActivity, WeiboList.METIONS);
+		case MSG_MESSAGE_SYSTEM:
+			if (mSystemMsgList == null) {
+				mSystemMsgList = new SystemMsgList(listview_message_system,
+						mActivity);
 			} else {
-				mWeiboListView.refreshListViewStart();
+				mSystemMsgList.refreshListViewStart();
 			}
-			current_btn = btn_transpond;
-			current_listview = transpond_listview;
-			break;
-		case MSG_COMMENTS:
-			if (mCommentsListView == null) {
-				mCommentsListView = new CommentList(comments_listview, mActivity);
-			} else {
-				mCommentsListView.refreshListViewStart();
-			}
-			current_btn = btn_comments;
-			current_listview = comments_listview;
-			break;
-		case MSG_ZAN:
-			if (mZanListView == null) {
-				mZanListView = new WeiboList(zan_listview, mActivity, WeiboList.ZAN);
-			} else {
-				mZanListView.refreshListViewStart();
-			}
-			current_btn = btn_zan;
-			current_listview = zan_listview;
+			current_btn = btn_systemmessage;
+			current_listview = listview_message_system;
 			break;
 		default:
 			break;
@@ -194,17 +127,11 @@ public class MessageActivity extends FLActivity {
 	protected void onResume() {
 		super.onResume();
 		switch (msg_type) {
-		case MSG_MESSAGE:
+		case MSG_MESSAGE_ME:
 			mMessageListView.refreshListViewStart();
 			break;
-		case MSG_TRANSPOND:
-			mWeiboListView.refreshListViewStart();
-			break;
-		case MSG_COMMENTS:
-			mCommentsListView.refreshListViewStart();
-			break;
-		case MSG_ZAN:
-			mZanListView.refreshListViewStart();
+		case MSG_MESSAGE_SYSTEM:
+			mSystemMsgList.refreshListViewStart();
 			break;
 		}
 	}

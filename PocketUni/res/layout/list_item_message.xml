@@ -40,8 +40,9 @@
 
                 <TextView
                     android:id="@+id/text_nickname"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="2"
                     android:shadowColor="#90ffffff"
                     android:shadowDx="0"
                     android:shadowDy="2"
@@ -52,10 +53,11 @@
 
                 <TextView
                     android:id="@+id/text_date"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="right"
+                    android:singleLine="true"
                     android:text="今天11:33"
                     android:textColor="#aaa"
                     android:textSize="12sp" />

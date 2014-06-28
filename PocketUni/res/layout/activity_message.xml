@@ -6,37 +6,19 @@
     android:background="#fcfcfc" >
 
     <com.handmark.pulltorefresh.library.PullToRefreshListView
-        android:id="@+id/message_listview"
+        android:id="@+id/listview_message_me"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="88dip"
+        android:layout_below="@+id/navbar"
         android:cacheColorHint="#00000000"
         android:divider="@null"
         android:orientation="vertical" />
 
     <com.handmark.pulltorefresh.library.PullToRefreshListView
-        android:id="@+id/atme_listview"
+        android:id="@+id/listview_message_system"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="88dip"
-        android:cacheColorHint="#00000000"
-        android:divider="@null"
-        android:orientation="vertical" />
-
-    <com.handmark.pulltorefresh.library.PullToRefreshListView
-        android:id="@+id/comments_listview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="88dip"
-        android:cacheColorHint="#00000000"
-        android:divider="@null"
-        android:orientation="vertical" />
-    
-    <com.handmark.pulltorefresh.library.PullToRefreshListView
-        android:id="@+id/zan_listview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="88dip"
+        android:layout_below="@+id/navbar"
         android:cacheColorHint="#00000000"
         android:divider="@null"
         android:orientation="vertical" />
@@ -47,16 +29,45 @@
         android:layout_height="50dip"
         android:background="@drawable/bar_navigation_bg" >
 
-        <TextView
-            android:id="@+id/navbar_TitleText"
-            style="@style/navigation_title"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="44dip"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:gravity="center_vertical"
-            android:text="消息" />
+            android:layout_toLeftOf="@+id/btn_operate"
+            android:layout_toRightOf="@+id/btn_back"
+            android:gravity="center"
+            android:orientation="horizontal" >
+
+            <Button
+                android:id="@+id/btn_message"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/btn_selector_nav_following"
+                android:shadowColor="#000"
+                android:shadowDx="0"
+                android:shadowDy="-1"
+                android:shadowRadius="0.01"
+                android:text="私信"
+                android:textColor="#fff"
+                android:textSize="13sp" />
+
+            <Button
+                android:id="@+id/btn_systemmessage"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/btn_selector_nav_followed"
+                android:shadowColor="#000"
+                android:shadowDx="0"
+                android:shadowDy="-1"
+                android:shadowRadius="0.01"
+                android:text="系统通知"
+                android:textColor="#fff"
+                android:textSize="13sp" />
+        </LinearLayout>
 
         <Button
             android:id="@+id/btn_back"
@@ -65,50 +76,16 @@
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="2dip"
             android:background="@drawable/btn_selector_navbar_backicon" />
+
+        <Button
+            android:id="@+id/btn_operate"
+            style="@style/navbar_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="2dip"
+            android:background="@drawable/btn_selector_navbar_more"
+            android:visibility="invisible" />
     </RelativeLayout>
-
-    <LinearLayout
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="50dip"
-        android:layout_marginTop="44dip"
-        android:background="@drawable/bar_tool_bg" >
-
-        <Button
-            android:id="@+id/btn_message"
-            android:layout_width="wrap_content"
-            android:layout_height="44dip"
-            android:layout_weight="1"
-            android:background="@drawable/btn_selector_notice_sort"
-            android:text="私信"
-            android:textSize="14sp" />
-
-        <Button
-            android:id="@+id/btn_atme"
-            android:layout_width="wrap_content"
-            android:layout_height="44dip"
-            android:layout_weight="1"
-            android:background="@drawable/btn_selector_notice_sort"
-            android:text="转发"
-            android:textSize="14sp" />
-
-        <Button
-            android:id="@+id/btn_comments"
-            android:layout_width="wrap_content"
-            android:layout_height="44dip"
-            android:layout_weight="1"
-            android:background="@drawable/btn_selector_notice_sort"
-            android:text="评论"
-            android:textSize="14sp" />
-        
-        <Button
-            android:id="@+id/btn_zan"
-            android:layout_width="wrap_content"
-            android:layout_height="44dip"
-            android:layout_weight="1"
-            android:background="@drawable/btn_selector_notice_sort"
-            android:text="赞"
-            android:textSize="14sp" />
-    </LinearLayout>
 
 </RelativeLayout>

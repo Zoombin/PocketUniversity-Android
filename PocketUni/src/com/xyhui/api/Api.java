@@ -279,6 +279,12 @@ public class Api extends BaseApi {
 		params.put("page", page + "");
 		Client.get("Heart", "index", params, handler);
 	}
+	
+	public void systemMSG(RequestParams params, int count, int page) {
+		params.put("count", count + "");
+		params.put("page", page + "");
+		Client.get("Message", "notifyList", params, handler);
+	}
 
 	public void isfav(RequestParams params, String id) {
 		params.put("id", id);
