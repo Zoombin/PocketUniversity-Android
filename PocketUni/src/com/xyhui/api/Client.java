@@ -9,7 +9,7 @@ public class Client {
 
 	private static final int TIME_OUT_INTERVAL = 10000;
 
-	// public static final String BASE_URL = "http://xyhui.com/index.php";
+//	 public static final String BASE_URL = "http://xyhui.com/index.php";
 	public static final String BASE_URL = "http://pocketuni.net/index.php";
 	public static final String VOLUNTEER_UPDATE_URL = "http://www.dakaqi.cn/services/search-android-version.action";
 	public static final String GAME_LIST_URL = "http://pu.websharp.com.cn/invoke/Game.ashx?method=listgame";
