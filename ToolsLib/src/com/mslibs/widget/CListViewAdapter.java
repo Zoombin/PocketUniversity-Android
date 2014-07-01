@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -61,13 +62,14 @@ public class CListViewAdapter extends BaseAdapter {
 
 	public CListViewAdapter(Activity activity, int resouce) {
 		mItemResource = resouce;
-		mInflater = (LayoutInflater) activity.getBaseContext().getSystemService(
-				Context.LAYOUT_INFLATER_SERVICE);
+		mInflater = (LayoutInflater) activity.getBaseContext()
+				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 
 	public CListViewAdapter(Context context, int resouce) {
 		mItemResource = resouce;
-		mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		mInflater = (LayoutInflater) context
+				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 
 	public void setData(ArrayList<ArrayList<CListViewParam>> LVPs) {
@@ -226,7 +228,8 @@ public class CListViewAdapter extends BaseAdapter {
 				}
 			} else {
 				if (ItemViewEmptyInvisible) {
-					if (iLVP.getDate() == null || iLVP.getDate().toString().length() == 0) {
+					if (iLVP.getDate() == null
+							|| iLVP.getDate().toString().length() == 0) {
 						view.setVisibility(View.GONE);
 					}
 				}
@@ -237,22 +240,24 @@ public class CListViewAdapter extends BaseAdapter {
 				view.setTag(iLVP.getItemTag());
 
 			// 设置Date值
-			if (iLVP.getDate() != null && iLVP.getDate().toString().length() > 0) {
+			if (iLVP.getDate() != null
+					&& iLVP.getDate().toString().length() > 0) {
 
 				if (view instanceof Button) {
 					if (iLVP.getDate() instanceof String) {
 						((Button) view).setText(iLVP.getDate().toString());
 					} else if (iLVP.getDate() instanceof Integer) {
-						((Button) view).setBackgroundResource(Integer.parseInt(iLVP.getDate()
-								.toString()));
+						((Button) view).setBackgroundResource(Integer
+								.parseInt(iLVP.getDate().toString()));
 					}
 				} else if (view instanceof ImageButton) {
-					((ImageButton) view).setImageResource(Integer.parseInt(iLVP.getDate()
-							.toString()));
+					((ImageButton) view).setImageResource(Integer.parseInt(iLVP
+							.getDate().toString()));
 				} else if (view instanceof TextView) {
 					if (iLVP.getDate() instanceof Spanned) {
 						((TextView) view).setText((Spanned) iLVP.getDate());
-						((TextView) view).setMovementMethod(LinkMovementMethod.getInstance());
+						((TextView) view).setMovementMethod(LinkMovementMethod
+								.getInstance());
 					} else {
 						((TextView) view).setText(iLVP.getDate().toString());
 					}
@@ -261,9 +266,14 @@ public class CListViewAdapter extends BaseAdapter {
 					if (iLVP.getDate() != null) {
 					}
 					((CSpannedTextViewBase) view).setData(iLVP.getDate());
+				} else if (view instanceof WebView) {
+					// VolleyLog.d("CListViewAdapter: instanceof CSpannedTextViewBase");
+					((WebView) view).loadDataWithBaseURL(null, iLVP.getDate()
+							.toString(), "text/html", "utf-8", null);
 				} else if (view instanceof ImageView) {
 					ImageView imgView = (ImageView) view;
-					imgView.setImageResource(Integer.parseInt(iLVP.getDate().toString()));
+					imgView.setImageResource(Integer.parseInt(iLVP.getDate()
+							.toString()));
 
 					if (iLVP.getImgAsync()) {
 						// VolleyLog.d("getImgAsync: %s", iLVP.getItemTag());
@@ -273,8 +283,8 @@ public class CListViewAdapter extends BaseAdapter {
 							if (iLVP.getDate() != null) {
 								resource = (Integer) iLVP.getDate();
 							}
-							UrlImageViewHelper.setUrlDrawable((ImageView) view, iLVP.getItemTag()
-									.toString(), resource);
+							UrlImageViewHelper.setUrlDrawable((ImageView) view,
+									iLVP.getItemTag().toString(), resource);
 						}
 					}
 
@@ -283,14 +293,16 @@ public class CListViewAdapter extends BaseAdapter {
 						Bitmap bitmap = imgView.getDrawingCache();
 						imgView.setDrawingCacheEnabled(false);
 						if (bitmap != null) {
-							imgView.setImageBitmap(toRoundCorner(bitmap, iLVP.getImgRoundCorner()));
+							imgView.setImageBitmap(toRoundCorner(bitmap,
+									iLVP.getImgRoundCorner()));
 						} else {
 							// VolleyLog.d("-----------------------bitmap is null");
 						}
 					}
 
 				} else if (view instanceof ProgressBar) {
-					((ProgressBar) view).setProgress(Integer.parseInt(iLVP.getDate().toString()));
+					((ProgressBar) view).setProgress(Integer.parseInt(iLVP
+							.getDate().toString()));
 				}
 			}
 		}
@@ -298,8 +310,8 @@ public class CListViewAdapter extends BaseAdapter {
 
 	// 处理图像圆角
 	public static Bitmap toRoundCorner(Bitmap bitmap, int pixels) {
-		Bitmap output = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(),
-				Config.ARGB_8888);
+		Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
+				bitmap.getHeight(), Config.ARGB_8888);
 		Canvas canvas = new Canvas(output);
 		final int color = 0xff424242;
 		final Paint paint = new Paint();

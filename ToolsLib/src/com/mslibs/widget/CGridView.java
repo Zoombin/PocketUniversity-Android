@@ -172,4 +172,12 @@ public abstract class CGridView {
 			mDateList.add(getMoreLVP);
 		}
 	}
+
+	public ArrayList<ArrayList<CListViewParam>> getmDateList() {
+		return mDateList;
+	}
+
+	public void setmDateList(ArrayList<ArrayList<CListViewParam>> mDateList) {
+		this.mDateList = mDateList;
+	}
 }
