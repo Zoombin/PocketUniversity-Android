@@ -275,6 +275,10 @@ public class GroupViewActivity extends FLActivity {
 			@Override
 			public void onClick(View v) {
 				// 动态
+				Intent intent = new Intent(mActivity,
+						GroupDynamicListActivity.class);
+				intent.putExtra(Params.INTENT_EXTRA.GROUP_ID, mGroupId);
+				startActivity(intent);
 			}
 		});
 

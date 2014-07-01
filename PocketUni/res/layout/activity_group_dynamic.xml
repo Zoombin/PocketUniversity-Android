@@ -5,14 +5,20 @@
     android:layout_height="match_parent"
     android:background="#fcfcfc" >
 
-    <com.handmark.pulltorefresh.library.PullToRefreshListView
-        android:id="@+id/all_event_listview"
+    <RelativeLayout
+        android:id="@+id/weibo_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/navbar"
-        android:cacheColorHint="#00000000"
-        android:divider="@null"
-        android:orientation="vertical" />
+        android:layout_below="@+id/navbar" >
+
+        <com.handmark.pulltorefresh.library.PullToRefreshListView
+            android:id="@+id/weibo_listview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:cacheColorHint="#00000000"
+            android:divider="@null"
+            android:orientation="vertical" />
+    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/navbar"
@@ -35,7 +41,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="44dip"
                 android:gravity="center_vertical"
-                android:text="部落活动" />
+                android:text="部落动态" />
         </LinearLayout>
 
         <Button
@@ -53,8 +59,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_marginRight="2dip"
-            android:background="@drawable/btn_selector_navbar_more"
-            android:visibility="invisible" />
+            android:background="@drawable/btn_selector_navbar_edit" />
     </RelativeLayout>
 
 </RelativeLayout>
