@@ -83,6 +83,7 @@ public class Params {
 
 		public static final String BLOGLIST = "action.refresh.bloglist";
 		public static final String EVENTLIST = "action.refresh.eventlist";
+		public static final String DYNAMICLIST = "action.refresh.dynamiclist";
 		public static final String WEIBOLIST = "action.refresh.weibolist";
 		public static final String ALBUMLIST = "action.refresh.albumlist";
 		public static final String PHOTOLIST = "action.refresh.photolist";

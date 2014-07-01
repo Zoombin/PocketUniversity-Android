@@ -47,6 +47,11 @@ public class GroupDynamicListActivity extends FLActivity {
 			@Override
 			public void onClick(View v) {
 				// 添加新的
+				// 动态
+				Intent intent = new Intent(mActivity,
+						GroupDynamicEditActivity.class);
+				intent.putExtra(Params.INTENT_EXTRA.GROUP_ID, groupIP);
+				startActivity(intent);
 			}
 		});
 	}
@@ -65,7 +70,7 @@ public class GroupDynamicListActivity extends FLActivity {
 	public void ensureUi() {
 
 		IntentFilter filter = new IntentFilter();
-		filter.addAction(Params.INTENT_ACTION.WEIBOLIST);
+		filter.addAction(Params.INTENT_ACTION.DYNAMICLIST);
 		registerReceiver(mEvtReceiver, filter);
 		selectWeiboByType();
 	}
