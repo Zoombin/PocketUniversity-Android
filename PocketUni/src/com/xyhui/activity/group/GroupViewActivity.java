@@ -49,7 +49,6 @@ public class GroupViewActivity extends FLActivity {
 
 	private LinearLayout btn_params_event;
 	private TextView text_params_event;
-	
 
 	private LinearLayout btn_params_dynamic;
 	private TextView text_params_dynamic;
@@ -111,6 +110,7 @@ public class GroupViewActivity extends FLActivity {
 		btn_params_user = (LinearLayout) findViewById(R.id.btn_params_user);
 		text_params_user = (TextView) findViewById(R.id.text_params_user);
 		text_notice = (TextView) findViewById(R.id.text_notice);
+		text_notice.setOnClickListener(clickListener);
 		text_intro = (TextView) findViewById(R.id.text_intro);
 		blog_layout = (LinearLayout) findViewById(R.id.blog_layout);
 		new_bloglist_layout = (LinearLayout) findViewById(R.id.new_bloglist_layout);
@@ -118,6 +118,25 @@ public class GroupViewActivity extends FLActivity {
 		unverify_layout = (LinearLayout) findViewById(R.id.unverify_layout);
 		text_unverify = (TextView) findViewById(R.id.text_unverify);
 	}
+
+	OnClickListener clickListener = new OnClickListener() {
+
+		@Override
+		public void onClick(View v) {
+			switch (v.getId()) {
+			case R.id.text_notice: {
+				Intent intent = new Intent(mActivity,
+						GroupNoticeListActivity.class);
+				intent.putExtra(Params.INTENT_EXTRA.GROUP_ID, mGroupId);
+				startActivity(intent);
+			}
+				break;
+
+			default:
+				break;
+			}
+		}
+	};
 
 	@Override
 	public void bindListener() {
@@ -145,40 +164,60 @@ public class GroupViewActivity extends FLActivity {
 				int isJoin = (Integer) btn.getTag();
 				if (isJoin == 1) {
 					// 离开部落
-					new AlertDialog.Builder(mActivity).setMessage("确定要退出这个部落吗?")
-							.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-								public void onClick(DialogInterface dialog, int whichButton) {
-									showProgress();
-									new Api(joincallback, mActivity).quitgroup(PuApp.get()
-											.getToken(), mGroupId);
-								}
-							}).setNegativeButton("取消", new DialogInterface.OnClickListener() {
-								public void onClick(DialogInterface dialog, int whichButton) {
-									btn.setEnabled(true);
-									dialog.dismiss();
-								}
-							}).setCancelable(false).show();
+					new AlertDialog.Builder(mActivity)
+							.setMessage("确定要退出这个部落吗?")
+							.setPositiveButton("确定",
+									new DialogInterface.OnClickListener() {
+										public void onClick(
+												DialogInterface dialog,
+												int whichButton) {
+											showProgress();
+											new Api(joincallback, mActivity)
+													.quitgroup(PuApp.get()
+															.getToken(),
+															mGroupId);
+										}
+									})
+							.setNegativeButton("取消",
+									new DialogInterface.OnClickListener() {
+										public void onClick(
+												DialogInterface dialog,
+												int whichButton) {
+											btn.setEnabled(true);
+											dialog.dismiss();
+										}
+									}).setCancelable(false).show();
 				} else {
-					String mobile = new PrefUtil().getPreference(Params.LOCAL.MOBILE);
+					String mobile = new PrefUtil()
+							.getPreference(Params.LOCAL.MOBILE);
 					if (TextUtils.isEmpty(mobile)) {
 						btn.setEnabled(true);
 
-						new AlertDialog.Builder(mActivity).setTitle("您还没有绑定手机, 现在去绑定吗?")
-								.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-									public void onClick(DialogInterface dialog, int whichButton) {
-										Intent intent = new Intent(mActivity,
-												PhoneBindingActivity.class);
-										startActivity(intent);
-									}
-								}).setNegativeButton("取消", new DialogInterface.OnClickListener() {
-									public void onClick(DialogInterface dialog, int whichButton) {
-									}
-								}).show();
+						new AlertDialog.Builder(mActivity)
+								.setTitle("您还没有绑定手机, 现在去绑定吗?")
+								.setPositiveButton("确定",
+										new DialogInterface.OnClickListener() {
+											public void onClick(
+													DialogInterface dialog,
+													int whichButton) {
+												Intent intent = new Intent(
+														mActivity,
+														PhoneBindingActivity.class);
+												startActivity(intent);
+											}
+										})
+								.setNegativeButton("取消",
+										new DialogInterface.OnClickListener() {
+											public void onClick(
+													DialogInterface dialog,
+													int whichButton) {
+											}
+										}).show();
 					} else {
 						// 加入部落
 						showProgress();
-						new Api(joincallback, mActivity).joingroup(PuApp.get().getToken(),
-								mGroupId);
+						new Api(joincallback, mActivity).joingroup(PuApp.get()
+								.getToken(), mGroupId);
 					}
 				}
 			}
@@ -188,7 +227,8 @@ public class GroupViewActivity extends FLActivity {
 			@Override
 			public void onClick(View v) {
 				// 打开文章列表
-				Intent intent = new Intent(mActivity, GroupBlogListActivity.class);
+				Intent intent = new Intent(mActivity,
+						GroupBlogListActivity.class);
 				intent.putExtra(Params.INTENT_EXTRA.GROUP_ID, mGroupId);
 				intent.putExtra(Params.INTENT_EXTRA.GROUPMEMBER, mIsMemeber);
 				startActivity(intent);
@@ -199,7 +239,8 @@ public class GroupViewActivity extends FLActivity {
 			@Override
 			public void onClick(View v) {
 				// 打开文章列表
-				Intent intent = new Intent(mActivity, GroupBlogListActivity.class);
+				Intent intent = new Intent(mActivity,
+						GroupBlogListActivity.class);
 				intent.putExtra(Params.INTENT_EXTRA.GROUP_ID, mGroupId);
 				intent.putExtra(Params.INTENT_EXTRA.GROUPMEMBER, mIsMemeber);
 				startActivity(intent);
@@ -209,9 +250,10 @@ public class GroupViewActivity extends FLActivity {
 		btn_params_event.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				//活动
+				// 活动
 				// 打开文章列表
-				Intent intent = new Intent(mActivity, GroupEventListActivity.class);
+				Intent intent = new Intent(mActivity,
+						GroupEventListActivity.class);
 				intent.putExtra(Params.INTENT_EXTRA.GROUP_ID, mGroupId);
 				startActivity(intent);
 			}
@@ -221,17 +263,18 @@ public class GroupViewActivity extends FLActivity {
 			@Override
 			public void onClick(View v) {
 				// 打开成员列表
-				Intent intent = new Intent(mActivity, GroupUserListActivity.class);
+				Intent intent = new Intent(mActivity,
+						GroupUserListActivity.class);
 				intent.putExtra(Params.INTENT_EXTRA.GROUP_ID, mGroupId);
 				intent.putExtra(Params.INTENT_EXTRA.GROUPMEMBER, mIsMemeber);
 				startActivity(intent);
 			}
 		});
-		
+
 		btn_params_dynamic.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				//动态
+				// 动态
 			}
 		});
 
@@ -265,55 +308,67 @@ public class GroupViewActivity extends FLActivity {
 		builder.setTitle("选择操作");
 
 		if (isAdmin) {
-			builder.setItems(R.array.group_operate_admin, new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int which) {
+			builder.setItems(R.array.group_operate_admin,
+					new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int which) {
 
-					Intent intent = new Intent();
+							Intent intent = new Intent();
 
-					switch (which) {
-					case 0:
-						// 邀请好友
-						intent.setClass(mActivity, GroupInviteListActivity.class);
-						intent.putExtra(Params.INTENT_EXTRA.GROUP_ID, mGroupId);
-						startActivity(intent);
-						break;
-					case 1:
-						// 修改公告
-						intent.setClass(mActivity, GroupNoticeEditActivity.class);
-						intent.putExtra(Params.INTENT_EXTRA.GROUP_ID, mGroupId);
-						startActivity(intent);
-						break;
-					case 2:
-						// 部落设置
-						intent.setClass(mActivity, GroupEditActivity.class);
-						intent.putExtra(Params.INTENT_EXTRA.GROUP, mDetailGroup);
-						startActivity(intent);
-						break;
-					case 3:
-						// 成员管理
-						intent.setClass(mActivity, GroupMemberManageActivity.class);
-						intent.putExtra(Params.INTENT_EXTRA.GROUP_ID, mGroupId);
-						intent.putExtra(IS_GROUP_CREATOR, isCreator);
-						startActivity(intent);
-						break;
-					}
+							switch (which) {
+							case 0:
+								// 邀请好友
+								intent.setClass(mActivity,
+										GroupInviteListActivity.class);
+								intent.putExtra(Params.INTENT_EXTRA.GROUP_ID,
+										mGroupId);
+								startActivity(intent);
+								break;
+							case 1:
+								// 修改公告
+								intent.setClass(mActivity,
+										GroupNoticeEditActivity.class);
+								intent.putExtra(Params.INTENT_EXTRA.GROUP_ID,
+										mGroupId);
+								startActivity(intent);
+								break;
+							case 2:
+								// 部落设置
+								intent.setClass(mActivity,
+										GroupEditActivity.class);
+								intent.putExtra(Params.INTENT_EXTRA.GROUP,
+										mDetailGroup);
+								startActivity(intent);
+								break;
+							case 3:
+								// 成员管理
+								intent.setClass(mActivity,
+										GroupMemberManageActivity.class);
+								intent.putExtra(Params.INTENT_EXTRA.GROUP_ID,
+										mGroupId);
+								intent.putExtra(IS_GROUP_CREATOR, isCreator);
+								startActivity(intent);
+								break;
+							}
 
-					dialog.cancel();
-				}
-			}).show();
+							dialog.cancel();
+						}
+					}).show();
 		} else {
-			builder.setItems(R.array.group_operate_normal, new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int which) {
-					if (0 == which) {
-						// 邀请好友
-						Intent intent = new Intent(mActivity, GroupInviteListActivity.class);
-						intent.putExtra(Params.INTENT_EXTRA.GROUP_ID, mGroupId);
-						startActivity(intent);
-					}
+			builder.setItems(R.array.group_operate_normal,
+					new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int which) {
+							if (0 == which) {
+								// 邀请好友
+								Intent intent = new Intent(mActivity,
+										GroupInviteListActivity.class);
+								intent.putExtra(Params.INTENT_EXTRA.GROUP_ID,
+										mGroupId);
+								startActivity(intent);
+							}
 
-					dialog.cancel();
-				}
-			}).show();
+							dialog.cancel();
+						}
+					}).show();
 		}
 	}
 
@@ -321,7 +376,8 @@ public class GroupViewActivity extends FLActivity {
 		@Override
 		public void onSuccess(String response) {
 			dismissProgress();
-			DetailGroups group = JSONUtils.fromJson(response, DetailGroups.class);
+			DetailGroups group = JSONUtils.fromJson(response,
+					DetailGroups.class);
 
 			if (null == group)
 				return;
@@ -350,10 +406,12 @@ public class GroupViewActivity extends FLActivity {
 			btn_group.setTag(mDetailGroup.ismember);
 			if (mDetailGroup.ismember == 1) {
 				mIsMemeber = 1;
-				btn_group.setBackgroundResource(R.drawable.btn_selector_group_leave);
+				btn_group
+						.setBackgroundResource(R.drawable.btn_selector_group_leave);
 				btn_more.setVisibility(View.VISIBLE);
 			} else {
-				btn_group.setBackgroundResource(R.drawable.btn_selector_group_join);
+				btn_group
+						.setBackgroundResource(R.drawable.btn_selector_group_join);
 				btn_more.setVisibility(View.GONE);
 				btn_params_blog.setEnabled(false);
 				btn_params_event.setEnabled(false);
@@ -369,7 +427,8 @@ public class GroupViewActivity extends FLActivity {
 					&& !"default.gif".equalsIgnoreCase(mDetailGroup.logo)) {
 				String logo = Client.UPLOAD_URL + mDetailGroup.logo;
 				VolleyLog.d(logo);
-				UrlImageViewHelper.setUrlDrawable(img_avatar, logo, R.drawable.group_avatar);
+				UrlImageViewHelper.setUrlDrawable(img_avatar, logo,
+						R.drawable.group_avatar);
 			}
 
 			text_group_name.setText(mDetailGroup.name);
@@ -398,21 +457,21 @@ public class GroupViewActivity extends FLActivity {
 
 			text_group_info.setText(info);
 
-//			text_params_blog.setText(mDetailGroup.topiccount);
-//
-//			text_params_event.setText(mDetailGroup.filecount);
-//
-//			text_params_user.setText(mDetailGroup.membercount);
-//			
-//			text_params_event.setText(mDetailGroup.filecount);
+			// text_params_blog.setText(mDetailGroup.topiccount);
+			//
+			// text_params_event.setText(mDetailGroup.filecount);
+			//
+			// text_params_user.setText(mDetailGroup.membercount);
+			//
+			// text_params_event.setText(mDetailGroup.filecount);
 
 			text_notice.setText(mDetailGroup.announce);
 
 			text_intro.setText(mDetailGroup.intro);
 
 			showProgress();
-			new Api(bloglistcallback, mActivity)
-					.grouptopic(PuApp.get().getToken(), mGroupId, 5, 1);
+			new Api(bloglistcallback, mActivity).grouptopic(PuApp.get()
+					.getToken(), mGroupId, 5, 1);
 		}
 	};
 
@@ -422,15 +481,16 @@ public class GroupViewActivity extends FLActivity {
 			dismissProgress();
 
 			GroupTopics items = JSONUtils.fromJson(response, GroupTopics.class);
-			LayoutInflater mInflater = (LayoutInflater) getBaseContext().getSystemService(
-					Context.LAYOUT_INFLATER_SERVICE);
+			LayoutInflater mInflater = (LayoutInflater) getBaseContext()
+					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 			new_bloglist_layout.removeAllViews();
 			if (items != null && items.data != null && !items.data.isEmpty()) {
 				for (int i = 0; i < items.data.size(); i++) {
 					GroupTopic item = (GroupTopic) items.data.get(i);
 
-					View blogItemView = mInflater.inflate(R.layout.list_item_group_blog, null);
+					View blogItemView = mInflater.inflate(
+							R.layout.list_item_group_blog, null);
 					blogItemView.setTag(item);
 					blogItemView.setOnClickListener(new OnClickListener() {
 
@@ -438,9 +498,12 @@ public class GroupViewActivity extends FLActivity {
 						public void onClick(View v) {
 							GroupTopic item = (GroupTopic) v.getTag();
 							// 打开文章浏览
-							Intent intent = new Intent(mActivity, GroupBlogViewListActivity.class);
-							intent.putExtra(Params.INTENT_EXTRA.BLOG_ID, item.id);
-							intent.putExtra(Params.INTENT_EXTRA.GROUP_ID, mGroupId);
+							Intent intent = new Intent(mActivity,
+									GroupBlogViewListActivity.class);
+							intent.putExtra(Params.INTENT_EXTRA.BLOG_ID,
+									item.id);
+							intent.putExtra(Params.INTENT_EXTRA.GROUP_ID,
+									mGroupId);
 							startActivity(intent);
 						}
 					});
@@ -450,7 +513,8 @@ public class GroupViewActivity extends FLActivity {
 								.findViewById(R.id.text_title);
 						text_title.setText(item.title);
 
-						TextView text_info = (TextView) blogItemView.findViewById(R.id.text_info);
+						TextView text_info = (TextView) blogItemView
+								.findViewById(R.id.text_info);
 						text_info.setText(item.getDesc());
 					}
 

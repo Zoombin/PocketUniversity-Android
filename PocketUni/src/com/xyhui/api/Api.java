@@ -305,6 +305,13 @@ public class Api extends BaseApi {
 		params.put("p", page + "");
 		Client.get("Event", "groupEvent", params, handler);
 	}
+	public void getGroupNoticeList(RequestParams params, String gid, int count,
+			int page) {
+		params.put("gid", gid);
+		params.put("count", count + "");
+		params.put("p", page + "");
+		Client.get("Group", "announceList", params, handler);
+	}
 
 	public void allgroup(RequestParams params, String[] ids, int count, int page) {
 		params.put("dpart", ids[0]);
