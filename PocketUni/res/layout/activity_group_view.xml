@@ -23,8 +23,8 @@
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" 
-                    android:background="@drawable/group_bg">
+                    android:layout_height="match_parent"
+                    android:background="@drawable/group_bg" >
 
                     <ImageView
                         android:id="@+id/img_avatar"
@@ -131,7 +131,8 @@
                             android:text=""
                             android:textColor="#666"
                             android:textSize="16sp"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"
+                            android:visibility="gone" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -140,13 +141,13 @@
                             android:shadowDx="0"
                             android:shadowDy="1"
                             android:shadowRadius="0.01"
-                            android:text="帖子"
+                            android:text="水帖"
                             android:textColor="#999"
                             android:textSize="12sp" />
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/btn_params_doc"
+                        android:id="@+id/btn_params_event"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -155,7 +156,7 @@
                         android:orientation="vertical" >
 
                         <TextView
-                            android:id="@+id/text_params_doc"
+                            android:id="@+id/text_params_event"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:shadowColor="#fff"
@@ -165,7 +166,8 @@
                             android:text=""
                             android:textColor="#666"
                             android:textSize="16sp"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"
+                            android:visibility="gone" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -174,7 +176,7 @@
                             android:shadowDx="0"
                             android:shadowDy="1"
                             android:shadowRadius="0.01"
-                            android:text="共享"
+                            android:text="活动"
                             android:textColor="#999"
                             android:textSize="12sp" />
                     </LinearLayout>
@@ -199,7 +201,8 @@
                             android:text=""
                             android:textColor="#666"
                             android:textSize="16sp"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"
+                            android:visibility="gone" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -209,6 +212,41 @@
                             android:shadowDy="1"
                             android:shadowRadius="0.01"
                             android:text="成员"
+                            android:textColor="#999"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/btn_params_dynamic"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/btn_selector_user_params"
+                        android:gravity="center"
+                        android:orientation="vertical" >
+
+                        <TextView
+                            android:id="@+id/text_params_dynamic"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:shadowColor="#fff"
+                            android:shadowDx="0"
+                            android:shadowDy="1"
+                            android:shadowRadius="0.01"
+                            android:text=""
+                            android:textColor="#666"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:visibility="gone" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:shadowColor="#fff"
+                            android:shadowDx="0"
+                            android:shadowDy="1"
+                            android:shadowRadius="0.01"
+                            android:text="动态"
                             android:textColor="#999"
                             android:textSize="12sp" />
                     </LinearLayout>
@@ -348,13 +386,12 @@
     </ScrollView>
 
     <LinearLayout
-        
         android:id="@+id/unverify_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="44dip"
-        android:gravity="center"
-        android:background="#80000000" >
+        android:background="#80000000"
+        android:gravity="center" >
 
         <TextView
             android:id="@+id/text_unverify"
@@ -362,7 +399,6 @@
             android:layout_height="wrap_content"
             android:text="sorry！该部落正在审核中！"
             android:textAppearance="?android:attr/textAppearanceMedium" />
-
     </LinearLayout>
 
     <RelativeLayout
@@ -405,4 +441,5 @@
             android:layout_marginRight="2dip"
             android:background="@drawable/btn_selector_navbar_more" />
     </RelativeLayout>
+
 </RelativeLayout>

@@ -47,8 +47,12 @@ public class GroupViewActivity extends FLActivity {
 	private LinearLayout btn_params_blog;
 	private TextView text_params_blog;
 
-	private LinearLayout btn_params_doc;
-	private TextView text_params_doc;
+	private LinearLayout btn_params_event;
+	private TextView text_params_event;
+	
+
+	private LinearLayout btn_params_dynamic;
+	private TextView text_params_dynamic;
 
 	private LinearLayout btn_params_user;
 	private TextView text_params_user;
@@ -100,8 +104,10 @@ public class GroupViewActivity extends FLActivity {
 		btn_group = (Button) findViewById(R.id.btn_group);
 		btn_params_blog = (LinearLayout) findViewById(R.id.btn_params_blog);
 		text_params_blog = (TextView) findViewById(R.id.text_params_blog);
-		btn_params_doc = (LinearLayout) findViewById(R.id.btn_params_doc);
-		text_params_doc = (TextView) findViewById(R.id.text_params_doc);
+		btn_params_event = (LinearLayout) findViewById(R.id.btn_params_event);
+		text_params_event = (TextView) findViewById(R.id.text_params_event);
+		btn_params_dynamic = (LinearLayout) findViewById(R.id.btn_params_dynamic);
+		text_params_dynamic = (TextView) findViewById(R.id.text_params_dynamic);
 		btn_params_user = (LinearLayout) findViewById(R.id.btn_params_user);
 		text_params_user = (TextView) findViewById(R.id.text_params_user);
 		text_notice = (TextView) findViewById(R.id.text_notice);
@@ -200,13 +206,13 @@ public class GroupViewActivity extends FLActivity {
 			}
 		});
 
-		btn_params_doc.setOnClickListener(new OnClickListener() {
+		btn_params_event.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// 打开文档列表
-				Intent intent = new Intent(mActivity, GroupDocListActivity.class);
+				//活动
+				// 打开文章列表
+				Intent intent = new Intent(mActivity, GroupEventListActivity.class);
 				intent.putExtra(Params.INTENT_EXTRA.GROUP_ID, mGroupId);
-				intent.putExtra(Params.INTENT_EXTRA.GROUPMEMBER, mIsMemeber);
 				startActivity(intent);
 			}
 		});
@@ -219,6 +225,13 @@ public class GroupViewActivity extends FLActivity {
 				intent.putExtra(Params.INTENT_EXTRA.GROUP_ID, mGroupId);
 				intent.putExtra(Params.INTENT_EXTRA.GROUPMEMBER, mIsMemeber);
 				startActivity(intent);
+			}
+		});
+		
+		btn_params_dynamic.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				//动态
 			}
 		});
 
@@ -343,8 +356,9 @@ public class GroupViewActivity extends FLActivity {
 				btn_group.setBackgroundResource(R.drawable.btn_selector_group_join);
 				btn_more.setVisibility(View.GONE);
 				btn_params_blog.setEnabled(false);
-				btn_params_doc.setEnabled(false);
+				btn_params_event.setEnabled(false);
 				btn_params_user.setEnabled(false);
+				btn_params_dynamic.setEnabled(false);
 				blog_layout.setVisibility(View.GONE);
 			}
 
@@ -384,11 +398,13 @@ public class GroupViewActivity extends FLActivity {
 
 			text_group_info.setText(info);
 
-			text_params_blog.setText(mDetailGroup.topiccount);
-
-			text_params_doc.setText(mDetailGroup.filecount);
-
-			text_params_user.setText(mDetailGroup.membercount);
+//			text_params_blog.setText(mDetailGroup.topiccount);
+//
+//			text_params_event.setText(mDetailGroup.filecount);
+//
+//			text_params_user.setText(mDetailGroup.membercount);
+//			
+//			text_params_event.setText(mDetailGroup.filecount);
 
 			text_notice.setText(mDetailGroup.announce);
 
