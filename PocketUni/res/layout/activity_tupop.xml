@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <RelativeLayout
+        android:id="@+id/navbar"
+        android:layout_width="match_parent"
+        android:layout_height="50dip"
+        android:background="@drawable/bar_navigation_bg" >
+
+        <Button
+            android:id="@+id/btn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="2dip"
+            android:background="@drawable/btn_selector_navbar_backicon" />
+
+        <TextView
+            style="@style/navigation_title"
+            android:layout_width="wrap_content"
+            android:layout_height="44dip"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="吐泡泡" />
+
+        <Button
+            android:id="@+id/btn_setting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dip"
+            android:background="@drawable/btn_selector_setting" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_nav"
+        android:layout_width="fill_parent"
+        android:layout_height="40dip"
+        android:layout_below="@id/navbar"
+        android:layout_gravity="top"
+        android:background="#5AB0EB" >
+
+        <RadioGroup
+            android:id="@+id/rg_nav_content"
+            android:layout_width="fill_parent"
+            android:layout_height="38dip"
+            android:layout_alignParentTop="true"
+            android:background="#F2F2F2"
+            android:orientation="horizontal" >
+        </RadioGroup>
+
+        <ImageView
+            android:id="@+id/iv_nav_indicator"
+            android:layout_width="1dip"
+            android:layout_height="5dip"
+            android:layout_alignParentBottom="true"
+            android:background="#5AB0EB"
+            android:scaleType="matrix" />
+    </RelativeLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/mViewPager"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@id/rl_nav"
+        android:layout_gravity="center"
+        android:background="#ffffff"
+        android:flipInterval="30"
+        android:persistentDrawingCache="animation" />
+
+</RelativeLayout>

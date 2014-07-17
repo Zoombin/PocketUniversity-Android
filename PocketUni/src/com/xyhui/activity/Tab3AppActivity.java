@@ -19,7 +19,7 @@ import com.xyhui.activity.app.GameCenterActivity;
 import com.xyhui.activity.app.MobileZoneListActivity;
 import com.xyhui.activity.app.NoticeListActivity;
 import com.xyhui.activity.app.ShakeActivity;
-import com.xyhui.activity.app.TrainListActivity;
+import com.xyhui.activity.app.TupopActivity;
 import com.xyhui.activity.app.WishHelpActivity;
 import com.xyhui.activity.event.EventListActivity;
 import com.xyhui.activity.group.GroupListActivity;
@@ -56,6 +56,7 @@ public class Tab3AppActivity extends FLTabActivity {
 	private ImageButton btn_app_miaopai;
 	private ImageButton btn_app_love;
 	private ImageButton btn_app_dushuhu;
+	private ImageButton btn_tupop;
 
 	private AdBannerLayout ad_banner;
 
@@ -89,7 +90,8 @@ public class Tab3AppActivity extends FLTabActivity {
 		btn_app_miaopai = (ImageButton) findViewById(R.id.btn_app_miaopai);
 		btn_app_love = (ImageButton) findViewById(R.id.btn_app_love);
 		btn_app_dushuhu = (ImageButton) findViewById(R.id.btn_app_dushuhu);
-
+		btn_tupop = (ImageButton) findViewById(R.id.btn_tupop);
+		
 		ad_banner = (AdBannerLayout) findViewById(R.id.ad_banner);
 
 		txt_volunteer = (TextView) findViewById(R.id.txt_app_volunteer);
@@ -211,6 +213,14 @@ public class Tab3AppActivity extends FLTabActivity {
 			}
 		});
 
+		btn_tupop.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(mActivity, TupopActivity.class);
+				startActivity(intent);
+			}
+		});
+		
 		btn_travel.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
