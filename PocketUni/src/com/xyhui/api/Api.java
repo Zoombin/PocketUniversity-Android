@@ -69,6 +69,23 @@ public class Api extends BaseApi {
 		Client.get("Statuses", "comments", params, handler);
 	}
 
+	/**
+	 * 取帖子列表
+	 * @param params
+	 * @param type(0:最新, 1:最热)
+	 * @param sid
+	 * @param page
+	 */
+	public void getPopList(RequestParams params, int type, int sid, int page) {
+		params.put("sid", "" + sid);
+		params.put("page", "" + page);
+		if (type == 0) {
+			Client.get("Forum", "forumList", params, handler);
+		} else {
+			Client.get("Forum", "hotList", params, handler);
+		}
+	}
+	
 	public void mentions(RequestParams params, int count, int page) {
 		params.put("count", "" + count);
 		params.put("page", "" + page);

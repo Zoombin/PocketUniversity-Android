@@ -1,6 +1,7 @@
 package com.xyhui.activity.app;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -20,8 +21,7 @@ import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.RelativeLayout;
 
 import com.xyhui.R;
-import com.xyhui.fragment.PopHotFragment;
-import com.xyhui.fragment.PopNewFragment;
+import com.xyhui.fragment.PopFragment;
 import com.xyhui.widget.FLActivity;
 
 public class TupopActivity extends FLActivity {
@@ -173,16 +173,23 @@ public class TupopActivity extends FLActivity {
 		
 		@Override
 		public Fragment getItem(int index) {
+			Bundle bundle;
 			
 			switch (index) {
 			case new_index:
 				if (newft == null) {
-					newft = new PopNewFragment();
+					bundle = new Bundle();
+					bundle.putInt("type", index);
+					newft = new PopFragment();
+					newft.setArguments(bundle);
 				}
 				return newft;
 			case hot_index:
 				if (hotft == null) {
-					hotft = new PopHotFragment();
+					bundle = new Bundle();
+					bundle.putInt("type", index);
+					hotft = new PopFragment();
+					hotft.setArguments(bundle);
 				}
 				return hotft;
 			default:
