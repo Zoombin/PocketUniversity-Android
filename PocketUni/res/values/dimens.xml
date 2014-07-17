@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="bg_row_corner_radius">8.0dip</dimen>
+    <dimen name="bg_row_corner_radius_none">0.0dip</dimen>
+    <dimen name="bg_row_padding_left">1.0dip</dimen>
+    <dimen name="bg_row_padding_right">1.0dip</dimen>
+    <dimen name="bg_row_padding_top">1.0dip</dimen>
+    <dimen name="bg_row_padding_bottom">1.0dip</dimen>
+    <dimen name="bg_row_border_width">0.5dip</dimen>
+
+</resources>

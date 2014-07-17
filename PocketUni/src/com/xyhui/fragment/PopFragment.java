@@ -1,11 +1,13 @@
 package com.xyhui.fragment;
 
 import android.app.Activity;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.xyhui.R;
@@ -13,6 +15,8 @@ import com.xyhui.activity.app.TupopList;
 
 public class PopFragment extends Fragment {
 
+	private AnimationDrawable animationDrawable;
+	private ImageView animation_tupop;
 	private PullToRefreshListView pop_view_listview;
 	private TupopList tuPopListView;
 	private Activity mActivity;
@@ -37,6 +41,9 @@ public class PopFragment extends Fragment {
 		View v = inflater.inflate(R.layout.fragment_pop, null);
 		
 		pop_view_listview = (PullToRefreshListView) v.findViewById(R.id.pop_view_listview);
+		animation_tupop = (ImageView) v.findViewById(R.id.animation_tupop);
+		animationDrawable = (AnimationDrawable) animation_tupop.getBackground();
+		animationDrawable.start();
 		
 		return v;
 	}

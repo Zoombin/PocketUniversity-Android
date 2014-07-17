@@ -9,10 +9,18 @@
         android:id="@+id/pop_view_listview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="46dip"
-        android:layout_marginTop="44dip"
         android:cacheColorHint="#00000000"
         android:divider="@null"
         android:orientation="vertical" />
-    
+
+    <ImageView
+        android:id="@+id/animation_tupop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="50dp"
+        android:background="@drawable/animation_tupop"
+        android:contentDescription="@null" />
+
 </RelativeLayout>

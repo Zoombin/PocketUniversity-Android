@@ -28,4 +28,13 @@
 	<color name="red_highlight">#c00</color>
 	
 	<color name="list_item_bg">#efefef</color>
+	
+	<color name="bg_row_pressed_start">#ffcccccc</color>
+    <color name="bg_row_pressed_center">#ffcccccc</color>
+    <color name="bg_row_pressed_end">#ffcccccc</color>
+    <color name="bg_row_normal">#ffffffff</color>
+    <color name="bg_row_border">#ffcacaca</color>
+    <item name="bg_row_normal_start" type="color">@color/bg_row_normal</item>
+    <item name="bg_row_normal_center" type="color">@color/bg_row_normal</item>
+    <item name="bg_row_normal_end" type="color">@color/bg_row_normal</item>
 </resources>

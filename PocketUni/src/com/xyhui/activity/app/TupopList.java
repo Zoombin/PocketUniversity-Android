@@ -51,7 +51,7 @@ public class TupopList extends CListView {
 
 	@Override
 	public void initListItemResource() {
-		setListItemResource(R.layout.list_item_train_course);
+		setListItemResource(R.layout.list_item_tupop);
 	}
 
 	@Override
@@ -74,12 +74,12 @@ public class TupopList extends CListView {
 				int i = (Integer) v.getTag();
 				Forum item = (Forum) mListItems.get(i);
 
-				// 打开课程详情页
-				Intent intent = new Intent();
-				intent.setClass(mActivity, TrainViewActivity.class);
-				intent.putExtra(Params.INTENT_EXTRA.COURSEID, item.id);
-
-				mActivity.startActivity(intent);
+//				// 打开课程详情页
+//				Intent intent = new Intent();
+//				intent.setClass(mActivity, TrainViewActivity.class);
+//				intent.putExtra(Params.INTENT_EXTRA.COURSEID, item.id);
+//
+//				mActivity.startActivity(intent);
 			}
 		});
 	}
@@ -90,13 +90,14 @@ public class TupopList extends CListView {
 		final Forum item = (Forum) obj;
 		ArrayList<CListViewParam> LVP = new ArrayList<CListViewParam>();
 
-		CListViewParam avatarLVP = new CListViewParam(R.id.img_avatar, R.drawable.img_default,
-				true);
-		avatarLVP.setImgAsync(true);
-//		avatarLVP.setItemTag(item.orgLogo);
-		LVP.add(avatarLVP);
+//		CListViewParam avatarLVP = new CListViewParam(R.id.img_avatar, R.drawable.img_default,
+//				true);
+//		avatarLVP.setImgAsync(true);
+////		avatarLVP.setItemTag(item.orgLogo);
+//		LVP.add(avatarLVP);
 
-//		LVP.add(new CListViewParam(R.id.text_title, item.title, true));
+		LVP.add(new CListViewParam(R.id.tv_content, item.content, true));
+//		LVP.add(new CListViewParam(R.id.tv_content, item.id, false));
 //		LVP.add(new CListViewParam(R.id.text_hours, String.format("课时:%s", item.dauer), true));
 //		LVP.add(new CListViewParam(R.id.text_school, String.format("授课学校:%s", item.org), true));
 //		LVP.add(new CListViewParam(R.id.text_cost, String.format("价格:%s", item.cost), false));
@@ -163,7 +164,7 @@ public class TupopList extends CListView {
 		if (pop_type == COURSE_NEW) {
 			new Api(callback, mActivity).getPopList(PuApp.get().getToken(), COURSE_NEW, sid, page);
 		} else {
-			new Api(callback, mActivity).getPopList(PuApp.get().getToken(), COURSE_NEW, sid, page);
+			new Api(callback, mActivity).getPopList(PuApp.get().getToken(), COURSE_HOT, sid, page);
 		}
 	}
 
