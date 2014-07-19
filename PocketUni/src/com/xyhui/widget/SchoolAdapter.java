@@ -169,7 +169,7 @@ public class SchoolAdapter extends ArrayAdapter<School> implements
 		sectionOfPosition.put(0, 0);
 		for (int i = 1; i < count; i++) {
 
-			String letter = "afd";// getItem(i).getUname();
+			String letter =  Utils.getPinYinHeadChar(getItem(i).name);
 			int section = list.size() - 1;
 			if (list.get(section) != null && !list.get(section).equals(letter)) {
 				list.add(letter);
