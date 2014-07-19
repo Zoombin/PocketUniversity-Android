@@ -42,7 +42,8 @@ public class TupopSettingActivity extends FLActivity implements OnClickListener 
 			finish();
 			break;
 		case R.id.layout_school:
-			
+			intent.setClass(this, SchoolListActivity.class);
+			startActivity(intent);
 			break;
 		case R.id.layout_msg:
 			

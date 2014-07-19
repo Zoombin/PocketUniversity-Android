@@ -11,6 +11,13 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Locale;
 
+import net.sourceforge.pinyin4j.PinyinHelper;
+import net.sourceforge.pinyin4j.format.HanyuPinyinCaseType;
+import net.sourceforge.pinyin4j.format.HanyuPinyinOutputFormat;
+import net.sourceforge.pinyin4j.format.HanyuPinyinToneType;
+import net.sourceforge.pinyin4j.format.HanyuPinyinVCharType;
+import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombination;
+
 import org.apache.http.HttpHost;
 import org.apache.http.client.HttpClient;
 import org.apache.http.conn.params.ConnRoutePNames;
@@ -51,13 +58,14 @@ public class Utils {
 		try {
 			URL parsed = new URL(url);
 			if (!parsed.getProtocol().toLowerCase(Locale.US).equals("https")
-					&& !parsed.getHost().toLowerCase(Locale.US).endsWith("corp.google.com")) {
-				throw new RuntimeException(new StringBuilder().append("Insecure URL: ")
-						.append(url).toString());
+					&& !parsed.getHost().toLowerCase(Locale.US)
+							.endsWith("corp.google.com")) {
+				throw new RuntimeException(new StringBuilder()
+						.append("Insecure URL: ").append(url).toString());
 			}
 		} catch (MalformedURLException e) {
-			VolleyLog.d(new StringBuilder().append("Cannot parse URL: ").append(url).toString(),
-					new Object[0]);
+			VolleyLog.d(new StringBuilder().append("Cannot parse URL: ")
+					.append(url).toString(), new Object[0]);
 		}
 	}
 
@@ -66,8 +74,10 @@ public class Utils {
 	 */
 	public static void ensureNotOnMainThread() {
 		// Prevent the HttpRequest from being sent on the main thread
-		if (Looper.myLooper() != null && Looper.myLooper() == Looper.getMainLooper()) {
-			throw new IllegalStateException("This method cannot be called from the UI thread.");
+		if (Looper.myLooper() != null
+				&& Looper.myLooper() == Looper.getMainLooper()) {
+			throw new IllegalStateException(
+					"This method cannot be called from the UI thread.");
 		}
 	}
 
@@ -75,8 +85,10 @@ public class Utils {
 	 * Make sure the method must be called from UI thread.
 	 */
 	public static void ensureOnMainThread() {
-		if (Looper.myLooper() != null && Looper.myLooper() != Looper.getMainLooper()) {
-			throw new IllegalStateException("This method must be called from the UI thread.");
+		if (Looper.myLooper() != null
+				&& Looper.myLooper() != Looper.getMainLooper()) {
+			throw new IllegalStateException(
+					"This method must be called from the UI thread.");
 		}
 	}
 
@@ -90,7 +102,8 @@ public class Utils {
 	public static boolean isWifiAvailable(Context context) {
 		ConnectivityManager connectivityManager = (ConnectivityManager) context
 				.getSystemService(Context.CONNECTIVITY_SERVICE);
-		NetworkInfo wifiInfo = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+		NetworkInfo wifiInfo = connectivityManager
+				.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 		if (wifiInfo == null) {
 			return false;
 		}
@@ -150,7 +163,8 @@ public class Utils {
 			String extraInfo = mobileInfo.getExtraInfo();
 			if (extraInfo != null
 					&& (extraInfo.equals(CMWAP) || extraInfo.equals(CTWAP)
-							|| extraInfo.equals(UNIWAP) || extraInfo.equals(GWAP))) {
+							|| extraInfo.equals(UNIWAP) || extraInfo
+								.equals(GWAP))) {
 				return true;
 			}
 		}
@@ -174,15 +188,18 @@ public class Utils {
 				return;
 			}
 			HttpHost proxy = null;
-			if (extraInfo.toLowerCase().equals(CMWAP) || extraInfo.toLowerCase().equals(UNIWAP)
+			if (extraInfo.toLowerCase().equals(CMWAP)
+					|| extraInfo.toLowerCase().equals(UNIWAP)
 					|| extraInfo.toLowerCase().equals(GWAP)) {
 				proxy = new HttpHost(WAP_PROXY_HOST, 80);
 			} else if (extraInfo.toLowerCase().equals(CTWAP)) {
 				proxy = new HttpHost(CTWAP_PROXY_HOST, 80);
 			}
 			if (proxy != null) {
-				httpClient.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, proxy);
-				VolleyLog.d("Use Proxy %s", new Object[] { proxy.toHostString() });
+				httpClient.getParams().setParameter(
+						ConnRoutePNames.DEFAULT_PROXY, proxy);
+				VolleyLog.d("Use Proxy %s",
+						new Object[] { proxy.toHostString() });
 			}
 		}
 	}
@@ -222,8 +239,9 @@ public class Utils {
 	}
 
 	/**
-	 * Copy the content of the input stream into the output stream, using a temporary byte array
-	 * buffer whose size is defined by {@link #IO_BUFFER_SIZE}.
+	 * Copy the content of the input stream into the output stream, using a
+	 * temporary byte array buffer whose size is defined by
+	 * {@link #IO_BUFFER_SIZE}.
 	 * 
 	 * @param in
 	 *            The input stream to copy from.
@@ -233,7 +251,8 @@ public class Utils {
 	 * @throws java.io.IOException
 	 *             If any error occurs during the copy.
 	 */
-	public static void copy(InputStream in, OutputStream out) throws IOException {
+	public static void copy(InputStream in, OutputStream out)
+			throws IOException {
 		byte[] b = new byte[8 * 1024];
 		int read;
 		while ((read = in.read(b)) != -1) {
@@ -257,4 +276,19 @@ public class Utils {
 		}
 	}
 
+	// 返回中文的首字母
+	public static String getPinYinHeadChar(String str) {
+		if (str == null) {
+			return "";
+		}
+		String convert = "";
+		char word = str.substring(0, 1).charAt(0);
+		String[] pinyinArray = PinyinHelper.toHanyuPinyinStringArray(word);
+		if (pinyinArray != null) {
+			convert += pinyinArray[0].charAt(0);
+		} else {
+			convert = "";
+		}
+		return convert.toUpperCase();
+	}
 }
