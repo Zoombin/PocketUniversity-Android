@@ -111,7 +111,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ico_more_iphone" />
+                    android:src="@drawable/ico_more_twocode" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -266,11 +266,12 @@
         android:id="@+id/navbar"
         android:layout_width="match_parent"
         android:layout_height="50dip"
-        android:background="@drawable/bar_navigation_bg" >
+        android:background="@drawable/top_bg_yellow" >
 
         <TextView
             android:id="@+id/navbar_TitleText"
-            style="@style/navigation_title"
+            android:textSize="18sp"
+            android:textColor="@color/white"
             android:layout_width="wrap_content"
             android:layout_height="44dip"
             android:layout_alignParentTop="true"

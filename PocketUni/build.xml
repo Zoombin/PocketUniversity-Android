@@ -79,7 +79,7 @@
                            If this is not done in place, override ${out.dex.input.absolute.dir})
             -post-package
             -post-build
-            -pre-clean
+            -pre-clean
     -->
 
     <import
@@ -103,7 +103,7 @@
          ****** IMPORTANT ******
          ***********************
          In all cases you must update the value of version-tag below to read 'custom' instead of an integer,
-         in order to avoid having your file be overridden by tools such as "android update project"
+         in order to avoid having your file be overridden by tools such as "android update project"
     -->
     <!-- version-tag: 1 -->
 
