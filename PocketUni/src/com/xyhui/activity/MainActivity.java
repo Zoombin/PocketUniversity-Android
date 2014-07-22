@@ -29,13 +29,13 @@ public class MainActivity extends TabActivity implements TabHost.OnTabChangeList
 
 		mTabHost = getTabHost();
 
-		TableOperate.addTab(mTabHost, "主页", R.drawable.tab_selector_index, "index", new Intent(
+		TableOperate.addTab(mTabHost, "我", R.drawable.tab_selector_index, "index", new Intent(
 				this, Tab1HomeActivity.class));
-		TableOperate.addTab(mTabHost, "微博", R.drawable.tab_selector_weibo, "weibo", new Intent(
+		TableOperate.addTab(mTabHost, "学校", R.drawable.tab_selector_weibo, "weibo", new Intent(
 				this, Tab2WeiboActivity.class));
-		TableOperate.addTab(mTabHost, "应用", R.drawable.tab_selector_app, "app", new Intent(this,
+		TableOperate.addTab(mTabHost, "", R.drawable.tab_selector_app, "app", new Intent(this,
 				Tab3AppActivity.class));
-		TableOperate.addTab(mTabHost, "好友", R.drawable.tab_selector_friend, "friend", new Intent(
+		TableOperate.addTab(mTabHost, "PU", R.drawable.tab_selector_friend, "friend", new Intent(
 				this, Tab4FriendActivity.class));
 		TableOperate.addTab(mTabHost, "更多", R.drawable.tab_selector_more, "more", new Intent(this,
 				Tab5MoreActivity.class));

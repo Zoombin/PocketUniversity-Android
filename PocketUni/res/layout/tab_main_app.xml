@@ -8,21 +8,11 @@
 
     <ImageView
         android:id="@+id/tab_main_nav_ivIcon"
-        android:layout_width="32dip"
-        android:layout_height="32dip"
+        android:layout_width="46dip"
+        android:layout_height="46dip"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="9dip"
+        android:layout_marginTop="4dip"
         android:layout_centerInParent="true"
         android:src="@drawable/tab_ico_index_o" />
-
-    <TextView
-        android:id="@+id/tab_main_nav_tvTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerInParent="true"
-        android:gravity="center"
-        android:text="菜单"
-        android:textAppearance="@style/tab_title_TextStyle" />
 
 </RelativeLayout>

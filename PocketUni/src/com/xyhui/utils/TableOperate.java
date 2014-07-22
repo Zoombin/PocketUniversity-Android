@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -45,9 +46,14 @@ public abstract class TableOperate {
 	}
 
 	private static View prepareTabView(Context context, String text, int drawable) {
-		View view = LayoutInflater.from(context).inflate(R.layout.tab_main_nav, null);
-		TextView tv = (TextView) view.findViewById(R.id.tab_main_nav_tvTitle);
-		tv.setText(text);
+		View view;
+		if (TextUtils.isEmpty(text)) {
+			view = LayoutInflater.from(context).inflate(R.layout.tab_main_app, null);
+		} else {
+			view = LayoutInflater.from(context).inflate(R.layout.tab_main_nav, null);
+			TextView tv = (TextView) view.findViewById(R.id.tab_main_nav_tvTitle);
+			tv.setText(text);
+		}
 		ImageView iv = (ImageView) view.findViewById(R.id.tab_main_nav_ivIcon);
 		iv.setImageResource(drawable);
 		return view;

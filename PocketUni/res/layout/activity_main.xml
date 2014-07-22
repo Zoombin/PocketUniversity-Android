@@ -18,12 +18,18 @@
             android:layout_marginBottom="46dip" >
         </FrameLayout>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dip"
+            android:background="@color/gray333" />
+
         <TabWidget
             android:id="@android:id/tabs"
             android:layout_width="match_parent"
             android:layout_height="53dip"
             android:layout_alignParentBottom="true"
-            android:background="@drawable/tab_host_bg"
+            android:background="@color/white"
             android:paddingTop="0dip" />
     </RelativeLayout>
+
 </TabHost>
