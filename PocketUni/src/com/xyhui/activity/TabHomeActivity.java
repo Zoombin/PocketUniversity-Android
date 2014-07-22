@@ -22,7 +22,7 @@ import com.xyhui.utils.PrefUtil;
 import com.xyhui.widget.EventBannerLayout;
 import com.xyhui.widget.FLTabActivity;
 
-public class Tab1HomeActivity extends FLTabActivity {
+public class TabHomeActivity extends FLTabActivity {
 
 	private EventBannerLayout index_banner;
 

@@ -33,7 +33,7 @@ import com.xyhui.utils.PrefUtil;
 import com.xyhui.widget.AdBannerLayout;
 import com.xyhui.widget.FLTabActivity;
 
-public class Tab5MoreActivity extends FLTabActivity {
+public class TabMoreActivity extends FLTabActivity {
 
 	private final String HELP_URL = "http://pocketuni.net/puhelp.html";
 
@@ -201,7 +201,7 @@ public class Tab5MoreActivity extends FLTabActivity {
 					|| current_version.compareTo(version) >= 0) {
 				NotificationsUtil.ToastBottomMsg(mActivity, "当前是最新版本");
 			} else {
-				new AlertDialog.Builder(Tab5MoreActivity.this).setTitle("升级应用程序")
+				new AlertDialog.Builder(TabMoreActivity.this).setTitle("升级应用程序")
 						.setMessage(r.msg)
 						.setPositiveButton("立即升级", new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int whichButton) {

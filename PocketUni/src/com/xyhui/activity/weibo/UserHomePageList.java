@@ -26,7 +26,7 @@ import com.mslibs.widget.CListViewParam;
 import com.xyhui.R;
 import com.xyhui.activity.ImageZoomActivity;
 import com.xyhui.activity.PuApp;
-import com.xyhui.activity.Tab4FriendActivity;
+import com.xyhui.activity.TabFriendActivity;
 import com.xyhui.activity.group.GroupListActivity;
 import com.xyhui.activity.photo.AlbumListActivity;
 import com.xyhui.api.Api;
@@ -256,7 +256,7 @@ public class UserHomePageList extends CListView {
 				public void onClick(View v) {
 					// 打开粉丝列表
 					Intent intent = new Intent();
-					intent.setClass(mActivity, Tab4FriendActivity.class);
+					intent.setClass(mActivity, TabFriendActivity.class);
 					intent.putExtra(Params.INTENT_EXTRA.FRIENDLIST_USERID,
 							mUser.uid);
 					intent.putExtra(Params.INTENT_EXTRA.FRIENDLIST_TYPE,

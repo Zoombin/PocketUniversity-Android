@@ -18,7 +18,7 @@ import com.xyhui.utils.Params;
 import com.xyhui.widget.AdBannerLayout;
 import com.xyhui.widget.FLTabActivity;
 
-public class Tab2WeiboActivity extends FLTabActivity {
+public class TabWeiboActivity extends FLTabActivity {
 
 	private PullToRefreshListView weibo_listview;
 	private PullToRefreshListView all_weibo_listview;

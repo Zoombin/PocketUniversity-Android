@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/navbar"
+        android:orientation="vertical"
+        android:padding="6dip" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <RelativeLayout
+                android:id="@+id/layout_school_bl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="6dip"
+                android:layout_weight="1" >
+
+                <ImageButton
+                    android:id="@+id/btn_school_bl"
+                    android:layout_width="66dip"
+                    android:layout_height="66dip"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/btn_selector_app"
+                    android:padding="3dip"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/school_icon_bl" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/btn_school_bl"
+                    android:gravity="center"
+                    android:text="部落"
+                    android:textColor="#333"
+                    android:textSize="14sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/layout_school_hd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="6dip"
+                android:layout_weight="1" >
+
+                <ImageButton
+                    android:id="@+id/btn_hd"
+                    android:layout_width="66dip"
+                    android:layout_height="66dip"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/btn_selector_app"
+                    android:padding="3dip"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/school_icon_hd" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/btn_hd"
+                    android:gravity="center"
+                    android:text="活动"
+                    android:textColor="#333"
+                    android:textSize="14sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/layout_school_dh"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="6dip"
+                android:layout_weight="1" >
+
+                <ImageButton
+                    android:id="@+id/btn_school_dh"
+                    android:layout_width="66dip"
+                    android:layout_height="66dip"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/btn_selector_app"
+                    android:padding="3dip"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/school_icon_dh" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/btn_school_dh"
+                    android:gravity="center"
+                    android:text="导航"
+                    android:textColor="#333"
+                    android:textSize="14sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/layout_school_weibo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="6dip"
+                android:layout_weight="1" >
+
+                <ImageButton
+                    android:id="@+id/btn_school_weibo"
+                    android:layout_width="66dip"
+                    android:layout_height="66dip"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/btn_selector_app"
+                    android:padding="3dip"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/school_icon_weibo" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/btn_school_weibo"
+                    android:gravity="center"
+                    android:text="发微博"
+                    android:textColor="#333"
+                    android:textSize="14sp" />
+            </RelativeLayout>
+        </LinearLayout>
+	</LinearLayout>
+        
+    <RelativeLayout
+        android:id="@+id/navbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/navbar_TitleText"
+            android:layout_width="match_parent"
+            android:layout_height="50dip"
+            android:layout_alignParentTop="true"
+            android:background="#61a0e6"
+            android:gravity="center"
+            android:text="学校"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+
+        <com.xyhui.widget.AdBannerLayout
+            android:id="@+id/ad_banner"
+            android:layout_width="match_parent"
+            android:layout_height="50dip"
+            android:layout_below="@+id/navbar_TitleText"
+            android:layout_marginTop="-6dip" />
+    </RelativeLayout>
+
+</RelativeLayout>

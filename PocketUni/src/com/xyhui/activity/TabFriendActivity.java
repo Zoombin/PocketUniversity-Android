@@ -16,7 +16,7 @@ import com.xyhui.utils.Params;
 import com.xyhui.widget.AdBannerLayout;
 import com.xyhui.widget.FLTabActivity;
 
-public class Tab4FriendActivity extends FLTabActivity {
+public class TabFriendActivity extends FLTabActivity {
 
 	private Button btn_nav_follows;
 	private Button btn_nav_followed;

@@ -7,7 +7,7 @@ import android.widget.TextView;
 
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.xyhui.R;
-import com.xyhui.activity.Tab3AppActivity;
+import com.xyhui.activity.TabAppActivity;
 import com.xyhui.utils.Params;
 import com.xyhui.utils.PrefUtil;
 import com.xyhui.widget.FLActivity;
@@ -45,7 +45,7 @@ public class MobileZoneListActivity extends FLActivity {
 	public void ensureUi() {
 		mCityId = new PrefUtil().getPreference(Params.LOCAL.CITYID);
 
-		if (mCityId.equals(Tab3AppActivity.SUZHOU_CITY_ID)) {
+		if (mCityId.equals(TabAppActivity.SUZHOU_CITY_ID)) {
 			navbar_TitleText.setText("移动专区");
 		} else {
 			navbar_TitleText.setText("运营商专区");

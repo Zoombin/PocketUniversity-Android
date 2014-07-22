@@ -29,7 +29,7 @@ import com.mslibs.utils.JSONUtils;
 import com.mslibs.utils.NotificationsUtil;
 import com.xyhui.R;
 import com.xyhui.activity.PuApp;
-import com.xyhui.activity.Tab3AppActivity;
+import com.xyhui.activity.TabAppActivity;
 import com.xyhui.activity.WebViewActivity;
 import com.xyhui.activity.more.PhoneBindingActivity;
 import com.xyhui.activity.more.QRCardViewActivity;
@@ -374,9 +374,9 @@ public class EventViewActivity extends FLActivity {
 										int whichButton) {
 									DownloadImpl download = new DownloadImpl(
 											mActivity,
-											Tab3AppActivity.MIAOPAI_DOWNLOAD_URL,
+											TabAppActivity.MIAOPAI_DOWNLOAD_URL,
 											"秒拍",
-											Tab3AppActivity.MIAOPAI_PKG_NAME
+											TabAppActivity.MIAOPAI_PKG_NAME
 													+ ".apk");
 									download.startDownload();
 								}

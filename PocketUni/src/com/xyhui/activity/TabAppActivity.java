@@ -33,7 +33,7 @@ import com.xyhui.utils.PrefUtil;
 import com.xyhui.widget.AdBannerLayout;
 import com.xyhui.widget.FLTabActivity;
 
-public class Tab3AppActivity extends FLTabActivity {
+public class TabAppActivity extends FLTabActivity {
 	public final static String SUZHOU_CITY_ID = "1";
 	public final static String VOLUNTEER_PKG_NAME = "com.lifeyoyo.volunteer.pu";
 	public final static String MIAOPAI_DOWNLOAD_URL = "http://storage.video.sina.com.cn/apk/140226_wostore.apk?qq-pf-to=pcqq.c2c";
@@ -238,7 +238,7 @@ public class Tab3AppActivity extends FLTabActivity {
 				// 打开志愿者打卡器
 				if (PuApp.get().isInstalled(mVolunteerApp)) {
 					showProgress();
-					new Api(volunteerUpdateCB, Tab3AppActivity.this).getVolunteerUpdate();
+					new Api(volunteerUpdateCB, TabAppActivity.this).getVolunteerUpdate();
 				} else {
 					new AlertDialog.Builder(mActivity).setTitle("下载").setMessage("点击确定开始下载")
 							.setPositiveButton("确定", new DialogInterface.OnClickListener() {

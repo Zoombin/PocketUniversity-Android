@@ -401,7 +401,7 @@
                     android:layout_centerHorizontal="true"
                     android:background="@drawable/btn_selector_app"
                     android:padding="3dip"
-            		android:scaleType="fitXY"
+                    android:scaleType="fitXY"
                     android:src="@drawable/app_icon_love" />
 
                 <TextView
@@ -414,8 +414,8 @@
                     android:textColor="#333"
                     android:textSize="14sp" />
             </RelativeLayout>
-            
-     		 <RelativeLayout
+
+            <RelativeLayout
                 android:id="@+id/layout_app_dushuhu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -442,8 +442,8 @@
                     android:textColor="#333"
                     android:textSize="14sp" />
             </RelativeLayout>
-            
-     		<RelativeLayout
+
+            <RelativeLayout
                 android:id="@+id/layout_tupop"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -470,7 +470,8 @@
                     android:textColor="#333"
                     android:textSize="14sp" />
             </RelativeLayout>
-        <!--     <RelativeLayout
+            <!--
+                 <RelativeLayout
                 android:id="@+id/layout_app_train"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -496,7 +497,8 @@
                     android:text="培训"
                     android:textColor="#333"
                     android:textSize="14sp" />
-            </RelativeLayout> -->
+            </RelativeLayout>
+            -->
 
             <RelativeLayout
                 android:id="@+id/layout_app_jqt1"
@@ -526,7 +528,8 @@
                     android:textSize="14sp" />
             </RelativeLayout>
 
-       <!--      <RelativeLayout
+            <!--
+                 <RelativeLayout
                 android:id="@+id/layout_app_jqt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -552,7 +555,8 @@
                     android:text="街区淘"
                     android:textColor="#333"
                     android:textSize="14sp" />
-            </RelativeLayout> -->
+            </RelativeLayout>
+            -->
         </LinearLayout>
     </LinearLayout>
 
@@ -563,13 +567,14 @@
 
         <TextView
             android:id="@+id/navbar_TitleText"
-            style="@style/navigation_title"
             android:layout_width="match_parent"
             android:layout_height="50dip"
             android:layout_alignParentTop="true"
-            android:background="@drawable/bar_navigation_bg"
+            android:background="#61a0e6"
             android:gravity="center"
-            android:text="应用" />
+            android:text="PU"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
 
         <com.xyhui.widget.AdBannerLayout
             android:id="@+id/ad_banner"
