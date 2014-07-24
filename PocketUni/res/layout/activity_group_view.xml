@@ -141,7 +141,7 @@
                             android:shadowDx="0"
                             android:shadowDy="1"
                             android:shadowRadius="0.01"
-                            android:text="水帖"
+                            android:text="水区"
                             android:textColor="#999"
                             android:textSize="12sp" />
                     </LinearLayout>

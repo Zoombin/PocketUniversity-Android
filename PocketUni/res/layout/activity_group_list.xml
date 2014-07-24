@@ -15,6 +15,15 @@
         android:orientation="vertical" />
 
     <com.handmark.pulltorefresh.library.PullToRefreshListView
+        android:id="@+id/my_star_listview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/spinnerbar"
+        android:cacheColorHint="#00000000"
+        android:divider="@null"
+        android:orientation="vertical" />
+
+    <com.handmark.pulltorefresh.library.PullToRefreshListView
         android:id="@+id/my_group_listview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -73,58 +82,49 @@
         android:id="@+id/ad_banner"
         android:layout_width="match_parent"
         android:layout_height="50dip"
-        android:layout_below="@+id/toolbar"
-        android:layout_marginTop="-6dip" />
-
-    <LinearLayout
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="50dip"
         android:layout_below="@+id/navbar"
-        android:layout_marginTop="-6dip"
-        android:background="@drawable/bar_tool_bg" >
-
-        <Button
-            android:id="@+id/btn_hot_group"
-            android:layout_width="wrap_content"
-            android:layout_height="44dip"
-            android:layout_weight="1"
-            android:background="@drawable/btn_selector_notice_sort"
-            android:text="热门部落"
-            android:textSize="13sp" />
-
-        <Button
-            android:id="@+id/btn_my_group"
-            android:layout_width="wrap_content"
-            android:layout_height="44dip"
-            android:layout_weight="1"
-            android:background="@drawable/btn_selector_notice_sort"
-            android:text="我的部落"
-            android:textSize="13sp" />
-    </LinearLayout>
+        android:layout_marginTop="-6dip" />
 
     <RelativeLayout
         android:id="@+id/navbar"
         android:layout_width="match_parent"
         android:layout_height="50dip"
-        android:background="@drawable/bar_navigation_bg" >
+        android:background="#61a0e6" >
 
         <LinearLayout
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="44dip"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:gravity="center"
-            android:orientation="horizontal" >
+            android:layout_marginLeft="60dip"
+            android:layout_marginRight="60dip"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true" >
 
-            <TextView
-                android:id="@+id/navbar_TitleText"
-                style="@style/navigation_title"
+            <Button
+                android:id="@+id/btn_hot_group"
                 android:layout_width="wrap_content"
                 android:layout_height="44dip"
-                android:gravity="center_vertical"
-                android:text="部落" />
+                android:layout_weight="1"
+                android:background="@drawable/btn_selector_notice_sort"
+                android:text="活跃部落"
+                android:textSize="13sp" />
+
+            <Button
+                android:id="@+id/btn_star_group"
+                android:layout_width="wrap_content"
+                android:layout_height="44dip"
+                android:layout_weight="1"
+                android:background="@drawable/btn_selector_notice_sort"
+                android:text="星级部落"
+                android:textSize="13sp" />
+
+            <Button
+                android:id="@+id/btn_my_group"
+                android:layout_width="wrap_content"
+                android:layout_height="44dip"
+                android:layout_weight="1"
+                android:background="@drawable/btn_selector_notice_sort"
+                android:text="我的部落"
+                android:textSize="13sp" />
         </LinearLayout>
 
         <Button

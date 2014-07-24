@@ -28,6 +28,7 @@ public class GroupList extends CListView {
 	public static final int GROUP_HOT = 1;
 	public static final int GROUP_MY = 2;
 	public static final int GROUP_SEARCH = 3;
+	public static final int GROUP_STAR = 4;
 
 	private int group_type = GROUP_HOT;
 
@@ -156,6 +157,8 @@ public class GroupList extends CListView {
 
 		if (GROUP_HOT == group_type) {
 			new Api(callback, mActivity).allgroup(PuApp.get().getToken(), ids, mPerpage, page);
+		} else if (GROUP_STAR == group_type) {
+				new Api(callback, mActivity).stargroup(PuApp.get().getToken(), ids, mPerpage, page);
 		} else if (GROUP_MY == group_type) {
 			new Api(callback, mActivity).mygroup(PuApp.get().getToken(), mPerpage, page);
 		} else if (GROUP_SEARCH == group_type) {

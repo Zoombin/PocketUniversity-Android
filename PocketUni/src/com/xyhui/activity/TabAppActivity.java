@@ -54,7 +54,7 @@ public class TabAppActivity extends FLTabActivity {
 	private ImageButton btn_app_charge;
 	private ImageButton btn_app_qnh;
 	private ImageButton btn_app_miaopai;
-	private ImageButton btn_app_love;
+	private ImageButton btn_app_record;
 	private ImageButton btn_app_dushuhu;
 	private ImageButton btn_tupop;
 
@@ -88,7 +88,7 @@ public class TabAppActivity extends FLTabActivity {
 		btn_app_charge = (ImageButton) findViewById(R.id.btn_app_charge);
 		btn_app_qnh = (ImageButton) findViewById(R.id.btn_app_qnh);
 		btn_app_miaopai = (ImageButton) findViewById(R.id.btn_app_miaopai);
-		btn_app_love = (ImageButton) findViewById(R.id.btn_app_love);
+		btn_app_record = (ImageButton) findViewById(R.id.btn_app_record);
 		btn_app_dushuhu = (ImageButton) findViewById(R.id.btn_app_dushuhu);
 		btn_tupop = (ImageButton) findViewById(R.id.btn_tupop);
 		
@@ -360,10 +360,10 @@ public class TabAppActivity extends FLTabActivity {
 			}
 		});
 
-		btn_app_love.setOnClickListener(new OnClickListener() {
+		btn_app_record.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// 打开爱心校园
+				// 打开中奖纪录
 				Intent intent = new Intent(mActivity, DonateListActivity.class);
 				startActivity(intent);
 			}

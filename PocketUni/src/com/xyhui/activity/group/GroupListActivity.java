@@ -34,11 +34,14 @@ public class GroupListActivity extends FLActivity {
 	private Button btn_search;
 
 	private Button btn_hot_group;
+	private Button btn_star_group;
 	private Button btn_my_group;
 
 	private PullToRefreshListView hot_group_listview;
+	private PullToRefreshListView my_star_listview;
 	private PullToRefreshListView my_group_listview;
 	private GroupList mGroupListView_hot;
+	private GroupList mGroupListView_star;
 	private GroupList mGroupListView_my;
 
 	private LinearLayout schoolbar;
@@ -74,9 +77,11 @@ public class GroupListActivity extends FLActivity {
 		btn_search = (Button) findViewById(R.id.btn_search);
 
 		btn_hot_group = (Button) findViewById(R.id.btn_hot_group);
+		btn_star_group = (Button) findViewById(R.id.btn_star_group);
 		btn_my_group = (Button) findViewById(R.id.btn_my_group);
 
 		hot_group_listview = (PullToRefreshListView) findViewById(R.id.hot_group_listview);
+		my_star_listview = (PullToRefreshListView) findViewById(R.id.my_star_listview);
 		my_group_listview = (PullToRefreshListView) findViewById(R.id.my_group_listview);
 
 		ad_banner = (AdBannerLayout) findViewById(R.id.ad_banner);
@@ -104,9 +109,11 @@ public class GroupListActivity extends FLActivity {
 			public void onClick(View v) {
 				if (btn_hot_group.isSelected() == false) {
 					btn_hot_group.setSelected(true);
+					btn_star_group.setSelected(false);
 					btn_my_group.setSelected(false);
 
 					hot_group_listview.setVisibility(View.VISIBLE);
+					my_star_listview.setVisibility(View.GONE);
 					my_group_listview.setVisibility(View.GONE);
 
 					schoolbar.setVisibility(View.VISIBLE);
@@ -114,14 +121,38 @@ public class GroupListActivity extends FLActivity {
 			}
 		});
 
+		btn_star_group.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (btn_star_group.isSelected() == false) {
+					btn_hot_group.setSelected(false);
+					btn_star_group.setSelected(true);
+					btn_my_group.setSelected(false);
+
+					hot_group_listview.setVisibility(View.GONE);
+					my_star_listview.setVisibility(View.VISIBLE);
+					my_group_listview.setVisibility(View.GONE);
+
+					schoolbar.setVisibility(View.VISIBLE);
+					
+					if (mGroupListView_star == null) {
+						mGroupListView_star = new GroupList(my_star_listview, mActivity,
+								GroupList.GROUP_STAR);
+					}
+				}
+			}
+		});
+		
 		btn_my_group.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				if (btn_my_group.isSelected() == false) {
 					btn_hot_group.setSelected(false);
+					btn_star_group.setSelected(false);
 					btn_my_group.setSelected(true);
 
 					hot_group_listview.setVisibility(View.GONE);
+					my_star_listview.setVisibility(View.GONE);
 					my_group_listview.setVisibility(View.VISIBLE);
 
 					schoolbar.setVisibility(View.GONE);
@@ -186,6 +217,7 @@ public class GroupListActivity extends FLActivity {
 
 		btn_hot_group.setSelected(true);
 		hot_group_listview.setVisibility(View.VISIBLE);
+		my_star_listview.setVisibility(View.GONE);
 		my_group_listview.setVisibility(View.GONE);
 
 		setTitle();
@@ -194,10 +226,12 @@ public class GroupListActivity extends FLActivity {
 
 	private void setTitle() {
 		if (cityId.equals(CUPID)) {
-			btn_hot_group.setText("热门项目");
+			btn_hot_group.setText("活跃项目");
+			btn_star_group.setText("星级项目");
 			btn_my_group.setText("我的项目");
 		} else {
-			btn_hot_group.setText("热门部落");
+			btn_hot_group.setText("活跃部落");
+			btn_star_group.setText("星级部落");
 			btn_my_group.setText("我的部落");
 		}
 	}

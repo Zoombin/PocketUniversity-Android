@@ -352,6 +352,17 @@ public class Api extends BaseApi {
 		Client.get("Group", "allgroup", params, handler);
 	}
 
+	public void stargroup(RequestParams params, String[] ids, int count, int page) {
+		params.put("dpart", ids[0]);
+		params.put("sid1", ids[1]);
+		params.put("year", ids[2]);
+		params.put("sort", ids[3]);
+		params.put("order", "vStern");
+		params.put("count", count + "");
+		params.put("p", page + "");
+		Client.get("Group", "allgroup", params, handler);
+	}
+	
 	public void mygroup(RequestParams params, int count, int page) {
 		params.put("count", count + "");
 		params.put("page", page + "");
