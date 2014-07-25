@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fcfcfc" >
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/navbar" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white" >
+
+            <com.xyhui.widget.EventBannerLayout
+                android:id="@+id/index_banner"
+                android:layout_width="match_parent"
+                android:layout_height="136dip" />
+
+            <LinearLayout
+                android:id="@+id/layout_user"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/index_banner"
+                android:orientation="horizontal" >
+
+                <ImageView
+                    android:id="@+id/iv_userheader"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="5dp"
+                    android:scaleType="fitXY" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" >
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal" >
+
+                        <Button
+                            android:id="@+id/btn_pujie"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:layout_weight="1"
+                            android:background="@color/blue_highlight"
+                            android:paddingBottom="10dp"
+                            android:paddingTop="10dp"
+                            android:text="扑街"
+                            android:textColor="@color/white"
+                            android:textSize="16sp" />
+
+                        <Button
+                            android:id="@+id/btn_wuliao"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:layout_weight="1"
+                            android:background="@color/blue_highlight"
+                            android:paddingBottom="10dp"
+                            android:paddingTop="10dp"
+                            android:text="无聊"
+                            android:textColor="@color/white"
+                            android:textSize="16sp" />
+
+                        <Button
+                            android:id="@+id/btn_sixin"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:layout_weight="1"
+                            android:background="@color/blue_highlight"
+                            android:paddingBottom="10dp"
+                            android:paddingTop="10dp"
+                            android:text="私信"
+                            android:textColor="@color/white"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/btn_status"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:background="@color/orange_highlight"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp"
+                        android:text="点我发状态"
+                        android:textColor="@color/white"
+                        android:textSize="16sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <com.handmark.pulltorefresh.library.PullToRefreshListView
+                android:id="@+id/weibo_listview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/layout_user"
+                android:cacheColorHint="#00000000"
+                android:divider="@null"
+                android:orientation="vertical" />
+        </RelativeLayout>
+    </ScrollView>
+
+    <RelativeLayout
+        android:id="@+id/navbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/navbar_TitleText"
+            android:layout_width="match_parent"
+            android:layout_height="50dip"
+            android:layout_alignParentTop="true"
+            android:background="#61a0e6"
+            android:gravity="center"
+            android:text="我"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+    </RelativeLayout>
+
+</RelativeLayout>

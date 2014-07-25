@@ -32,6 +32,7 @@ public abstract class FLTabActivity extends FLActivity {
 			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			startActivity(intent);
 
+			System.exit(0);
 			// boolean moved = moveTaskToBack(false);
 			// VolleyLog.d("Moved? %b", moved);
 		}
