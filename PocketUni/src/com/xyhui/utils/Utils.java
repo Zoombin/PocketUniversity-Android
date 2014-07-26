@@ -11,13 +11,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Locale;
 
-import net.sourceforge.pinyin4j.PinyinHelper;
-import net.sourceforge.pinyin4j.format.HanyuPinyinCaseType;
-import net.sourceforge.pinyin4j.format.HanyuPinyinOutputFormat;
-import net.sourceforge.pinyin4j.format.HanyuPinyinToneType;
-import net.sourceforge.pinyin4j.format.HanyuPinyinVCharType;
-import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombination;
-
 import org.apache.http.HttpHost;
 import org.apache.http.client.HttpClient;
 import org.apache.http.conn.params.ConnRoutePNames;
@@ -26,6 +19,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Looper;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.mslibs.utils.VolleyLog;
@@ -275,20 +269,17 @@ public class Utils {
 			}
 		}
 	}
-
-	// 返回中文的首字母
-	public static String getPinYinHeadChar(String str) {
-		if (str == null) {
-			return "";
+	
+	/**
+	 * 取首字母
+	 * @param display_order
+	 * @return
+	 */
+	public static String getHeader(String display_order) {
+		String header = "";
+		if (!TextUtils.isEmpty(display_order)) {
+			header = display_order.substring(0, 1);
 		}
-		String convert = "";
-		char word = str.substring(0, 1).charAt(0);
-		String[] pinyinArray = PinyinHelper.toHanyuPinyinStringArray(word);
-		if (pinyinArray != null) {
-			convert += pinyinArray[0].charAt(0);
-		} else {
-			convert = "";
-		}
-		return convert.toUpperCase();
+		return header;
 	}
 }

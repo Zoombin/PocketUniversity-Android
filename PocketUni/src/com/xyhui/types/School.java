@@ -9,6 +9,7 @@ public class School implements Parcelable {
 	public String email;
 	public String cityId;
 	public String id;
+	public String display_order;
 
 	@Override
 	public String toString() {
@@ -27,6 +28,7 @@ public class School implements Parcelable {
 		out.writeString(email);
 		out.writeString(cityId);
 		out.writeString(id);
+		out.writeString(display_order);
 	}
 
 	public School() {
@@ -39,6 +41,7 @@ public class School implements Parcelable {
 		email = in.readString();
 		cityId = in.readString();
 		id = in.readString();
+		display_order = in.readString();
 	}
 
 	public static final Parcelable.Creator<School> CREATOR = new Parcelable.Creator<School>() {
@@ -51,5 +54,4 @@ public class School implements Parcelable {
 			return new School[size];
 		}
 	};
-
 }

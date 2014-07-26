@@ -6,6 +6,7 @@ import java.util.List;
 import android.app.Activity;
 import android.content.Context;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.SparseIntArray;
 import android.view.LayoutInflater;
@@ -35,15 +36,21 @@ public class SchoolAdapter extends ArrayAdapter<School> implements
 	private LayoutInflater layoutInflater;
 	private EditText query;
 	private ImageButton clearSearch;
+	private List<School> schoollist;
+	private List<School> firstschoollist = new ArrayList<School>();
 	private SparseIntArray positionOfSection;
 	private SparseIntArray sectionOfPosition;
 	private Sidebar sidebar;
 	private int res;
 	
-	public SchoolAdapter(Context context, int resource, List<School> objects,
+	public SchoolAdapter(Context context, int resource, List<School> schoollist,
 			Sidebar sidebar) {
-		super(context, resource, objects);
+		super(context, resource, schoollist);
 		this.res = resource;
+		this.schoollist = schoollist;
+		for (School school : schoollist) {
+			firstschoollist.add(school);
+		}
 		this.sidebar = sidebar;
 		layoutInflater = LayoutInflater.from(context);
 	}
@@ -58,6 +65,14 @@ public class SchoolAdapter extends ArrayAdapter<School> implements
 		return position == 0 ? 0 : 1;
 	}
 
+	private void getFilterSchoollist(List<School> schools, String s) {
+		for (School school : schools) {
+			if (school.display_order.subSequence(0, s.length()).equals(s.toUpperCase())) {
+				schoollist.add(school);
+			}
+		}
+	}
+	
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		if (position == 0) {// 搜索框
@@ -70,7 +85,17 @@ public class SchoolAdapter extends ArrayAdapter<School> implements
 				query.addTextChangedListener(new TextWatcher() {
 					public void onTextChanged(CharSequence s, int start,
 							int before, int count) {
-						getFilter().filter(s);
+//						getFilter().filter(s);
+						schoollist.clear();
+						if (TextUtils.isEmpty(s)) {
+							for (School school : firstschoollist) {
+								schoollist.add(school);
+							}
+						} else {
+							getFilterSchoollist(firstschoollist, s.toString());
+						}
+						SchoolAdapter.this.notifyDataSetChanged();
+						
 						if (s.length() > 0) {
 							clearSearch.setVisibility(View.VISIBLE);
 							if (sidebar != null)
@@ -119,9 +144,8 @@ public class SchoolAdapter extends ArrayAdapter<School> implements
 
 			School school = getItem(position);
 			// 设置nick，demo里不涉及到完整user，用username代替nick显示
-			String schoolname = school.name;
-			String header = Utils.getPinYinHeadChar(school.name);
-			if (position == 0 || header != null && !header.equals(Utils.getPinYinHeadChar(getItem(position - 1).name))) {
+			String header = Utils.getHeader(school.display_order);
+			if (position == 0 || header != null && !header.equals(Utils.getHeader(getItem(position - 1).display_order))) {
 				if ("".equals(header)) {
 					tvHeader.setVisibility(View.GONE);
 				} else {
@@ -131,7 +155,7 @@ public class SchoolAdapter extends ArrayAdapter<School> implements
 			} else {
 				tvHeader.setVisibility(View.GONE);
 			}
-			tv_schoolname.setText(schoolname);
+			tv_schoolname.setText(school.name);
 			// if (unreadMsgView != null)
 			iv_schoolselect.setVisibility(View.INVISIBLE);
 		}
@@ -169,7 +193,7 @@ public class SchoolAdapter extends ArrayAdapter<School> implements
 		sectionOfPosition.put(0, 0);
 		for (int i = 1; i < count; i++) {
 
-			String letter =  Utils.getPinYinHeadChar(getItem(i).name);
+			String letter =  Utils.getHeader(getItem(i).display_order);
 			int section = list.size() - 1;
 			if (list.get(section) != null && !list.get(section).equals(letter)) {
 				list.add(letter);

@@ -62,7 +62,7 @@ public class SchoolListActivity extends Activity {
 
 			@Override
 			public int compare(School lhs, School rhs) {
-				return Utils.getPinYinHeadChar(lhs.name).compareTo(Utils.getPinYinHeadChar(rhs.name));
+				return Utils.getHeader(lhs.display_order).compareTo(Utils.getHeader(rhs.display_order));
 			}
 		});
 	}
