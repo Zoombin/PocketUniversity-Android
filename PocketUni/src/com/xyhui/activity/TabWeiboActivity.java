@@ -16,9 +16,9 @@ import com.xyhui.activity.weibo.WeiboTopicList;
 import com.xyhui.types.Banner;
 import com.xyhui.utils.Params;
 import com.xyhui.widget.AdBannerLayout;
-import com.xyhui.widget.FLTabActivity;
+import com.xyhui.widget.FLActivity;
 
-public class TabWeiboActivity extends FLTabActivity {
+public class TabWeiboActivity extends FLActivity {
 
 	private PullToRefreshListView weibo_listview;
 	private PullToRefreshListView all_weibo_listview;

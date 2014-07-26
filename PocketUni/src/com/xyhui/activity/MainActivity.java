@@ -4,16 +4,21 @@ import android.app.TabActivity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TabHost;
 
 import com.xyhui.R;
 import com.xyhui.utils.TableOperate;
+import com.xyhui.widget.MenuDialog;
 
 @SuppressWarnings("deprecation")
 public class MainActivity extends TabActivity implements TabHost.OnTabChangeListener {
 	private TabHost mTabHost;
-
+	private Button btn_menu;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -40,6 +45,15 @@ public class MainActivity extends TabActivity implements TabHost.OnTabChangeList
 		TableOperate.addTab(mTabHost, "更多", R.drawable.tab_selector_more, "more", new Intent(this,
 				TabMoreActivity.class));
 
+		btn_menu = (Button) findViewById(R.id.btn_menu);
+		btn_menu.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				new MenuDialog(MainActivity.this);
+			}
+		});
+		
 		// Fix layout for 1.5.
 		if (Build.VERSION.SDK_INT < 4) {
 			FrameLayout flTabContent = (FrameLayout) findViewById(android.R.id.tabcontent);

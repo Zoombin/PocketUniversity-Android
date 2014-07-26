@@ -53,9 +53,10 @@ public abstract class TableOperate {
 			view = LayoutInflater.from(context).inflate(R.layout.tab_main_nav, null);
 			TextView tv = (TextView) view.findViewById(R.id.tab_main_nav_tvTitle);
 			tv.setText(text);
+			ImageView iv = (ImageView) view.findViewById(R.id.tab_main_nav_ivIcon);
+			iv.setImageResource(drawable);
 		}
-		ImageView iv = (ImageView) view.findViewById(R.id.tab_main_nav_ivIcon);
-		iv.setImageResource(drawable);
+
 		return view;
 	}
 

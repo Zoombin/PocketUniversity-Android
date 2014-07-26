@@ -30,6 +30,15 @@
             android:layout_alignParentBottom="true"
             android:background="@color/white"
             android:paddingTop="0dip" />
+
+        <Button
+            android:id="@+id/btn_menu"
+            android:layout_width="46dip"
+            android:layout_height="46dip"
+            android:layout_alignParentBottom="true"
+            android:layout_centerInParent="true"
+            android:layout_marginBottom="4dip"
+            android:background="@drawable/tab_ico_app_o" />
     </RelativeLayout>
 
 </TabHost>
