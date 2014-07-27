@@ -28,6 +28,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -91,6 +92,8 @@ public class EventLaunchActivity extends FLActivity {
 	private EditText edit_event_deaddate;
 	private EditText edit_event_deadtime;
 
+	public CheckBox chk_no;
+	
 	private String mEventName;
 	private String mEventIntro;
 	private String mEventMaxmember;
@@ -147,6 +150,8 @@ public class EventLaunchActivity extends FLActivity {
 		edit_event_endtime = (EditText) findViewById(R.id.edit_event_endtime);
 		edit_event_deaddate = (EditText) findViewById(R.id.edit_event_deaddate);
 		edit_event_deadtime = (EditText) findViewById(R.id.edit_event_deadtime);
+		
+		chk_no = (CheckBox) findViewById(R.id.chk_no);
 	}
 
 	@Override
@@ -177,7 +182,7 @@ public class EventLaunchActivity extends FLActivity {
 							mImageUtil.getPicFile(), mEventName, mEventVerifierId, mEventLoc,
 							mEventTypeId, mEventStartdate + " " + mEventStarttime, mEventEnddate
 									+ " " + mEventEndtime, mEventDeaddate + " " + mEventDeadtime,
-							mEventGroupId, mEventMaxmember, mEventIntro, mEventOrgId);
+							mEventGroupId, mEventMaxmember, mEventIntro, mEventOrgId, chk_no.isChecked() ? "1" : "0");
 				}
 			}
 		});

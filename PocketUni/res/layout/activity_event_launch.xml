@@ -397,6 +397,32 @@
                     android:text="  —  "
                     android:textSize="16sp" />
             </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/layout_event_no"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/layout_event_dead"
+                android:layout_margin="8dip"
+                android:padding="4dip" >
+
+                <TextView
+                    android:id="@+id/text_event_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="8dip"
+                    android:gravity="center"
+                    android:text="不报名也可签到:"
+                    android:textSize="16sp" />
+
+                <CheckBox
+                    android:id="@+id/chk_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/text_event_no"
+                    android:button="@drawable/item_checkbox" 
+                    android:checked="false" />
+            </RelativeLayout>
         </RelativeLayout>
     </ScrollView>
 

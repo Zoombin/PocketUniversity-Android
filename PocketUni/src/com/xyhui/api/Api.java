@@ -881,7 +881,7 @@ public class Api extends BaseApi {
 	public void doAddEvent(RequestParams params, File logo, String title,
 			String audit_uid, String address, String typeId, String sTime,
 			String eTime, String deadline, String gid, String limitCount,
-			String description, String sid) {
+			String description, String sid, String free_attend) {
 		try {
 			params.put("cover", logo);
 		} catch (FileNotFoundException e) {
@@ -900,6 +900,7 @@ public class Api extends BaseApi {
 		params.put("limitCount", limitCount);
 		params.put("description", description);
 		params.put("sid", sid);
+		params.put("free_attend", free_attend);
 		Client.get("Event", "doAddEvent", params, handler);
 	}
 
