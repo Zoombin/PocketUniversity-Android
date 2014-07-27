@@ -14,8 +14,8 @@ import com.mslibs.utils.JSONUtils;
 import com.xyhui.R;
 import com.xyhui.activity.app.ChargeActivity;
 import com.xyhui.activity.app.CourseListActivity;
-import com.xyhui.activity.app.DonateListActivity;
 import com.xyhui.activity.app.GameCenterActivity;
+import com.xyhui.activity.app.GiftListActivity;
 import com.xyhui.activity.app.MobileZoneListActivity;
 import com.xyhui.activity.app.NoticeListActivity;
 import com.xyhui.activity.app.ShakeActivity;
@@ -364,7 +364,7 @@ public class TabAppActivity extends FLTabActivity {
 			@Override
 			public void onClick(View v) {
 				// 打开中奖纪录
-				Intent intent = new Intent(mActivity, DonateListActivity.class);
+				Intent intent = new Intent(mActivity, GiftListActivity.class);
 				startActivity(intent);
 			}
 		});

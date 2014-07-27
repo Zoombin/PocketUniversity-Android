@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fcfcfd" >
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="44dip" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dip" >
+
+            <TextView
+                android:id="@+id/tv_giftwarning"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="2dip"
+                android:text="实物领取、一元梦想使用请登录网站【管理中心/中奖纪录】进行操作"
+                android:textColor="@color/red_highlight"
+                android:textSize="14sp" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1.5dip"
+                android:scaleType="fitXY"
+                android:src="@drawable/weibo_split" />
+
+            <TextView
+                android:id="@+id/tv_giftdetail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="2dip"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
+        </LinearLayout>
+    </ScrollView>
+
+    <RelativeLayout
+        android:id="@+id/navbar"
+        android:layout_width="match_parent"
+        android:layout_height="50dip"
+        android:background="@color/blue_highlight" >
+
+        <TextView
+            android:id="@+id/navbar_TitleText"
+            android:layout_width="match_parent"
+            android:layout_height="50dip"
+            android:layout_alignParentTop="true"
+            android:gravity="center"
+            android:text="奖品信息"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/btn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="2dip"
+            android:background="@drawable/btn_selector_navbar_backicon" />
+    </RelativeLayout>
+
+</RelativeLayout>

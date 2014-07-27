@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fcfcfc"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/navbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/navbar_TitleText"
+            android:layout_width="match_parent"
+            android:layout_height="50dip"
+            android:layout_alignParentTop="true"
+            android:background="#61a0e6"
+            android:gravity="center"
+            android:text="中奖纪录"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_giftwarning"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="2dip"
+        android:text="实物领取、一元梦想使用请登录网站【管理中心/中奖纪录】进行操作"
+        android:textColor="@color/red_highlight"
+        android:textSize="14sp" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1.5dip"
+        android:scaleType="fitXY"
+        android:src="@drawable/weibo_split" />
+
+    <com.handmark.pulltorefresh.library.PullToRefreshListView
+        android:id="@+id/gift_listview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:cacheColorHint="#00000000"
+        android:divider="@null"
+        android:orientation="vertical" />
+
+</LinearLayout>

@@ -723,6 +723,12 @@ public class Api extends BaseApi {
 		Client.get("Course", "courseList", params, handler);
 	}
 
+	public void getGiftList(RequestParams params, String action, int count, int page) {
+		params.put("count", count + "");
+		params.put("page", page + "");
+		Client.get("Yy", "giftList", params, handler);
+	}
+	
 	public void getMyCourseList(RequestParams params, String action, int count,
 			int page) {
 		getCourseList(params, action, "0", "0", "", count, page);
@@ -733,6 +739,11 @@ public class Api extends BaseApi {
 		Client.get("Course", "course", params, handler);
 	}
 
+	public void getGift(RequestParams params, String id) {
+		params.put("id", id);
+		Client.get("Yy", "gift", params, handler);
+	}
+	
 	public void joinCourse(RequestParams params, String id) {
 		params.put("id", id);
 		Client.get("Course", "joinCourse", params, handler);

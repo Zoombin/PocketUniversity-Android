@@ -51,6 +51,7 @@ public class Params {
 		public static final String EVENTID = "intent.event.id";
 		public static final String COURSE = "intent.course";
 		public static final String COURSEID = "intent.course.id";
+		public static final String GIFTID = "intent.gift.id";
 		public static final String QRCODE = "intent.qrcode";
 		public static final String EVENTNEWS_ID = "intent.event.news.id";
 		public static final String URL = "intent.url";

@@ -30,6 +30,7 @@ public class ShakeActivity extends FLActivity {
 	private final int ITEM_NOTHING = 1;
 	private final int ITEM_PU_COIN = 2;
 	private final int ITEM_PEOPLE = 3;
+	private final int ITEM_PHYSICAL = 4;
 
 	private String mTitle;
 	private String mMessage;
@@ -202,6 +203,10 @@ public class ShakeActivity extends FLActivity {
 			mMessage = String.format("摇到了一个来自%s的%s生", mShakedData.data.school,
 					mShakedData.data.sex);
 			break;
+		case ITEM_PHYSICAL:
+			mTitle = mShakedData.data.name;
+			mMessage = mShakedData.data.description;
+			break;
 		}
 
 		AlertDialog.Builder builder = new AlertDialog.Builder(mActivity).setTitle(mTitle)
@@ -245,6 +250,16 @@ public class ShakeActivity extends FLActivity {
 					finish();
 				}
 			});
+		} else if (ITEM_PHYSICAL == type) {
+			builder.setPositiveButton("去看看", new OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					mShakeFinished = true;
+					// 打开个人主页
+					Intent intent = new Intent(mActivity, GiftListActivity.class);
+					startActivity(intent);
+				}
+			});
 		}
 
 		builder.create().show();
@@ -273,6 +288,8 @@ public class ShakeActivity extends FLActivity {
 			String realname;
 			String school;
 			String sex;
+			String name;
+			String description;
 		}
 	}
 

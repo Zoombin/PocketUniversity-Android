@@ -376,6 +376,14 @@
             android:name="com.xyhui.activity.app.SchoolListActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name="com.xyhui.activity.app.GiftListActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name="com.xyhui.activity.app.GiftDetailActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
 
         <!-- event -->
         <activity
