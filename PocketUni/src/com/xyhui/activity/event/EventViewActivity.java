@@ -14,14 +14,12 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.reflect.TypeToken;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
@@ -34,11 +32,13 @@ import com.xyhui.activity.WebViewActivity;
 import com.xyhui.activity.more.PhoneBindingActivity;
 import com.xyhui.activity.more.QRCardViewActivity;
 import com.xyhui.activity.more.QRCodeScanActivity;
+import com.xyhui.activity.weibo.ChatDetailListActivity;
 import com.xyhui.activity.weibo.UserHomePageActivity;
 import com.xyhui.api.Api;
 import com.xyhui.api.CallBack;
 import com.xyhui.api.Client;
 import com.xyhui.types.EventBanner;
+import com.xyhui.types.EventBanner.EUser;
 import com.xyhui.types.EventUser;
 import com.xyhui.types.Response;
 import com.xyhui.utils.DownloadImpl;
@@ -72,10 +72,14 @@ public class EventViewActivity extends FLActivity {
 	private TextView text_nickname;
 	private TextView text_notice;
 	private RelativeLayout user_layout;
-
+	
+	private TextView tv_lianxi;
 	private LinearLayout userlist_layout;
 	private Button btn_more_user;
 
+	private LinearLayout layout_eventuser;
+	private Button btn_more_joiner;
+	
 	private String eventid;
 	private final int RECOMMEND_VOTE_COUNT = 3;
 
@@ -114,6 +118,9 @@ public class EventViewActivity extends FLActivity {
 		user_layout = (RelativeLayout) findViewById(R.id.user_layout);
 		userlist_layout = (LinearLayout) findViewById(R.id.userlist_layout);
 		btn_more_user = (Button) findViewById(R.id.btn_more_user);
+		btn_more_joiner = (Button) findViewById(R.id.btn_more_joiner);
+		tv_lianxi = (TextView) findViewById(R.id.tv_lianxi); 
+		layout_eventuser = (LinearLayout) findViewById(R.id.layout_eventuser);
 	}
 
 	@Override
@@ -126,6 +133,30 @@ public class EventViewActivity extends FLActivity {
 			}
 		});
 
+		btn_more_joiner.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(mActivity,
+						EventActivityUserListActivity.class);
+				intent.putExtra(Params.INTENT_EXTRA.EVENTID, eventid);
+				startActivity(intent);
+			}
+		});
+		tv_lianxi.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent();
+				intent.setClass(mActivity, ChatDetailListActivity.class);
+				intent.putExtra(Params.INTENT_EXTRA.MESSAGE_UID,
+						event.uid);
+				intent.putExtra(Params.INTENT_EXTRA.USERNAME,
+						event.uname);
+				mActivity.startActivity(intent);
+			}
+		});
+		
 		btn_more.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -458,6 +489,33 @@ public class EventViewActivity extends FLActivity {
 					btn_more.setVisibility(View.GONE);
 				}
 				btn_favor.setVisibility(View.VISIBLE);
+				
+				if (event.eventUser != null && event.eventUser.size() != 0) {
+					for (final EUser euser : event.eventUser) {
+						// 获取布局填充器
+						LayoutInflater mInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+						LinearLayout l = (LinearLayout) mInflater.inflate(
+								R.layout.list_item_eventuser, null);
+						ImageView img_avatar_joiner = (ImageView) l.findViewById(R.id.img_avatar_joiner);
+						UrlImageViewHelper.setUrlDrawable(img_avatar_joiner, euser.uface);
+//						ImageView img_avatar_mask_joiner = (ImageView) l.findViewById(R.id.img_avatar_mask_joiner);
+						TextView text_nickname_joiner = (TextView) l.findViewById(R.id.text_nickname_joiner);
+						text_nickname_joiner.setText(euser.realname);
+						
+						l.setOnClickListener(new OnClickListener() {
+							
+							@Override
+							public void onClick(View v) {
+								Intent intent = new Intent();
+								intent.setClass(mActivity, UserHomePageActivity.class);
+								intent.putExtra(Params.INTENT_EXTRA.USER_ID, euser.uid);
+								startActivity(intent);
+							}
+						});
+						layout_eventuser.addView(l);
+					}
+					
+				}
 			}
 		}
 

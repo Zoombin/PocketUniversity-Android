@@ -665,6 +665,14 @@ public class Api extends BaseApi {
 		Client.get("Event", "playerList", params, handler);
 	}
 
+	public void getEUserList(RequestParams params, String id, int count, int page) {
+
+		params.put("id", id);
+		params.put("count", count + "");
+		params.put("page", page + "");
+		Client.get("Event", "eventUser", params, handler);
+	}
+	
 	public void vote(RequestParams params, String pid, String eid) {
 		params.put("pid", pid);
 		params.put("eid", eid);
