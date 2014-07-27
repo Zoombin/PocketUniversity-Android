@@ -242,7 +242,7 @@ public class EventViewActivity extends FLActivity {
 										dismissProgress();
 									}
 								}, mActivity).grade(PuApp.get()
-										.getToken(), eventid,score);
+										.getToken(), eventid, Integer.toString(score));
 							}
 						});
 				// 创建一个单选按钮对话框
@@ -443,7 +443,11 @@ public class EventViewActivity extends FLActivity {
 				}
 
 				text_event_title.setText(event.title);
-
+				
+				if (event.uid.equals(new PrefUtil().getPreference(Params.LOCAL.UID))) {
+					tv_lianxi.setVisibility(View.GONE);
+				}
+				
 				UrlImageViewHelper.setUrlDrawable(img_avatar_mask, event.uface,
 						R.drawable.img_default);
 
