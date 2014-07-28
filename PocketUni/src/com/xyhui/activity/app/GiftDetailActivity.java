@@ -1,5 +1,7 @@
 package com.xyhui.activity.app;
 
+import android.text.Html;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -17,6 +19,7 @@ import com.xyhui.widget.FLActivity;
 public class GiftDetailActivity extends FLActivity {
 	private Button btn_back;
 	private TextView tv_giftdetail;
+	private TextView tv_content_html;
 	private Gift gift;
 
 	private String giftid;
@@ -38,6 +41,7 @@ public class GiftDetailActivity extends FLActivity {
 		btn_back = (Button) findViewById(R.id.btn_back);
 		
 		tv_giftdetail = (TextView) findViewById(R.id.tv_giftdetail); 
+		tv_content_html = (TextView) findViewById(R.id.tv_content_html);
 	}
 
 	@Override
@@ -65,6 +69,10 @@ public class GiftDetailActivity extends FLActivity {
 
 			if (gift != null) {
 				tv_giftdetail.setText(gift.getGiftDetail());
+				if (TextUtils.isEmpty(gift.content)) {
+					tv_content_html.setVisibility(View.VISIBLE);
+					tv_content_html.setText(Html.fromHtml(gift.content));
+				}
 			}
 		}
 	};
