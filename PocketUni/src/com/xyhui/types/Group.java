@@ -14,7 +14,8 @@ public class Group implements Parcelable {
 	public String cname0;
 	public String cname1;
 	public String schoolname;
-
+	public String vStern;
+	
 	@Override
 	public int describeContents() {
 		return 0;
@@ -32,6 +33,7 @@ public class Group implements Parcelable {
 		out.writeString(cname0);
 		out.writeString(cname1);
 		out.writeString(schoolname);
+		out.writeString(vStern);
 	}
 
 	public Group() {
@@ -49,6 +51,7 @@ public class Group implements Parcelable {
 		cname0 = in.readString();
 		cname1 = in.readString();
 		schoolname = in.readString();
+		vStern = in.readString();
 	}
 
 	public static final Parcelable.Creator<Group> CREATOR = new Parcelable.Creator<Group>() {

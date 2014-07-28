@@ -4,6 +4,10 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.text.Html;
+import android.text.Html.ImageGetter;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -117,12 +121,37 @@ public class GroupList extends CListView {
 		LVP.add(avatarLVP);
 
 		LVP.add(new CListViewParam(R.id.text_nickname, item.name, true));
-		LVP.add(new CListViewParam(R.id.text_params, "成员：" + item.membercount + "\n创建："
-				+ SpanUtils.getTimeString(item.ctime) + "\n类型：" + display(item.schoolname) + " "
-				+ display(item.cname0) + " " + display(item.cname1), true));
+		if (group_type == GROUP_STAR) {
+			String starString = "<img src=\""+R.drawable.star+"\"/>";
+			String face = "";
+			for (int i=0; i<Integer.parseInt(item.vStern); i++) {
+				face += starString;
+			}
+			LVP.add(new CListViewParam(R.id.text_params, Html.fromHtml("成员：" + item.membercount + "<br>创建："
+					+ SpanUtils.getTimeString(item.ctime) + "<br>类型：" + display(item.schoolname) + " "
+					+ display(item.cname0) + " " + display(item.cname1)
+					+ "<br>星级：" + face, imageGetter, null), true));
+
+		} else {
+			LVP.add(new CListViewParam(R.id.text_params, "成员：" + item.membercount + "\n创建："
+					+ SpanUtils.getTimeString(item.ctime) + "\n类型：" + display(item.schoolname) + " "
+					+ display(item.cname0) + " " + display(item.cname1), true));
+		}
+
 		return LVP;
 	}
 
+	ImageGetter imageGetter = new ImageGetter() {  
+		  
+        @Override  
+        public Drawable getDrawable(String source) {  
+            int id = Integer.parseInt(source);  
+            Drawable drawable = mActivity.getResources().getDrawable(id);  
+            drawable.setBounds(0, 0, drawable.getIntrinsicWidth(),drawable.getIntrinsicHeight());  
+            return drawable;  
+        }  
+    };  
+    
 	public String display(String str) {
 		if (TextUtils.isEmpty(str)) {
 			return "";
