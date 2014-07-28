@@ -9,14 +9,22 @@
     <RelativeLayout
         android:id="@+id/navbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:background="#61a0e6" >
+
+        <Button
+            android:id="@+id/btn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="2dip"
+            android:background="@drawable/btn_selector_navbar_backicon" />
 
         <TextView
             android:id="@+id/navbar_TitleText"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="50dip"
-            android:layout_alignParentTop="true"
-            android:background="#61a0e6"
+            android:layout_centerInParent="true"
             android:gravity="center"
             android:text="中奖纪录"
             android:textColor="@color/white"
