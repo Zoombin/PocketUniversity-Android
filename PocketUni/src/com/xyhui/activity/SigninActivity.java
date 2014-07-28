@@ -34,7 +34,7 @@ public class SigninActivity extends FLActivity {
 	private final String CLIENT_ANDROID = "1";
 
 	private Button btn_select_school;
-	private Button btn_select_city;
+//	private Button btn_select_city;
 	private EditText edit_email;
 	private EditText edit_password;
 	private Button btn_signin;
@@ -45,7 +45,7 @@ public class SigninActivity extends FLActivity {
 	 */
 	private final int RETRY_DURATION = 500;
 	private School mSchool;
-	private City mCity;
+//	private City mCity;
 	/**
 	 * 判断当前activity是否已销毁
 	 */
@@ -63,7 +63,7 @@ public class SigninActivity extends FLActivity {
 		setContentView(R.layout.activity_signin);
 
 		btn_select_school = (Button) findViewById(R.id.btn_select_school);
-		btn_select_city = (Button) findViewById(R.id.btn_select_city);
+//		btn_select_city = (Button) findViewById(R.id.btn_select_city);
 		edit_email = (EditText) findViewById(R.id.edit_email);
 		edit_password = (EditText) findViewById(R.id.edit_password);
 		btn_signin = (Button) findViewById(R.id.btn_signin);
@@ -71,24 +71,24 @@ public class SigninActivity extends FLActivity {
 
 	@Override
 	public void bindListener() {
-		btn_select_city.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				closeKeyboard(edit_email);
-				// 打开城市列表
-				Intent intent = new Intent();
-				intent.setClass(mActivity, CityListActivity.class);
-				startActivity(intent);
-			}
-		});
+//		btn_select_city.setOnClickListener(new OnClickListener() {
+//			@Override
+//			public void onClick(View v) {
+//				closeKeyboard(edit_email);
+//				// 打开城市列表
+//				Intent intent = new Intent();
+//				intent.setClass(mActivity, CityListActivity.class);
+//				startActivity(intent);
+//			}
+//		});
 
 		btn_select_school.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if (null == mCity) {
-					NotificationsUtil.ToastTopMsg(mActivity, "请先选择城市");
-					return;
-				}
+//				if (null == mCity) {
+//					NotificationsUtil.ToastTopMsg(mActivity, "请先选择城市");
+//					return;
+//				}
 
 				closeKeyboard(edit_email);
 				// 打开学校列表
@@ -101,11 +101,11 @@ public class SigninActivity extends FLActivity {
 		btn_signin.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// 提交登录
-				if (mCity == null) {
-					NotificationsUtil.ToastBottomMsg(mActivity, "请选择城市");
-					return;
-				}
+//				// 提交登录
+//				if (mCity == null) {
+//					NotificationsUtil.ToastBottomMsg(mActivity, "请选择城市");
+//					return;
+//				}
 
 				if (mSchool == null) {
 					NotificationsUtil.ToastBottomMsg(mActivity, "请选择学校");
@@ -142,12 +142,12 @@ public class SigninActivity extends FLActivity {
 		registerReceiver(mEvtReceiver, filter);
 		registerReceiver(mCityReceiver, filter);
 
-		String cityName = mPrefUtil.getPreference(Params.LOCAL.CITYNAME);
-		String cityId = mPrefUtil.getPreference(Params.LOCAL.CITYID);
-		if (null != cityName && null != cityId) {
-			mCity = new City(cityId, cityName);
-			btn_select_city.setText(mCity.city);
-		}
+//		String cityName = mPrefUtil.getPreference(Params.LOCAL.CITYNAME);
+//		String cityId = mPrefUtil.getPreference(Params.LOCAL.CITYID);
+//		if (null != cityName && null != cityId) {
+//			mCity = new City(cityId, cityName);
+//			btn_select_city.setText(mCity.city);
+//		}
 
 		String schoolName = mPrefUtil.getPreference(Params.LOCAL.SCHOOLNAME);
 		String schoolId = mPrefUtil.getPreference(Params.LOCAL.SCHOOLID);
@@ -254,7 +254,7 @@ public class SigninActivity extends FLActivity {
 
 				// 标签有长度限制：城市用中文名称；有的学校中文名称太长，改用学校id
 				Set<String> tags = new HashSet<String>();
-				tags.add(mCity.city);
+//				tags.add(mCity.city);
 				tags.add(mSchool.school);
 				tags.add(mToken.sid1);
 				// 避免某个tag无效导致调用失败，过滤出有效tag
@@ -321,8 +321,8 @@ public class SigninActivity extends FLActivity {
 		public void onReceive(Context context, Intent intent) {
 			if (intent.getAction().equals("android.user.CITY")) {
 				if (intent.hasExtra(Params.INTENT_EXTRA.CITY)) {
-					mCity = intent.getParcelableExtra(Params.INTENT_EXTRA.CITY);
-					btn_select_city.setText(mCity.city);
+//					mCity = intent.getParcelableExtra(Params.INTENT_EXTRA.CITY);
+//					btn_select_city.setText(mCity.city);
 
 					testOneSchool();
 				}

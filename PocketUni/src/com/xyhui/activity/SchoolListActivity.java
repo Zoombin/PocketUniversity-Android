@@ -74,21 +74,20 @@ public class SchoolListActivity extends Activity {
 	
 	private void getSchoolList() {
 		schools.clear();
-		ArrayList<School> tempschools = new ArrayList<School>();
-		tempschools = PuApp.get().getLocalDataMgr().getSchools();
+		schools = PuApp.get().getLocalDataMgr().getSchools();
 		
-		if (tempschools != null && !tempschools.isEmpty()) {
-			tempschools.remove(0);
+		if (schools != null && !schools.isEmpty()) {
+			schools.remove(0);
 
-			String cityId = new PrefUtil().getPreference(Params.LOCAL.CITYID);
+//			String cityId = new PrefUtil().getPreference(Params.LOCAL.CITYID);
 
-			for (int i = 0; i < tempschools.size(); i++) {
-				School school = tempschools.get(i);
-
-				if (cityId.equals(school.cityId)) {
-					schools.add(school);
-				}
-			}
+//			for (int i = 0; i < tempschools.size(); i++) {
+//				School school = tempschools.get(i);
+//
+//				if (cityId.equals(school.cityId)) {
+//					schools.add(school);
+//				}
+//			}
 			
 			//排序
 			Collections.sort(schools, new Comparator<School>() {
