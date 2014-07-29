@@ -102,8 +102,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="6dip"
-                android:layout_weight="1" 
-                android:visibility="invisible">
+                android:layout_weight="1"
+                android:visibility="invisible" >
 
                 <ImageButton
                     android:id="@+id/btn_school_weibo"
@@ -125,8 +125,8 @@
                     android:textSize="14sp" />
             </RelativeLayout>
         </LinearLayout>
-	</LinearLayout>
-        
+    </LinearLayout>
+
     <RelativeLayout
         android:id="@+id/navbar"
         android:layout_width="match_parent"
@@ -143,12 +143,11 @@
             android:textColor="@color/white"
             android:textSize="18sp" />
 
-        <com.xyhui.widget.AdBannerLayout
-            android:id="@+id/ad_banner"
+        <com.xyhui.widget.EventBannerLayout
+            android:id="@+id/index_banner"
             android:layout_width="match_parent"
-            android:layout_height="50dip"
-            android:layout_below="@+id/navbar_TitleText"
-            android:layout_marginTop="-6dip" />
+            android:layout_height="136dip"
+            android:layout_below="@+id/navbar_TitleText" />
     </RelativeLayout>
 
 </RelativeLayout>

@@ -6,12 +6,11 @@ import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 
 import com.xyhui.R;
-import com.xyhui.activity.app.DonateListActivity;
 import com.xyhui.activity.app.NavMapListActivity;
 import com.xyhui.activity.event.EventListActivity;
 import com.xyhui.activity.group.GroupListActivity;
 import com.xyhui.types.Banner;
-import com.xyhui.widget.AdBannerLayout;
+import com.xyhui.widget.EventBannerLayout;
 import com.xyhui.widget.FLTabActivity;
 
 public class TabSchoolActivity extends FLTabActivity {
@@ -25,7 +24,7 @@ public class TabSchoolActivity extends FLTabActivity {
 	private ImageButton btn_school_dh;
 	private ImageButton btn_school_weibo;
 
-	private AdBannerLayout ad_banner;
+	private EventBannerLayout index_banner;
 
 	@Override
 	public void linkUiVar() {
@@ -36,7 +35,7 @@ public class TabSchoolActivity extends FLTabActivity {
 		btn_school_dh = (ImageButton) findViewById(R.id.btn_school_dh);
 		btn_school_weibo = (ImageButton) findViewById(R.id.btn_school_weibo);
 		
-		ad_banner = (AdBannerLayout) findViewById(R.id.ad_banner);
+		index_banner = (EventBannerLayout) findViewById(R.id.index_banner);
 	}
 
 	@Override
@@ -80,18 +79,18 @@ public class TabSchoolActivity extends FLTabActivity {
 
 	@Override
 	public void ensureUi() {
-		ad_banner.init(Banner.TYPE_APP);
+		index_banner.init();
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
-		ad_banner.reload();
+		index_banner.reload();
 	}
 
 	@Override
 	protected void onPause() {
 		super.onPause();
-		ad_banner.pause();
+		index_banner.pause();
 	}
 }
