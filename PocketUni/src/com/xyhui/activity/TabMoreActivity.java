@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import cn.jpush.android.api.JPushInterface;
@@ -44,7 +45,7 @@ public class TabMoreActivity extends FLTabActivity {
 	private LinearLayout question_layout;
 	private LinearLayout about_layout;
 	private LinearLayout update_layout;
-	private LinearLayout signout_layout;
+	private Button btn_signout;
 	private TextView text_version;
 	private AdBannerLayout ad_banner;
 
@@ -60,7 +61,7 @@ public class TabMoreActivity extends FLTabActivity {
 		about_layout = (LinearLayout) findViewById(R.id.about_layout);
 		update_layout = (LinearLayout) findViewById(R.id.update_layout);
 		text_version = (TextView) findViewById(R.id.text_version);
-		signout_layout = (LinearLayout) findViewById(R.id.signout_layout);
+		btn_signout = (Button) findViewById(R.id.btn_signout);
 
 		ad_banner = (AdBannerLayout) findViewById(R.id.ad_banner);
 	}
@@ -129,7 +130,7 @@ public class TabMoreActivity extends FLTabActivity {
 				new Api(callback, mActivity).getVersion();
 			}
 		});
-		signout_layout.setOnClickListener(new OnClickListener() {
+		btn_signout.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				// 注销账号
