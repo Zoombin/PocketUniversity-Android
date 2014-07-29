@@ -13,6 +13,8 @@ import com.xyhui.R;
 import com.xyhui.activity.TabWeiboActivity;
 import com.xyhui.activity.app.ChargeActivity;
 import com.xyhui.activity.app.ShakeActivity;
+import com.xyhui.activity.weibo.WeiboEditActivity;
+import com.xyhui.utils.Params;
 
 /**
  * menu对话框
@@ -50,7 +52,9 @@ public class MenuDialog implements OnClickListener {
 		Intent intent = new Intent();
 		switch (v.getId()) {
 		case R.id.item_weibo:
-			intent.setClass(activity, TabWeiboActivity.class);
+			// 打开发微博窗体
+			intent.setClass(activity, WeiboEditActivity.class);
+			intent.putExtra(Params.INTENT_EXTRA.WEIBO_EDIT, Params.INTENT_VALUE.WEIBO_NEW);
 			activity.startActivity(intent);
 			dialog.dismiss();
 			break;

@@ -454,8 +454,6 @@ public class WeiboEditActivity extends FLActivity {
 		toolbar_face.setTag("");
 		switch (edit_type) {
 		case Params.INTENT_VALUE.WEIBO_NEW:
-			navbar_TitleText.setText("发微博");
-
 			edit_title.setVisibility(View.GONE);
 			img_split.setVisibility(View.GONE);
 			edit_content.setHint("说说新鲜事");

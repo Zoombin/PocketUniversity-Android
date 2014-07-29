@@ -54,7 +54,7 @@
         android:id="@+id/navbar"
         android:layout_width="match_parent"
         android:layout_height="50dip"
-        android:background="@drawable/bar_navigation_bg" >
+        android:background="@color/blue_highlight" >
 
         <LinearLayout
             android:layout_width="match_parent"

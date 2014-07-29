@@ -398,7 +398,7 @@
         android:id="@+id/navbar"
         android:layout_width="match_parent"
         android:layout_height="50dip"
-        android:background="@drawable/bar_navigation_bg" >
+        android:background="@color/blue_highlight" >
 
         <Button
             android:id="@+id/btn_back"
@@ -417,7 +417,7 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:gravity="center_vertical"
-            android:text="发微博" />
+            android:text="发状态" />
 
         <Button
             android:id="@+id/btn_send"

@@ -112,6 +112,9 @@ public class SigninActivity extends FLActivity {
 					return;
 				}
 
+ 				mPrefUtil.setPreference(Params.LOCAL.CITYID, mSchool.cityId);
+//				mPrefUtil.setPreference(Params.LOCAL.CITYNAME, city.city);
+				
 				String email = edit_email.getText().toString().trim();
 				String password = edit_password.getText().toString().trim();
 
