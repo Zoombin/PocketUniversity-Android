@@ -55,7 +55,7 @@
                             android:background="@color/blue_highlight"
                             android:paddingBottom="10dp"
                             android:paddingTop="10dp"
-                            android:text="扑街"
+                            android:text="扑友"
                             android:textColor="@color/white"
                             android:textSize="16sp" />
 

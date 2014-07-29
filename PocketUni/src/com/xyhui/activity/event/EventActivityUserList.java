@@ -88,7 +88,7 @@ public class EventActivityUserList extends CListView {
 		imgAvatarLVP.setItemTag(item.uface);
 		LVP.add(imgAvatarLVP);
 
-		LVP.add(new CListViewParam(R.id.text_nickname_joiner, item.realname, true));
+		LVP.add(new CListViewParam(R.id.text_nickname_joiner, item.realname + "（" + (item.status.equals("2") ? "已签到" : "未签到") + "）", true));
 		return LVP;
 	}
 

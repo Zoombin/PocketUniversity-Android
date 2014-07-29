@@ -9,7 +9,7 @@
         android:id="@+id/event_activity_user_listview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="44dip"
+        android:layout_marginTop="50dip"
         android:cacheColorHint="#00000000"
         android:divider="@null"
         android:orientation="vertical" />
