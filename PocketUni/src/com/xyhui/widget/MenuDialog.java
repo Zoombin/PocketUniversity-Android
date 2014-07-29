@@ -33,6 +33,7 @@ public class MenuDialog implements OnClickListener {
 				.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
 		View view = mInflater.inflate(R.layout.dlg_share, null);
 		
+		View view_outside = (View) view.findViewById(R.id.view_outside);
 		LinearLayout item_weibo = (LinearLayout) view.findViewById(R.id.item_weibo);
 		LinearLayout item_shake = (LinearLayout) view.findViewById(R.id.item_shake);
 		LinearLayout item_charge = (LinearLayout) view.findViewById(R.id.item_charge);
@@ -41,9 +42,11 @@ public class MenuDialog implements OnClickListener {
 		item_shake.setOnClickListener(this);
 		item_charge.setOnClickListener(this);
 		btn_cancel.setOnClickListener(this);
+		view_outside.setOnClickListener(this);
 		
 		dialog = new Dialog(activity, R.style.ShareDialogStyleBottom);
 		dialog.setContentView(view);
+		dialog.setCanceledOnTouchOutside(true);
 		dialog.show();
 	}
 
@@ -69,6 +72,9 @@ public class MenuDialog implements OnClickListener {
 			dialog.dismiss();
 			break;
 		case R.id.btn_cancel:
+			dialog.dismiss();
+			break;
+		case R.id.view_outside:
 			dialog.dismiss();
 			break;
 		default:
