@@ -13,10 +13,13 @@ import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 import com.mslibs.utils.JSONUtils;
 import com.xyhui.R;
-import com.xyhui.activity.weibo.WeiboTopicList;
+import com.xyhui.activity.weibo.MessageActivity;
+import com.xyhui.activity.weibo.WeiboEditActivity;
+import com.xyhui.activity.weibo.WeiboList;
 import com.xyhui.api.Api;
 import com.xyhui.api.CallBack;
 import com.xyhui.types.User;
+import com.xyhui.utils.Params;
 import com.xyhui.widget.EventBannerLayout;
 import com.xyhui.widget.FLTabActivity;
 
@@ -31,7 +34,7 @@ public class TabMeActivity extends FLTabActivity {
 	private Button btn_status;
 
 	private PullToRefreshListView weibo_listview;
-	private WeiboTopicList mWeiboListView;
+	private WeiboList mWeiboListView;
 
 	@Override
 	public void linkUiVar() {
@@ -52,7 +55,8 @@ public class TabMeActivity extends FLTabActivity {
 
 			@Override
 			public void onClick(View v) {
-
+				Intent intent = new Intent(TabMeActivity.this, TabFriendActivity.class);
+				startActivity(intent);
 			}
 		});
 
@@ -60,7 +64,7 @@ public class TabMeActivity extends FLTabActivity {
 
 			@Override
 			public void onClick(View v) {
-
+				
 			}
 		});
 
@@ -68,7 +72,8 @@ public class TabMeActivity extends FLTabActivity {
 
 			@Override
 			public void onClick(View v) {
-
+				Intent intent = new Intent(TabMeActivity.this, MessageActivity.class);
+				startActivity(intent);
 			}
 		});
 
@@ -76,7 +81,10 @@ public class TabMeActivity extends FLTabActivity {
 
 			@Override
 			public void onClick(View v) {
-
+				Intent intent = new Intent();
+				intent.setClass(TabMeActivity.this, WeiboEditActivity.class);
+				intent.putExtra(Params.INTENT_EXTRA.WEIBO_EDIT, Params.INTENT_VALUE.WEIBO_NEW);
+				startActivity(intent);
 			}
 		});
 	}
@@ -89,15 +97,6 @@ public class TabMeActivity extends FLTabActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-
-
-		
-//		if (mWeiboListView == null) {
-//		mWeiboListView = new WeiboTopicList(weibo_listview, mActivity );
-//		weibo_listview.setVisibility(View.VISIBLE);
-//	} else {
-//		mWeiboListView.refreshListViewStart();
-//	}
 
 		index_banner.reload();
 		
@@ -131,6 +130,12 @@ public class TabMeActivity extends FLTabActivity {
 			if (mUser != null) {
 				UrlImageViewHelper.setUrlDrawable(iv_userheader, mUser.face,
 						R.drawable.img_default);
+			}
+			
+			if (mWeiboListView == null) {
+				mWeiboListView = new WeiboList(weibo_listview, mActivity, WeiboList.TIMELINE);
+			} else {
+				mWeiboListView.refreshListViewStart();
 			}
 		}
 	};

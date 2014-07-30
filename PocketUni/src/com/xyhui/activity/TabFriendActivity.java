@@ -14,9 +14,9 @@ import com.xyhui.activity.weibo.UserSearchActivity;
 import com.xyhui.types.Banner;
 import com.xyhui.utils.Params;
 import com.xyhui.widget.AdBannerLayout;
-import com.xyhui.widget.FLTabActivity;
+import com.xyhui.widget.FLActivity;
 
-public class TabFriendActivity extends FLTabActivity {
+public class TabFriendActivity extends FLActivity {
 
 	private Button btn_nav_follows;
 	private Button btn_nav_followed;
@@ -104,11 +104,11 @@ public class TabFriendActivity extends FLTabActivity {
 		ad_banner.init(Banner.TYPE_FRIEND);
 
 		if (UID == null) {
-			btn_back.setVisibility(View.GONE);
-			btn_search.setVisibility(View.VISIBLE);
+//			btn_back.setVisibility(View.GONE);
+//			btn_search.setVisibility(View.VISIBLE);
 		} else {
-			btn_back.setVisibility(View.VISIBLE);
-			btn_search.setVisibility(View.GONE);
+//			btn_back.setVisibility(View.VISIBLE);
+//			btn_search.setVisibility(View.GONE);
 			btn_nav_followed.setText("TA的关注");
 			btn_nav_follows.setText("TA的粉丝");
 		}

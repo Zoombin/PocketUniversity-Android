@@ -6,6 +6,7 @@ import java.util.TimerTask;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.ViewPager;
@@ -32,18 +33,22 @@ public class EventBannerLayout extends CRelativeLayout {
 	private ArrayList<? extends Object> mDataList;
 	private Timer mTimer;
 	private TimerTask mTask;
-
+	private Context context;
+	
 	public EventBannerLayout(Context context) {
 		super(context);
+		this.context = context;
 	}
 
 	public EventBannerLayout(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		setContentView(R.layout.widget_banner_layout);
+		this.context = context;
 	}
 
 	public EventBannerLayout(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
+		this.context = context;
 	}
 
 	private void linkUiVar() {
@@ -118,6 +123,10 @@ public class EventBannerLayout extends CRelativeLayout {
 			mBannerPagerAdapter.setDataList(mDataList);
 			mViewPager.setAdapter(mBannerPagerAdapter);
 			mPagerIndicator.setPagerCount(mBannerPagerAdapter.getCount());
+			
+			Intent intent = new Intent("TabMeActivity");
+			intent.putExtra("key", "banner");
+			context.sendBroadcast(intent);
 		}
 	};
 
