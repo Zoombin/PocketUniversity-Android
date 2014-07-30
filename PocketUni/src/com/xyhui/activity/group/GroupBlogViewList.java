@@ -94,7 +94,6 @@ public class GroupBlogViewList extends CListView {
 			LVP.add(new CListViewParam(R.id.text_nickname, item.name, true));
 			LVP.add(new CListViewParam(R.id.text_info, SpanUtils.getTimeString(item.addtime), true));
 			LVP.add(new CListViewParam(R.id.text_content, item.content, true));
-
 		} else {
 			if (obj == null) {
 				LVP.add(new CListViewParam(R.id.text_nickname, null, false));
