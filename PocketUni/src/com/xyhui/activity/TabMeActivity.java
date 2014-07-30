@@ -1,7 +1,9 @@
 package com.xyhui.activity;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
-import android.text.TextUtils;
+import android.content.IntentFilter;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -11,18 +13,10 @@ import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 import com.mslibs.utils.JSONUtils;
 import com.xyhui.R;
-import com.xyhui.activity.app.NavMapListActivity;
-import com.xyhui.activity.app.NoticeListActivity;
-import com.xyhui.activity.event.EventListActivity;
-import com.xyhui.activity.group.GroupListActivity;
-import com.xyhui.activity.more.AccountManageActivity;
-import com.xyhui.activity.weibo.MessageActivity;
-import com.xyhui.activity.weibo.WeiboList;
+import com.xyhui.activity.weibo.WeiboTopicList;
 import com.xyhui.api.Api;
 import com.xyhui.api.CallBack;
 import com.xyhui.types.User;
-import com.xyhui.utils.Params;
-import com.xyhui.utils.PrefUtil;
 import com.xyhui.widget.EventBannerLayout;
 import com.xyhui.widget.FLTabActivity;
 
@@ -37,7 +31,7 @@ public class TabMeActivity extends FLTabActivity {
 	private Button btn_status;
 
 	private PullToRefreshListView weibo_listview;
-	private WeiboList mWeiboListView;
+	private WeiboTopicList mWeiboListView;
 
 	@Override
 	public void linkUiVar() {
@@ -89,33 +83,49 @@ public class TabMeActivity extends FLTabActivity {
 
 	@Override
 	public void ensureUi() {
-		showProgress();
 		index_banner.init();
-
-		new Api(headercallback, mActivity).myinfo(PuApp.get().getToken());
-
-		mWeiboListView = new WeiboList(weibo_listview, mActivity,
-				WeiboList.TIMELINE);
-		mWeiboListView.setTopicName("");
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
 
+
+		
+//		if (mWeiboListView == null) {
+//		mWeiboListView = new WeiboTopicList(weibo_listview, mActivity );
+//		weibo_listview.setVisibility(View.VISIBLE);
+//	} else {
+//		mWeiboListView.refreshListViewStart();
+//	}
+
 		index_banner.reload();
+		
+		IntentFilter filter = new IntentFilter("TabMeActivity");
+		registerReceiver(broadcastreceiver, filter);
 	}
 
 	@Override
 	protected void onPause() {
 		super.onPause();
 		index_banner.pause();
+		unregisterReceiver(broadcastreceiver);
 	}
 
+	BroadcastReceiver broadcastreceiver = new BroadcastReceiver() {
+		
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			String key = intent.getStringExtra("key");
+			if (key.equals("banner")) {
+				new Api(headercallback, mActivity).myinfo(PuApp.get().getToken());
+			}
+		}
+	};
+	
 	CallBack headercallback = new CallBack() {
 		@Override
 		public void onSuccess(String response) {
-			dismissProgress();
 			User mUser = JSONUtils.fromJson(response, User.class);
 
 			if (mUser != null) {

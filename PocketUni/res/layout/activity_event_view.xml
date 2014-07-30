@@ -5,10 +5,19 @@
     android:layout_height="match_parent"
     android:background="#fcfcfc" >
 
-    <ScrollView
+    <LinearLayout
+        android:id="@+id/layout_loading"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="44dip" >
+        android:orientation="vertical" >
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/layout_event_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="44dip"
+        android:visibility="gone" >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -223,13 +232,13 @@
 
                     <TextView
                         android:id="@+id/tv_lianxi"
-                        android:textColor="@color/blue_highlight"
-                        android:textSize="18sp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:text="【联系TA】" />
+                        android:text="【联系TA】"
+                        android:textColor="@color/blue_highlight"
+                        android:textSize="18sp" />
                 </RelativeLayout>
             </LinearLayout>
 

@@ -67,7 +67,7 @@ public class SchoolAdapter extends ArrayAdapter<School> implements
 
 	private void getFilterSchoollist(List<School> schools, String s) {
 		for (School school : schools) {
-			if (school.display_order.subSequence(0, s.length()).equals(s.toUpperCase())) {
+			if (school.display_order.length() >= s.length() && school.display_order.subSequence(0, s.length()).equals(s.toUpperCase())) {
 				schoollist.add(school);
 			}
 		}

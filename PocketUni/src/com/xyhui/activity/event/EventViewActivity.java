@@ -17,8 +17,8 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.google.gson.reflect.TypeToken;
@@ -54,6 +54,9 @@ public class EventViewActivity extends FLActivity {
 
 	private PrefUtil mPrefUtil;
 
+	private ScrollView layout_event;
+	private LinearLayout layout_loading;
+	
 	private Button btn_back;
 	private Button btn_more;
 
@@ -102,6 +105,9 @@ public class EventViewActivity extends FLActivity {
 	public void linkUiVar() {
 		setContentView(R.layout.activity_event_view);
 
+		layout_event = (ScrollView) findViewById(R.id.layout_event_view);
+		layout_loading = (LinearLayout) findViewById(R.id.layout_loading);
+		
 		btn_back = (Button) findViewById(R.id.btn_back);
 		btn_more = (Button) findViewById(R.id.btn_more);
 		btn_join = (Button) findViewById(R.id.btn_join);
@@ -648,6 +654,9 @@ public class EventViewActivity extends FLActivity {
 					userlist_layout.addView(userItemView);
 				}
 			}
+			
+			layout_event.setVisibility(View.VISIBLE);
+			layout_loading.setVisibility(View.GONE);
 		}
 	};
 
