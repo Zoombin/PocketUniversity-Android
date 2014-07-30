@@ -231,10 +231,15 @@ public class UserHomePageList extends CListView {
 				LVP.add(btn_message);
 			}
 
-			// LVP.add(btn_photo);
-			// 部落按钮
-			CListViewParam btn_params_buluo = new CListViewParam(
-					R.id.btn_params_buluo, null, true);
+			CListViewParam btn_params_buluo;
+			if (mUserID.equals(new PrefUtil().getPreference(Params.LOCAL.UID))) {
+				// 部落按钮
+				btn_params_buluo = new CListViewParam(R.id.btn_params_buluo,
+						null, true);
+			} else {
+				btn_params_buluo = new CListViewParam(R.id.btn_params_buluo,
+						null, false);
+			}
 			btn_params_buluo.setOnclickLinstener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
@@ -245,12 +250,16 @@ public class UserHomePageList extends CListView {
 				}
 			});
 			LVP.add(btn_params_buluo);
-			// // 微博数量
-			// LVP.add(new CListViewParam(R.id.text_params_weibo, ""
-			// + mUser.weibo_count, true));
-			// 扑友按钮
-			CListViewParam btn_params_puyou = new CListViewParam(
-					R.id.btn_params_puyou, null, true);
+
+			CListViewParam btn_params_puyou;
+			if (mUserID.equals(new PrefUtil().getPreference(Params.LOCAL.UID))) {
+				// 扑友按钮
+				btn_params_puyou = new CListViewParam(R.id.btn_params_puyou,
+						null, true);
+			} else {
+				btn_params_puyou = new CListViewParam(R.id.btn_params_puyou,
+						null, false);
+			}
 			btn_params_puyou.setOnclickLinstener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
@@ -265,9 +274,7 @@ public class UserHomePageList extends CListView {
 				}
 			});
 			LVP.add(btn_params_puyou);
-			// // 粉丝数量
-			// LVP.add(new CListViewParam(R.id.text_params_follows, ""
-			// + mUser.followers_count, true));
+
 			// 相册按钮
 			CListViewParam btn_params_album = new CListViewParam(
 					R.id.btn_params_album, null, true);
@@ -398,9 +405,10 @@ public class UserHomePageList extends CListView {
 			try {
 				JSONObject jsonObject = new JSONObject(response);
 				String status = jsonObject.optString("status");
-				if(status.equals("0"))
-					NotificationsUtil.ToastTopMsg(mActivity, jsonObject.optString("msg"));
-				else{
+				if (status.equals("0"))
+					NotificationsUtil.ToastTopMsg(mActivity,
+							jsonObject.optString("msg"));
+				else {
 					NotificationsUtil.ToastTopMsg(mActivity, "修改成功！");
 					refreshListViewStart();
 				}
