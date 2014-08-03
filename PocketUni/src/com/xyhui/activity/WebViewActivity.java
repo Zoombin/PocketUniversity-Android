@@ -109,7 +109,7 @@ public class WebViewActivity extends FLActivity {
 				// 开始
 				VolleyLog.d("--------------------------onPageStarted--------------------------");
 				mWebView.removeAllViews();
-				if (!dialogShowing() && TYPE_TRAVEL_LOTTERY != mType) {
+				if (!dialogShowing()) {
 					showProgress();
 				}
 				btn_refresh.setEnabled(false);
@@ -136,9 +136,6 @@ public class WebViewActivity extends FLActivity {
 					timeout_layout.setVisibility(View.GONE);
 				}
 
-				if (TYPE_TRAVEL_LOTTERY != mType) {
-					dismissProgress();
-				}
 				btn_refresh.setVisibility(View.VISIBLE);
 				btn_refresh.setEnabled(true);
 			}
@@ -146,6 +143,13 @@ public class WebViewActivity extends FLActivity {
 
 		mWebView.setWebChromeClient(new WebChromeClient() {
 
+			@Override
+			public void onProgressChanged(WebView view, int newProgress) {
+				if (newProgress >= 50 && dialogShowing()) {
+					dismissProgress();
+				}
+			}
+			
 			@Override
 			public boolean onJsAlert(WebView view, String url, String message,
 					final JsResult result) {

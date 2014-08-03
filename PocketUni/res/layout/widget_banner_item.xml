@@ -17,6 +17,7 @@
         android:layout_alignParentBottom="true"
         android:background="#70000000"
         android:gravity="right|center_vertical"
+        android:singleLine="true"
         android:paddingRight="15dip"
         android:textColor="#fff"
         android:textSize="15sp"
