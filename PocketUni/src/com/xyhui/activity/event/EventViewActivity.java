@@ -501,6 +501,7 @@ public class EventViewActivity extends FLActivity {
 				btn_favor.setVisibility(View.VISIBLE);
 				
 				if (event.eventUser != null && event.eventUser.size() != 0) {
+					layout_eventuser.removeViews(2, layout_eventuser.getChildCount() - 2);
 					for (final EUser euser : event.eventUser) {
 						// 获取布局填充器
 						LayoutInflater mInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
