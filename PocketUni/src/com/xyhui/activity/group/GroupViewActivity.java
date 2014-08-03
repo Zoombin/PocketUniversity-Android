@@ -79,6 +79,9 @@ public class GroupViewActivity extends FLActivity {
 
 	private Builder builder;
 
+	private boolean params_blog = true;
+	private boolean params_user = true;
+	
 	@Override
 	public void init() {
 		if (getIntent().hasExtra(Params.INTENT_EXTRA.GROUP_ID)) {
@@ -238,6 +241,10 @@ public class GroupViewActivity extends FLActivity {
 		btn_params_blog.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				if (!params_blog) {
+					NotificationsUtil.ToastBottomMsg(mActivity, "您不在此部落无法查看水区！");
+					return;
+				}
 				// 打开文章列表
 				Intent intent = new Intent(mActivity,
 						GroupBlogListActivity.class);
@@ -262,6 +269,10 @@ public class GroupViewActivity extends FLActivity {
 		btn_params_user.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				if (!params_user) {
+					NotificationsUtil.ToastBottomMsg(mActivity, "您不在此部落无法查看成员！");
+					return;
+				}
 				// 打开成员列表
 				Intent intent = new Intent(mActivity,
 						GroupUserListActivity.class);
@@ -417,10 +428,8 @@ public class GroupViewActivity extends FLActivity {
 				btn_group
 						.setBackgroundResource(R.drawable.btn_selector_group_join);
 				btn_more.setVisibility(View.GONE);
-				btn_params_blog.setEnabled(false);
-				btn_params_event.setEnabled(false);
-				btn_params_user.setEnabled(false);
-				btn_params_dynamic.setEnabled(false);
+				params_blog = false;
+				params_user = false;
 				blog_layout.setVisibility(View.GONE);
 			}
 
