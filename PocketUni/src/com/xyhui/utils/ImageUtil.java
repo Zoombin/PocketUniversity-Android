@@ -2,6 +2,7 @@ package com.xyhui.utils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import android.app.Activity;
 import android.content.Context;
@@ -92,7 +93,13 @@ public class ImageUtil {
 		}
 
 		VolleyLog.d(file.getAbsolutePath());
-		return new File(file, fileName);
+		File f = new File(file, fileName);
+		try {
+			f.createNewFile();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return f;
 	}
 
 	/**
