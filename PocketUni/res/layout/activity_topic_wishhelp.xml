@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
-    
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dip"
@@ -17,7 +17,7 @@
             android:layout_weight="1"
             android:background="@drawable/btn_selector_notice_sort"
             android:textSize="13sp" />
-        
+
         <Button
             android:id="@+id/btn_my_weibo"
             android:layout_width="0dip"
@@ -43,11 +43,19 @@
         android:background="@color/blue_highlight" >
 
         <Button
-            android:id="@+id/btn_newweibo"
+            android:id="@+id/btn_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="2dip"
+            android:background="@drawable/btn_selector_navbar_backicon" />
+
+        <Button
+            android:id="@+id/btn_newweibo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="10dip"
             android:background="@drawable/btn_selector_navbar_edit" />
 
         <LinearLayout
@@ -86,4 +94,5 @@
                 android:textSize="12sp" />
         </LinearLayout>
     </RelativeLayout>
+
 </RelativeLayout>

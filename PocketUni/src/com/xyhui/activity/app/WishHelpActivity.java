@@ -29,6 +29,7 @@ public class WishHelpActivity extends FLActivity {
 	private Button btn_wish;
 	private Button btn_help;
 
+	private Button btn_back;
 	private Button btn_my_weibo;
 	private Button btn_all_weibo;
 
@@ -53,13 +54,22 @@ public class WishHelpActivity extends FLActivity {
 		btn_wish = (Button) this.findViewById(R.id.btn_wish);
 		btn_help = (Button) this.findViewById(R.id.btn_help);
 
-		btn_my_weibo = (Button) this.findViewById(R.id.btn_my_weibo);
-		btn_all_weibo = (Button) this.findViewById(R.id.btn_all_weibo);
+		btn_back = (Button) findViewById(R.id.btn_back); 
+		btn_my_weibo = (Button) findViewById(R.id.btn_my_weibo);
+		btn_all_weibo = (Button) findViewById(R.id.btn_all_weibo);
 	}
 
 	@Override
 	public void bindListener() {
 
+		btn_back.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				finish();
+			}
+		});
+		
 		btn_newweibo.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
