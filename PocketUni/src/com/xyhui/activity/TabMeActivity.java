@@ -8,12 +8,12 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 import com.mslibs.utils.JSONUtils;
 import com.xyhui.R;
-import com.xyhui.activity.weibo.MessageActivity;
 import com.xyhui.activity.weibo.WeiboEditActivity;
 import com.xyhui.activity.weibo.WeiboList;
 import com.xyhui.api.Api;
@@ -28,9 +28,9 @@ public class TabMeActivity extends FLTabActivity {
 	private EventBannerLayout index_banner;
 
 	private ImageView iv_userheader;
+	private TextView tv_user;
 	private Button btn_pujie;
 	private Button btn_wuliao;
-	private Button btn_sixin;
 	private Button btn_status;
 
 	private PullToRefreshListView weibo_listview;
@@ -42,9 +42,9 @@ public class TabMeActivity extends FLTabActivity {
 
 		index_banner = (EventBannerLayout) findViewById(R.id.index_banner);
 		iv_userheader = (ImageView) findViewById(R.id.iv_userheader);
+		tv_user = (TextView) findViewById(R.id.tv_user); 
 		btn_pujie = (Button) findViewById(R.id.btn_pujie);
 		btn_wuliao = (Button) findViewById(R.id.btn_wuliao);
-		btn_sixin = (Button) findViewById(R.id.btn_sixin);
 		btn_status = (Button) findViewById(R.id.btn_status);
 		weibo_listview = (PullToRefreshListView) findViewById(R.id.weibo_listview);
 	}
@@ -65,15 +65,6 @@ public class TabMeActivity extends FLTabActivity {
 			@Override
 			public void onClick(View v) {
 				
-			}
-		});
-
-		btn_sixin.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent(TabMeActivity.this, MessageActivity.class);
-				startActivity(intent);
 			}
 		});
 
@@ -128,6 +119,7 @@ public class TabMeActivity extends FLTabActivity {
 			User mUser = JSONUtils.fromJson(response, User.class);
 
 			if (mUser != null) {
+				tv_user.setText(mUser.uname);
 				UrlImageViewHelper.setUrlDrawable(iv_userheader, mUser.face,
 						R.drawable.img_default);
 			}

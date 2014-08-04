@@ -9,8 +9,8 @@
         android:id="@+id/weibo_listview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:cacheColorHint="#00000000"
         android:layout_below="@id/layout_user"
+        android:cacheColorHint="#00000000"
         android:divider="@null"
         android:orientation="vertical" />
 
@@ -27,6 +27,7 @@
             android:layout_height="136dip" />
 
         <LinearLayout
+            android:id="@+id/layout_user"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/index_banner"
@@ -34,72 +35,67 @@
 
             <ImageView
                 android:id="@+id/iv_userheader"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="5dp"
+                android:layout_margin="8dp"
                 android:scaleType="fitXY" />
+
+            <TextView
+                android:id="@+id/tv_user"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/blue_highlight"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/layout_user"
+            android:orientation="vertical" >
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical" >
+                android:orientation="horizontal" >
 
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <Button
+                    android:id="@+id/btn_pujie"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal" >
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="@color/blue_highlight"
+                    android:paddingBottom="5dp"
+                    android:paddingTop="5dp"
+                    android:text="扑友"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
 
-                    <Button
-                        android:id="@+id/btn_pujie"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
-                        android:layout_weight="1"
-                        android:background="@color/blue_highlight"
-                        android:paddingBottom="10dp"
-                        android:paddingTop="10dp"
-                        android:text="扑友"
-                        android:textColor="@color/white"
-                        android:textSize="16sp" />
-
-                    <Button
-                        android:id="@+id/btn_wuliao"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
-                        android:layout_weight="1"
-                        android:background="@color/blue_highlight"
-                        android:paddingBottom="10dp"
-                        android:paddingTop="10dp"
-                        android:text="无聊"
-                        android:textColor="@color/white"
-                        android:textSize="16sp" />
-
-                    <Button
-                        android:id="@+id/btn_sixin"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
-                        android:layout_weight="1"
-                        android:background="@color/blue_highlight"
-                        android:paddingBottom="10dp"
-                        android:paddingTop="10dp"
-                        android:text="私信"
-                        android:textColor="@color/white"
-                        android:textSize="16sp" />
-                </LinearLayout>
+                <Button
+                    android:id="@+id/btn_wuliao"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="@color/blue_highlight"
+                    android:paddingBottom="5dp"
+                    android:paddingTop="5dp"
+                    android:text="无聊"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
 
                 <Button
                     android:id="@+id/btn_status"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
-                    android:background="@color/orange_highlight"
-                    android:paddingBottom="10dp"
-                    android:paddingTop="10dp"
-                    android:text="点我发状态"
+                    android:layout_weight="1"
+                    android:background="@color/blue_highlight"
+                    android:paddingBottom="5dp"
+                    android:paddingTop="5dp"
+                    android:text="发状态"
                     android:textColor="@color/white"
                     android:textSize="16sp" />
             </LinearLayout>

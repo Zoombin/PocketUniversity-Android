@@ -44,7 +44,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="2dip"
-                android:textColor="@color/black"
+                android:textColor="@color/blue_highlight"
                 android:visibility="gone"
                 android:textSize="18sp" />
         </LinearLayout>

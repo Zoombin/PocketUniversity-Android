@@ -69,7 +69,7 @@ public class GiftDetailActivity extends FLActivity {
 
 			if (gift != null) {
 				tv_giftdetail.setText(gift.getGiftDetail());
-				if (TextUtils.isEmpty(gift.content)) {
+				if (!TextUtils.isEmpty(gift.content)) {
 					tv_content_html.setVisibility(View.VISIBLE);
 					tv_content_html.setText(Html.fromHtml(gift.content));
 				}
