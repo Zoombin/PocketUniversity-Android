@@ -13,9 +13,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.GridView;
-import android.widget.Toast;
 
-import com.google.gson.reflect.TypeToken;
 import com.mslibs.utils.JSONUtils;
 import com.mslibs.utils.NotificationsUtil;
 import com.mslibs.widget.CActivity;
@@ -24,10 +22,8 @@ import com.mslibs.widget.CListViewParam;
 import com.xyhui.R;
 import com.xyhui.activity.ImageZoomActivity;
 import com.xyhui.activity.PuApp;
-import com.xyhui.activity.event.EventLuckyActivity;
 import com.xyhui.api.Api;
 import com.xyhui.api.CallBack;
-import com.xyhui.types.EventNews;
 import com.xyhui.types.Photo;
 import com.xyhui.utils.Params;
 import com.xyhui.utils.PrefUtil;
@@ -37,6 +33,8 @@ public class PhotoGridView extends CGridView {
 	private String mAlbumID;
 	private String mPasswd;
 
+	private ArrayList<String> photolist = new ArrayList<String>();
+	
 	private Activity mActivity;
 
 	public PhotoGridView(GridView gv, Activity activity, String albumID,
@@ -64,10 +62,14 @@ public class PhotoGridView extends CGridView {
 						switch (which) {
 						case 0: {
 							// 查看
-							Intent intent = new Intent(getContext(),
-									ImageZoomActivity.class);
-							intent.putExtra(Params.INTENT_EXTRA.WEBVIEW_URL,
-									photo.getOrig());
+//							Intent intent = new Intent(getContext(),
+//									ImageZoomActivity.class);
+//							intent.putExtra(Params.INTENT_EXTRA.WEBVIEW_URL,
+//									photo.getOrig());
+//							getContext().startActivity(intent);
+							Intent intent = new Intent(getContext(), PhotosActivity.class);
+							intent.putStringArrayListExtra("PHOTOS", photolist);
+							intent.putExtra("PHOTO", photo.getOrig());
 							getContext().startActivity(intent);
 							break;
 						}
@@ -179,10 +181,14 @@ public class PhotoGridView extends CGridView {
 
 				} else {
 					// 查看
-					Intent intent = new Intent(getContext(),
-							ImageZoomActivity.class);
-					intent.putExtra(Params.INTENT_EXTRA.WEBVIEW_URL,
-							item.getOrig());
+//					Intent intent = new Intent(getContext(),
+//							ImageZoomActivity.class);
+//					intent.putExtra(Params.INTENT_EXTRA.WEBVIEW_URL,
+//							item.getOrig());
+//					getContext().startActivity(intent);
+					Intent intent = new Intent(getContext(), PhotosActivity.class);
+					intent.putStringArrayListExtra("PHOTOS", photolist);
+					intent.putExtra("PHOTO", item.getOrig());
 					getContext().startActivity(intent);
 				}
 			}
@@ -211,6 +217,7 @@ public class PhotoGridView extends CGridView {
 				if (photos != null) {
 					for (int i = 0; i < photos.length; i++) {
 						getListItems().add(photos[i]);
+						photolist.add(photos[i].getOrig());
 					}
 				}
 				initListViewFinish();

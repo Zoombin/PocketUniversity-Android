@@ -575,6 +575,10 @@
             android:name=".activity.photo.PhotoListActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activity.photo.PhotosActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
         <!-- service -->
         <service
             android:name="com.baidu.location.f"
