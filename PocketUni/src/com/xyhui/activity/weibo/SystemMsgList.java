@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.view.View;
@@ -20,6 +21,7 @@ import com.xyhui.api.Api;
 import com.xyhui.api.ListCallBack;
 import com.xyhui.types.SystemMsg;
 import com.xyhui.types.SystemMsgs;
+import com.xyhui.utils.Params;
 import com.xyhui.utils.SpanUtils;
 
 public class SystemMsgList extends CListView {
@@ -61,6 +63,16 @@ public class SystemMsgList extends CListView {
 			avatarLVP.setImgAsync(true);
 			avatarLVP.setItemTag(item.face);
 		}
+		avatarLVP.setOnclickLinstener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// 打开个人主页
+				Intent intent = new Intent();
+				intent.setClass(mActivity, UserHomePageActivity.class);
+				intent.putExtra(Params.INTENT_EXTRA.USER_ID, item.from + "");
+				mActivity.startActivity(intent);
+			}
+		});
 		LVP.add(avatarLVP);
 
 		LVP.add(new CListViewParam(R.id.img_new_message,

@@ -83,6 +83,7 @@ public class ChatList extends CListView {
 				mActivity.startActivity(intent);
 			}
 		});
+		
 		LVP.add(avatarLVP);
 
 		if (item.isNew.equals("0")) {
@@ -101,8 +102,21 @@ public class ChatList extends CListView {
 
 		LVP.add(new CListViewParam(R.id.text_nickname, chat_name, true));
 		LVP.add(new CListViewParam(R.id.text_date, item.ctime, true));
+		
 		SpannableString spanStr = SpanUtils.txtToImg(mActivity, item.content);
-		LVP.add(new CListViewParam(R.id.text_message, spanStr, true));
+		CListViewParam messageLVP = new CListViewParam(R.id.text_message, spanStr, true);
+		messageLVP.setOnclickLinstener(new OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				// 打开私信回复
+				Intent intent = new Intent(mActivity, ChatDetailListActivity.class);
+				intent.putExtra(Params.INTENT_EXTRA.MESSAGE_UID, item.talk_uid);
+				intent.putExtra(Params.INTENT_EXTRA.USERNAME, item.talk_uname);
+				mActivity.startActivity(intent);
+			}
+		});
+		LVP.add(messageLVP);
 
 		return LVP;
 	}

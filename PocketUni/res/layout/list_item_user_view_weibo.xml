@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="60dip"
             android:gravity="center"
-            android:text="这家伙很懒\n还未发表过微博！" />
+            android:text="这家伙很懒\n&#160;&#160;还未发状态！" />
 
         <TextView
             android:id="@+id/text_nickname"
