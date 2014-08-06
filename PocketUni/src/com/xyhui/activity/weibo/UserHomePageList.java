@@ -8,12 +8,14 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.preference.PreferenceManager.OnActivityResultListener;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
@@ -135,6 +137,17 @@ public class UserHomePageList extends CListView {
 			avatarLVP.setImgAsync(true);
 			avatarLVP.setItemTag(mUser.face);
 			avatarLVP.setImgRoundCorner(6);
+			if (mUserID.equals(new PrefUtil().getPreference(Params.LOCAL.UID))) {
+				avatarLVP.setOnclickLinstener(new OnClickListener() {
+					@Override
+					public void onClick(View arg0) {
+						// TODO Auto-generated method stub
+						//Toast.makeText(mActivity, "更换头像", Toast.LENGTH_SHORT).show();
+					}
+				});
+			} else {
+				avatarLVP.setOnclickLinstener(null);
+			}
 			LVP.add(avatarLVP);
 
 			// 昵称
@@ -230,8 +243,25 @@ public class UserHomePageList extends CListView {
 				});
 				LVP.add(btn_message);
 			}
+			
+			if (!TextUtils.isEmpty(uid) && !uid.equalsIgnoreCase(mUser.uid)) {
+				// 他人相册按钮
+				CListViewParam btn_photos = new CListViewParam(
+						R.id.btn_photo, R.drawable.btn_user_photo, true);
 
-			CListViewParam btn_params_buluo;
+				btn_photos.setOnclickLinstener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						Intent intent = new Intent();
+						intent.setClass(mActivity, AlbumListActivity.class);
+						intent.putExtra(Params.INTENT_EXTRA.USER_ID, mUser.uid);
+						mActivity.startActivity(intent);
+					}
+				});
+				LVP.add(btn_photos);
+			}
+
+			/*CListViewParam btn_params_buluo;
 			if (mUserID.equals(new PrefUtil().getPreference(Params.LOCAL.UID))) {
 				// 部落按钮
 				btn_params_buluo = new CListViewParam(R.id.btn_params_buluo,
@@ -239,7 +269,11 @@ public class UserHomePageList extends CListView {
 			} else {
 				btn_params_buluo = new CListViewParam(R.id.btn_params_buluo,
 						null, false);
-			}
+			}*/
+			
+			// 部落按钮
+		   CListViewParam btn_params_buluo  = new CListViewParam(R.id.btn_params_buluo,
+					null, true);
 			btn_params_buluo.setOnclickLinstener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
@@ -251,7 +285,7 @@ public class UserHomePageList extends CListView {
 			});
 			LVP.add(btn_params_buluo);
 
-			CListViewParam btn_params_puyou;
+			/*CListViewParam btn_params_puyou;
 			if (mUserID.equals(new PrefUtil().getPreference(Params.LOCAL.UID))) {
 				// 扑友按钮
 				btn_params_puyou = new CListViewParam(R.id.btn_params_puyou,
@@ -259,7 +293,11 @@ public class UserHomePageList extends CListView {
 			} else {
 				btn_params_puyou = new CListViewParam(R.id.btn_params_puyou,
 						null, false);
-			}
+			}*/
+			
+			// 扑友按钮
+			CListViewParam btn_params_puyou = new CListViewParam(R.id.btn_params_puyou,
+					null, true);
 			btn_params_puyou.setOnclickLinstener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
@@ -275,8 +313,18 @@ public class UserHomePageList extends CListView {
 			});
 			LVP.add(btn_params_puyou);
 
+			/*CListViewParam btn_params_album;
+			if (mUserID.equals(new PrefUtil().getPreference(Params.LOCAL.UID))) {
+				// 相册按钮
+				btn_params_album = new CListViewParam(
+						R.id.btn_params_album, null, true);
+			} else {
+				btn_params_album = new CListViewParam(
+						R.id.btn_params_album, null, false);
+			}*/
+			
 			// 相册按钮
-			CListViewParam btn_params_album = new CListViewParam(
+			CListViewParam btn_params_album= new CListViewParam(
 					R.id.btn_params_album, null, true);
 			btn_params_album.setOnclickLinstener(new OnClickListener() {
 				@Override
@@ -289,6 +337,18 @@ public class UserHomePageList extends CListView {
 				}
 			});
 			LVP.add(btn_params_album);
+			
+			//自己的功能布局
+			CListViewParam myFunLayou ;
+			if (mUserID.equals(new PrefUtil().getPreference(Params.LOCAL.UID))) {
+				myFunLayou = new CListViewParam(
+						R.id.my_fun_layoutss, null, true);
+			} else {
+				myFunLayou = new CListViewParam(
+						R.id.my_fun_layoutss, null, false);
+			}
+			LVP.add(myFunLayou);
+			
 			// // 关注数量
 			// LVP.add(new CListViewParam(R.id.text_params_followed, ""
 			// + mUser.followed_count, true));
@@ -532,4 +592,5 @@ public class UserHomePageList extends CListView {
 			btn.setEnabled(true);
 		}
 	};
+	
 }

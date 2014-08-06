@@ -43,7 +43,6 @@ public class TupopActivity extends FLActivity {
 	@Override
 	public void linkUiVar() {
 		setContentView(R.layout.activity_tupop);
-		
 		btn_back = (Button) findViewById(R.id.btn_back);
 		btn_setting = (Button) findViewById(R.id.btn_setting);
 		rl_nav = (RelativeLayout) findViewById(R.id.rl_nav);
