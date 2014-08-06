@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -14,6 +15,7 @@ import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 import com.mslibs.utils.JSONUtils;
 import com.xyhui.R;
+import com.xyhui.activity.weibo.UserHomePageActivity;
 import com.xyhui.activity.weibo.WeiboEditActivity;
 import com.xyhui.activity.weibo.WeiboList;
 import com.xyhui.api.Api;
@@ -78,6 +80,19 @@ public class TabMeActivity extends FLTabActivity {
 				startActivity(intent);
 			}
 		});
+		
+		iv_userheader.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				String uid = (String) v.getTag();
+				// 打开个人主页
+				Intent intent = new Intent();
+				intent.setClass(mActivity, UserHomePageActivity.class);
+				intent.putExtra(Params.INTENT_EXTRA.USER_ID, uid);
+				mActivity.startActivity(intent);
+			}
+		});
 	}
 
 	@Override
@@ -116,12 +131,14 @@ public class TabMeActivity extends FLTabActivity {
 	CallBack headercallback = new CallBack() {
 		@Override
 		public void onSuccess(String response) {
+			Log.i("TAG", response);
 			User mUser = JSONUtils.fromJson(response, User.class);
 
 			if (mUser != null) {
 				tv_user.setText(mUser.uname);
 				UrlImageViewHelper.setUrlDrawable(iv_userheader, mUser.face,
 						R.drawable.img_default);
+				iv_userheader.setTag(mUser.uid);
 			}
 			
 			if (mWeiboListView == null) {

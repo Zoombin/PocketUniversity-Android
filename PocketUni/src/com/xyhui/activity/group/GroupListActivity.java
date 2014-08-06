@@ -215,13 +215,27 @@ public class GroupListActivity extends FLActivity {
 	public void ensureUi() {
 		ad_banner.init(Banner.TYPE_GROUP);
 
-		btn_hot_group.setSelected(true);
+		/*btn_hot_group.setSelected(true);
 		hot_group_listview.setVisibility(View.VISIBLE);
 		my_star_listview.setVisibility(View.GONE);
-		my_group_listview.setVisibility(View.GONE);
-
+		my_group_listview.setVisibility(View.GONE);*/
+		
 		setTitle();
 		setSpinner();
+		
+		//先显示我的部落
+		btn_my_group.setSelected(true);
+
+		hot_group_listview.setVisibility(View.GONE);
+		my_star_listview.setVisibility(View.GONE);
+		my_group_listview.setVisibility(View.VISIBLE);
+
+		schoolbar.setVisibility(View.GONE);
+		if (mGroupListView_my == null)
+			mGroupListView_my = new GroupList(my_group_listview, mActivity,
+					GroupList.GROUP_MY);
+		
+		
 	}
 
 	private void setTitle() {

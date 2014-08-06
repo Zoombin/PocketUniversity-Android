@@ -109,8 +109,8 @@ public class TabFriendActivity extends FLActivity {
 		} else {
 //			btn_back.setVisibility(View.VISIBLE);
 //			btn_search.setVisibility(View.GONE);
-			btn_nav_followed.setText("TA的关注");
-			btn_nav_follows.setText("TA的粉丝");
+			btn_nav_followed.setText("我的关注");
+			btn_nav_follows.setText("我的粉丝");
 		}
 
 		selectFriendByType();
