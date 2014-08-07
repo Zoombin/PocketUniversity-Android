@@ -89,7 +89,7 @@ public class GroupInviteList extends CListView {
 		LVP.add(avatarLVP);
 
 		LVP.add(new CListViewParam(R.id.text_nickname, user.uname, true));
-		LVP.add(new CListViewParam(R.id.text_params, "微博:" + user.weibo_count + "   粉丝:"
+		LVP.add(new CListViewParam(R.id.text_params, "动态:" + user.weibo_count + "   粉丝:"
 				+ user.followers_count + "   关注:" + user.followed_count, true));
 
 		CListViewParam inviteLVP = new CListViewParam(R.id.btn_invite, "邀请", true);

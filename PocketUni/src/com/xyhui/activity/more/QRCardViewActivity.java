@@ -67,7 +67,7 @@ public class QRCardViewActivity extends FLActivity {
 
 			if (user != null) {
 				text_nickname.setText(user.uname);
-				text_params.setText("微博:" + user.weibo_count + "   粉丝:" + user.followers_count
+				text_params.setText("动态:" + user.weibo_count + "   粉丝:" + user.followers_count
 						+ "   关注:" + user.followed_count);
 				UrlImageViewHelper.setUrlDrawable(img_avatar_mask, user.face, R.drawable.none);
 			}

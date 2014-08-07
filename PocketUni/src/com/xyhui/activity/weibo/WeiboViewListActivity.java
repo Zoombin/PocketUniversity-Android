@@ -101,7 +101,7 @@ public class WeiboViewListActivity extends FLActivity {
 			@Override
 			public void onClick(View v) {
 
-				new AlertDialog.Builder(mActivity).setTitle("确定要删除这条微博吗?")
+				new AlertDialog.Builder(mActivity).setTitle("确定要删除吗?")
 						.setPositiveButton("确定", new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int whichButton) {
 								new Api(delcallback, mActivity).delweibo(PuApp.get().getToken(),

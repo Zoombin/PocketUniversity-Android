@@ -120,7 +120,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/btn_school_weibo"
                     android:gravity="center"
-                    android:text="发微博"
+                    android:text="发状态"
                     android:textColor="#333"
                     android:textSize="14sp" />
             </RelativeLayout>

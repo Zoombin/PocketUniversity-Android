@@ -56,7 +56,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignLeft="@+id/text_nickname"
                 android:layout_below="@+id/text_nickname"
-                android:text="微博:129   粉丝:230   关注:120"
+                android:text="动态:129   粉丝:230   关注:120"
                 android:textColor="#aaa"
                 android:textSize="12sp" />
         </RelativeLayout>

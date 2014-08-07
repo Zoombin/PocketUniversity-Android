@@ -75,7 +75,7 @@
                 android:shadowDx="0"
                 android:shadowDy="-1"
                 android:shadowRadius="0.01"
-                android:text="微博广场"
+                android:text="广场"
                 android:textColor="#fff"
                 android:textSize="12sp" />
 
@@ -88,7 +88,7 @@
                 android:shadowDx="0"
                 android:shadowDy="-1"
                 android:shadowRadius="0.01"
-                android:text="我的微博"
+                android:text="我的动态"
                 android:textColor="#fff"
                 android:textSize="12sp" />
 

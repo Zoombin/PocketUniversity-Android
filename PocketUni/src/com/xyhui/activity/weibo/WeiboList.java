@@ -61,7 +61,7 @@ public class WeiboList extends CListView {
 	public void ensureUi() {
 		mPerpage = 10;
 		super.setGetMoreResource(R.layout.list_item_getmore, R.id.list_item_getmore_title,
-				"查看更多微博");
+				"查看更多");
 		super.ensureUi();
 
 		super.setGetMoreClickListener(new OnClickListener() {

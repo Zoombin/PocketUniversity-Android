@@ -31,7 +31,7 @@ public class User implements Parcelable {
 
 	public String getInfo() {
 		String result = "";
-		result += "微博:" + weibo_count + "   ";
+		result += "动态:" + weibo_count + "   ";
 		result += "关注:" + followed_count + "   ";
 		result += "粉丝:" + followers_count;
 		return result;

@@ -53,7 +53,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dip"
-                android:text="微博:129   粉丝:230   关注:120"
+                android:text="动态:129   粉丝:230   关注:120"
                 android:textColor="#aaa"
                 android:textSize="12sp" />
         </LinearLayout>

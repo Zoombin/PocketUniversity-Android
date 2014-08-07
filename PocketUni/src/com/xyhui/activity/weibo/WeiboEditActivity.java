@@ -487,14 +487,14 @@ public class WeiboEditActivity extends FLActivity {
 			toolbar_at.setVisibility(View.GONE);
 			break;
 		case Params.INTENT_VALUE.WEIBO_FORWARD:
-			navbar_TitleText.setText("转发微博");
+			navbar_TitleText.setText("转发");
 
 			edit_title.setVisibility(View.GONE);
 			img_split.setVisibility(View.GONE);
 			toolbar_swf.setVisibility(View.GONE);
 			toolbar_link.setVisibility(View.GONE);
 
-			edit_content.setText("转发微博");
+			edit_content.setText("转发");
 			edit_content.setHint("");
 			btn_send.setEnabled(true);
 			toolbar_photo.setVisibility(View.GONE);

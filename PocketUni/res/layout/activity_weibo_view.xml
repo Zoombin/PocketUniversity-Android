@@ -48,7 +48,7 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:gravity="center_vertical"
-            android:text="微博正文" />
+            android:text="正文" />
     </RelativeLayout>
 
     <LinearLayout
